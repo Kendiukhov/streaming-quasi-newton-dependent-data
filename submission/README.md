@@ -15,7 +15,7 @@ cd submission && sh build.sh
 | File | Purpose | Upload as |
 |---|---|---|
 | `manuscript.tex`, `body.tex` | The manuscript. `elsarticle`, single column, line-numbered. | Manuscript (source) |
-| `manuscript.pdf` | Compiled manuscript: 17-page main text, 60 pages including appendices and references. | Manuscript (PDF, for review) |
+| `manuscript.pdf` | Compiled manuscript: 17-page main text, 61 pages including appendices and references. | Manuscript (PDF, for review) |
 | `supplementary.tex` / `.pdf` | Four figures held out of the main text (see below). | Supplementary material |
 | `highlights.tex` / `.txt` / `.pdf` | 5 bullets, each ≤ 85 characters. | Highlights (file name contains "highlights") |
 | `cover_letter.tex` / `.pdf` | Cover letter to the Editors-in-Chief. | Cover letter |
@@ -86,8 +86,9 @@ Checked against the Guide for Authors on 11 August 2026.
   measures the extreme ink on all four sides, calibrating each side's baseline from the document
   itself, so it needs no page-geometry constants and catches vertical overflow as well as
   horizontal. The only remaining report is a benign 30 pt overfull `\vbox` on the title page from
-  `elsarticle`'s corresponding-author footnote; the rendered page is inside its margins. Nothing
-  protrudes past the text block by more than an end-of-line hyphen (0.07 in) in either document.
+  `elsarticle`'s corresponding-author footnote; the rendered page is inside its margins. Measured
+  over every page of all five PDFs, **nothing protrudes past the text block on any side** — the
+  worst excursion is 0.000 in.
 - **Declarations** — competing interest, funding, CRediT, data availability, and the declaration on
   generative AI use all appear as unnumbered sections after the Conclusions, and are also provided
   as separate files here.

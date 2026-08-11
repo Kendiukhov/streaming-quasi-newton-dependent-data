@@ -182,9 +182,18 @@ def table_ablation():
     # one panel are terminated with \\* rather than \\, which forbids a page break inside a
     # \multirow group, whose label would otherwise be dropped.
     HEADER = r"panel & setting & eff & 2-scale & BM & plug-in & $r_j$ \\"
-    L = [r"% \Needspace* is not decoration: the first chunk of this longtable (caption, head, and",
-         r"% the break-protected first panel) has no legal breakpoint inside it, so on a page with",
-         r"% less room than that it runs into the bottom margin without any warning.",
+    L = [r"% Two guards, and both are needed.  The first chunk of this longtable -- caption, head,",
+         r"% and the break-protected first panel -- is one unbreakable ~308pt block, so on a page",
+         r"% with less room than that it runs into the bottom margin, silently: \Needspace* asks",
+         r"% for the room.  But \Needspace* alone is not enough here, because the table is",
+         r"% \input after a queue of figure floats: it breaks the page, the pending figure is then",
+         r"% placed at the top of the fresh page and eats the reserved space, and longtable, whose",
+         r"% only breakpoint is now its very start, emits \endfoot and then \endhead -- printing",
+         r"% \"continued from the previous page\" ABOVE the table's own caption.  \FloatBarrier",
+         r"% drains the queue first so that cannot happen.  Measured: without the barrier the",
+         r"% manuscript prints the continuation head above the caption on the table's first page;",
+         r"% with it, both documents are clean at no extra page.",
+         r"\FloatBarrier",
          r"\Needspace*{22\baselineskip}",
          r"\begingroup", r"\small", r"\setlength{\tabcolsep}{4pt}",
          r"\begin{longtable}{llrrrrr}",

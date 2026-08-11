@@ -1,6 +1,15 @@
-% \Needspace* is not decoration: the first chunk of this longtable (caption, head, and
-% the break-protected first panel) has no legal breakpoint inside it, so on a page with
-% less room than that it runs into the bottom margin without any warning.
+% Two guards, and both are needed.  The first chunk of this longtable -- caption, head,
+% and the break-protected first panel -- is one unbreakable ~308pt block, so on a page
+% with less room than that it runs into the bottom margin, silently: \Needspace* asks
+% for the room.  But \Needspace* alone is not enough here, because the table is
+% \input after a queue of figure floats: it breaks the page, the pending figure is then
+% placed at the top of the fresh page and eats the reserved space, and longtable, whose
+% only breakpoint is now its very start, emits \endfoot and then \endhead -- printing
+% \"continued from the previous page\" ABOVE the table's own caption.  \FloatBarrier
+% drains the queue first so that cannot happen.  Measured: without the barrier the
+% manuscript prints the continuation head above the caption on the table's first page;
+% with it, both documents are clean at no extra page.
+\FloatBarrier
 \Needspace*{22\baselineskip}
 \begingroup
 \small

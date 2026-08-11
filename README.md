@@ -215,8 +215,9 @@ Two versions are built from one set of sources, so they cannot disagree:
   requires.
 
 Both have a **17-page main narrative** (the numbered Sections 1–8) and seven lettered appendices.
-Table D.4 is a `longtable` spanning three pages; every other table is a float whose width is capped
-by a `\resizebox` guard. `make layout` checks both PDFs for over-wide lines, floats too tall for a
+Table D.4 is a `longtable` spanning three pages, preceded by `\FloatBarrier` and `\Needspace*` so
+that no pending float can push its unbreakable first chunk into the bottom margin; every other table
+is a float whose width is capped by a `\resizebox` guard. `make layout` checks both PDFs for over-wide lines, floats too tall for a
 page, and ink outside the text block on any side of any page.
 Each long section is split into a core fragment, which the body includes, and a `_detail`
 fragment, which the appendix includes — so the derivation of the contraction condition, the full

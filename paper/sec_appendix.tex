@@ -266,9 +266,14 @@ F(\theta_t)-F(\ts)&\le F(\theta_{t-1})-F(\ts)
 +\tfrac{L}{2}\gamma_t^2\opnorm{P_{t-1}}^2\norm{\gb_t(\theta_{t-1})}^2 .
 \label{eq:desc}
 \end{align}
-The last term is summable: $\gamma_t^2\opnorm{P_{t-1}}^2=O(t^{2q_{\mathrm r}-2})$ by
-\Cref{lem:ridge} with $q_{\mathrm r}<1/2$, and $\E\norm{\gb_t(\theta_{t-1})}^2\le
-C+C'(F(\theta_{t-1})-F(\ts))$ by \Cref{as:mom} and Jensen. The cross term is the one that
+The last term is summable:
+\[
+\gamma_t^2\opnorm{P_{t-1}}^2=O(t^{2q_{\mathrm r}-2}),
+\qquad
+\E\norm{\gb_t(\theta_{t-1})}^2\le C+C'(F(\theta_{t-1})-F(\ts)),
+\]
+the first by \Cref{lem:ridge} with $q_{\mathrm r}<1/2$ and the second by \Cref{as:mom} and
+Jensen. The cross term is the one that
 would be handled by a martingale argument under independence. Instead, decompose
 $\zeta_t=\eps_t+r_t$ with $r_t=\gb_t(\theta_{t-1})-\nabla F(\theta_{t-1})-\eps_t$, so that
 \begin{equation}
@@ -304,7 +309,10 @@ convergence. We prove it using only \Cref{lem:ridge} and \Cref{thm:as}.
 \begin{lemma}[Preliminary rate]
 \label{lem:prelim}
 Under \Cref{as:reg,as:mom,as:curv,as:ident,as:mix}, with $\qr\in(0,1/4)$,
-$\norm{\theta_T-\ts}=O(T^{-1/2}\log^{1+\varpi}T)$ almost surely, for every $\varpi>0$.
+\[
+\norm{\theta_T-\ts}=O\big(T^{-1/2}\log^{1+\varpi}T\big)
+\quad\text{almost surely, for every }\varpi>0.
+\]
 \end{lemma}
 
 \begin{proof}

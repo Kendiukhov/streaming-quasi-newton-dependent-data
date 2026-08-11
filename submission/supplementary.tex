@@ -68,7 +68,11 @@
 % manuscript's own label definitions with xr, and supply the type word from the label prefix.
 % build.sh compiles manuscript.tex first, so manuscript.aux exists by the time this runs.  None of
 % the four figure labels defined below appear in the manuscript, so there is no clash.
-\usepackage{xr}
+% xr-hyper, not xr: with plain xr every \Cref into the manuscript became a hyperlink to a
+% destination this document does not contain, so the supplement shipped with four dead internal
+% links (table.D.4, theorem.8, theorem.9, theorem.10). xr-hyper resolves them against the
+% manuscript instead.
+\usepackage{xr-hyper}
 \usepackage{xstring}
 \externaldocument{manuscript}
 % Robust, because these appear inside \caption, whose argument is written to the .lof: a
