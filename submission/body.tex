@@ -48,6 +48,8 @@
 \label{sec:conclusions}
 \input{sec_conclusions}
 
+\FloatBarrier
+
 \section*{Declaration of competing interest}
 The author declares that he has no known competing financial interests or personal relationships
 that could have appeared to influence the work reported in this paper.
@@ -62,13 +64,20 @@ Investigation, Validation, Visualization, Writing -- original draft, Writing -- 
 editing.
 
 \section*{Data availability}
-All data, code and results needed to reproduce every number, figure and table in this article are
-publicly available at \url{https://github.com/Kendiukhov/streaming-quasi-newton-dependent-data}.
-The repository contains the estimator, the experiment scripts, the saved result files from which
-every reported number is generated, and the tests that validate the closed-form population
-quantities. The two real data sets are third-party and are not redistributed; they are downloaded
-from the UCI Machine Learning Repository by the script \texttt{experiments/fetch\_data.py} and are
-cited as \citet{hogue2019metro} and \citet{chen2019beijingairuci}.
+All code, saved results and derived data needed to reproduce every number, figure and table in this
+article are archived and citable \citep{kendiukhov2026bgsn}. The release used to produce the results
+reported here is
+\href{https://doi.org/10.5281/zenodo.21891313}{\texttt{https://doi.org/10.5281/zenodo.21891313}};
+the concept identifier \texttt{10.5281/zenodo.21891312} always resolves to the most recent release,
+and development continues at
+\url{https://github.com/Kendiukhov/streaming-quasi-newton-dependent-data}. The archive contains the
+estimator, the experiment scripts, the result files from which every reported number is generated,
+and the tests that validate every closed-form population quantity against long simulation.
+
+The two real data sets analysed are third-party and are not redistributed. They are downloaded from
+the UCI Machine Learning Repository by \texttt{experiments/fetch\_data.py} and are cited in the
+reference list: Metro Interstate Traffic Volume \citep{hogue2019metro}, \texttt{10.24432/C5X60B};
+and Beijing Multi-Site Air Quality \citep{chen2019beijingairuci}, \texttt{10.24432/C5RK5G}.
 
 \section*{Declaration of generative AI and AI-assisted technologies in the manuscript preparation
 process}

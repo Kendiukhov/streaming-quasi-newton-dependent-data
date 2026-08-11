@@ -62,6 +62,11 @@ Checked against the Guide for Authors on 11 August 2026.
 - **Declarations** — competing interest, funding, CRediT, data availability, and the declaration on
   generative AI use all appear as unnumbered sections after the Conclusions, and are also provided
   as separate files here.
+- **Research data (Option C)** — satisfied: the code and results are archived on Zenodo with a DOI
+  ([10.5281/zenodo.21891313](https://doi.org/10.5281/zenodo.21891313)), cited in the reference list
+  as a software reference with creator, title, venue, date, version and identifier as Elsevier's
+  software-citation guidance requires, and linked from the Data availability section. The two
+  third-party data sets are cited with their own UCI DOIs.
 - **References** — the journal does not impose a style at submission and requires only internal
   consistency; `elsarticle-harv` (author–year) is used, with DOIs, preprints marked as preprints,
   and software cited with its repository. All 99 cited works were verified against their published
@@ -77,9 +82,14 @@ Checked against the Guide for Authors on 11 August 2026.
    experiments and draft the manuscript. This is a material disclosure; the wording is the author's
    to confirm or change, and the journal requires that it be accurate.
 2. **Complete `author_biography.txt`** and attach a photograph. It is a template on purpose.
-3. **Archive the repository and mint a DOI** (GitHub–Zenodo), then replace the repository URL with
-   the DOI in `data_availability.txt` and in the manuscript's Data availability section. No DOI is
-   claimed at submission.
+3. **Fix the creator field on the Zenodo record.** It currently reads `Kendiukhov` with no given
+   name, so Zenodo's own generated citation renders as a surname alone. Edit it to
+   `Kendiukhov, Ihor`, add an ORCID iD and the University of Tübingen affiliation, and publish the
+   metadata change — the DOI is unaffected by metadata edits. The manuscript's reference list
+   already spells the name in full. *(The archive itself is done:
+   [10.5281/zenodo.21891313](https://doi.org/10.5281/zenodo.21891313), version `release1`,
+   MIT, 11 August 2026; concept DOI
+   [10.5281/zenodo.21891312](https://doi.org/10.5281/zenodo.21891312).)*
 4. **Verify the suggested reviewers'** current affiliations, and remove any with a conflict.
 5. **Produce the competing-interest declaration** with Elsevier's declarations tool as a `.docx`;
    the `.txt` here is reference text, not an acceptable upload.

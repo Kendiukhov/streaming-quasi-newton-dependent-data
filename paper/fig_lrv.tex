@@ -1,8 +1,8 @@
 %% Figure block, shared by ../paper/main.tex and ../submission/*.tex so the caption has
 %% exactly one source.
-\begin{figure}[t]
+\begin{figure}[tbp]
 \centering
-\IfFileExists{fig2_lrv.pdf}{\includegraphics[width=\linewidth]{fig2_lrv.pdf}}{\fbox{\parbox{0.9\linewidth}{\centering\vspace{2em}\texttt{\detokenize{fig2_lrv}} pending\vspace{2em}}}}
+\figorbox{fig2_lrv.pdf}
 \caption{\textbf{The long-run covariance estimator, and why the moving iterate does not
 spoil it.} (a) Measured $\E[\widehat S]/S$ against block length: plain batch means follow
 the closed-form bias $1-\Delta/(bS)$ (no fitted constants), while the two-scale form is

@@ -1,15 +1,24 @@
 %% Figure block, shared by ../paper/main.tex and ../submission/*.tex so the caption has
 %% exactly one source.
-\begin{figure}[t]
+\begin{figure}[tbp]
 \centering
-\IfFileExists{fig1_headline.pdf}{\includegraphics[width=\linewidth]{fig1_headline.pdf}}{\fbox{\parbox{0.9\linewidth}{\centering\vspace{2em}\texttt{\detokenize{fig1_headline}} pending\vspace{2em}}}}
+\figorbox{fig1_headline.pdf}
 \caption{\textbf{Dependence-blind confidence intervals fail by a computable amount, and
 only estimating the long-run score covariance repairs them.}
 (a) Coverage of nominal $95\%$ intervals on the homogeneous autoregressive design as the
 dependence strength varies, against the parameter-free prediction of
 \Cref{prop:coverage}; error bars are $\pm1.96$ Monte Carlo standard errors.
-(b) Coverage (vertical) against interval width divided by the width of the infeasible
-oracle interval (horizontal); the dotted line is the nominal level. Methods to the left of
-$1$ on the horizontal axis buy their narrowness with lost coverage.}
+(b) Coverage of every method on that design at $\phi=\psi=0.7$ ($\kappa=\KappaLoArhom$), one row
+per method; the dotted line is the nominal level and the number at the right is the interval width
+relative to the infeasible oracle interval. Read it in three groups. The five rows at the top all
+account for the autocovariances of the score --- the infeasible oracle, the offline reference, and
+the three streaming estimators that use our long-run covariance --- and they are the rows that
+reach nominal, at width $\approx1$. The next two use the instantaneous covariance the
+independent-data theory prescribes; they are narrower by the factor $\sqrt\kappa=\WidthRatioArhom$
+and they miss, by the amount \Cref{prop:coverage} predicts. The bottom four are first-order methods
+whose \emph{point} estimates have not converged on this ill-conditioned design (their $\sqrt N$
+error is $\RmseAdagradArhet$ to $\RmseAsgdArhom$ times the efficient value), so their coverage is
+dominated by that and not by which covariance they use; \Cref{tab:wellcond} is where they become
+informative about inference.}
 \label{fig:coverage}
 \end{figure}

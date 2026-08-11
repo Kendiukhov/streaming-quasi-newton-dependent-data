@@ -1,17 +1,22 @@
 %% Figure block, shared by ../paper/main.tex and ../submission/*.tex so the caption has
 %% exactly one source.
-\begin{figure}[t]
+\begin{figure}[tbp]
 \centering
-\IfFileExists{fig6_real.pdf}{\includegraphics[width=\linewidth]{fig6_real.pdf}}{\fbox{\parbox{0.9\linewidth}{\centering\vspace{2em}\texttt{\detokenize{fig6_real}} pending\vspace{2em}}}}
+\figorbox{fig6_real.pdf}
 \caption{\textbf{Two real hourly streams.} (a, b) Coverage of nominal $95\%$ intervals
 under Protocol~A (real covariates, synthetic autoregressive errors, exact target and exact
 conditional long-run covariance). The air-quality stream's median estimated variance inflation
 is $\RealKappaAirq$, so dependence-blind intervals fail badly there.
-(c) Coverage (vertical) against block length $b$ (horizontal, log scale) on the traffic stream,
+(c) Coverage (left axis) against block length $b$ (horizontal, log scale) on the traffic stream,
 with the free block-adequacy diagnostic
 $r_j=|u_j^{\!\top}(\Sft-\Sbm)u_j|/(u_j^{\!\top}\Sbm u_j)$ --- an estimate of the relative
-block-length bias of plain batch means, defined where it is first used in
-\Cref{sec:exp} --- overlaid. Coverage improves with $b$ and $r_j$ moves with it; the
-diagnostic tells you whether $b$ is too small, and it is not a calibration guarantee.}
+block-length bias of plain batch means, defined where it is first used in \Cref{sec:exp} --- on the
+right axis. Three things to read. Our coverage is flat in $b$ over a fortyfold range and stays
+within a few hundredths of the infeasible oracle-variance curve throughout, so the shortfall from
+$0.95$ on an $\RealNMetro$-observation segment is the point estimate and not the covariance. The
+dependence-blind curve sits far below at every $b$ and does not close. And $r_j$ is U-shaped, lowest
+near $b=20$--$40$: it rises for small $b$, where plain batch means are biased, and again for large
+$b$, where too few blocks remain to estimate anything stably --- which is what makes it a usable
+guide to the block length, though not a calibration guarantee.}
 \label{fig:real}
 \end{figure}

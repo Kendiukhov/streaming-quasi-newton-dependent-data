@@ -25,15 +25,35 @@
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{graphicx}
+% Figure inclusion, shared by both documents.  \IfFileExists does NOT consult \graphicspath, so
+% the guard has to test the same path graphicx will use -- getting this wrong silently replaces
+% every figure with a placeholder box, which is exactly what happened once.
+\newcommand{\FIGDIR}{../figures/}
+\graphicspath{{\FIGDIR}}
+\newcommand{\figorbox}[1]{%
+  \IfFileExists{\FIGDIR#1}{\includegraphics[width=\linewidth]{#1}}%
+  {\fbox{\parbox{0.9\linewidth}{\centering\vspace{2em}%
+    \texttt{\detokenize{#1}} pending: run \texttt{make figures}\vspace{2em}}}}}
+
 \usepackage{xcolor}
 \usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,
             urlcolor=blue!55!black]{hyperref}
 \usepackage{cleveref}   % before \newtheorem so cleveref can record the environment names
 \usepackage{enumitem}
+
+% Float placement.  Ten floats inside one section overflows LaTeX's defaults and they get
+% flushed to the end of the document -- which once pushed three figures past the appendices.
+% Raise the per-page limits, allow float pages, and put a barrier before the appendix.
+\setcounter{topnumber}{3}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{5}
+\renewcommand{\topfraction}{0.92}
+\renewcommand{\bottomfraction}{0.7}
+\renewcommand{\textfraction}{0.06}
+\renewcommand{\floatpagefraction}{0.72}
+\usepackage{placeins}
 \usepackage{caption}
 \captionsetup{font=small,labelfont=bf}
-
-\graphicspath{{../figures/}}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{proposition}[theorem]{Proposition}

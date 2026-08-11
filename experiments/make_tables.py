@@ -56,7 +56,7 @@ def table_main():
     labels = list(d.keys())
     hdr = " & ".join([r"\multicolumn{3}{c}{%s}" % L for L in labels])
     lines = [
-        r"\begin{table}[t]", r"\centering", r"\small",
+        r"\begin{table}[tbp]", r"\centering", r"\small",
         r"\setlength{\tabcolsep}{3.4pt}",
         r"\caption{\textbf{Coverage of nominal 95\%% confidence intervals, interval width,"
         r" and estimation error on four dependent designs} ($d=20$, $N=200{,}000$, block"
@@ -147,7 +147,7 @@ def table_main():
 # --------------------------------------------------------------------------------------
 def table_ablation():
     d = common.load("exp5_ablations.json")
-    L = [r"\begin{table}[t]", r"\centering", r"\small",
+    L = [r"\begin{table}[tbp]", r"\centering", r"\small",
          r"\caption{\textbf{Ablations} on the homogeneous autoregressive design"
          r" ($d=20$, $\kappa=2.92$, $R=%d$). \emph{cov} columns are coverage of nominal"
          r" 95\%% intervals using the two-scale, plain batch-means, and i.i.d.\ plug-in"
@@ -231,7 +231,7 @@ def table_real():
     ds = {q["name"]: q for q in d["datasets"]}
     metro = [k for k in ds if k.startswith("metro")][0]
     air = sorted([k for k in ds if k.startswith("airq")])
-    L = [r"\begin{table}[t]", r"\centering", r"\small",
+    L = [r"\begin{table}[tbp]", r"\centering", r"\small",
          r"\setlength{\tabcolsep}{4pt}",
          r"\caption{\textbf{Real hourly streams.} Protocol A: real covariates, synthetic"
          r" autoregressive errors whose coefficient equals the AR(1) coefficient of the"
@@ -291,7 +291,7 @@ def table_real():
 def table_wellcond():
     d = common.load("exp9_wellcond.json")
     rows = {q["method"]: q for q in d["rows"]}
-    L = [r"\begin{table}[t]", r"\centering", r"\small",
+    L = [r"\begin{table}[tbp]", r"\centering", r"\small",
          r"\caption{\textbf{A well-conditioned dependent design isolates the inference"
          r" question} ($\Sigma_x=I$, so $\mathrm{cond}(H)=%.2f$; otherwise identical to the"
          r" AR-hom column of \Cref{tab:main}: $d=20$, $N=200{,}000$, $b=20$,"
@@ -322,7 +322,7 @@ def table_wellcond():
 def table_hard():
     d = common.load("exp10_hard_design.json")
     designs = [(k, v) for k, v in d.items() if isinstance(v, dict)]
-    L = [r"\begin{table}[t]", r"\centering", r"\small",
+    L = [r"\begin{table}[tbp]", r"\centering", r"\small",
          r"\caption{\textbf{On the two designs whose point estimate has not converged, our"
          r" interval tracks the infeasible oracle interval at every sample size} ($d=20$,"
          r" $b=20$; $R$ decreases from %d at the smallest $N$ to %d at the largest, since"
@@ -392,7 +392,7 @@ def table_cost():
         [q["BGSN_plugin"] / q["BGSN"] for q in rows]))
     common.save("exp7_cost.json", d)      # persist so the macro pass can read them
     ratios = [q["BGSN_plugin"] / q["BGSN"] for q in rows]
-    L = [r"\begin{table}[t]", r"\centering", r"\small",
+    L = [r"\begin{table}[tbp]", r"\centering", r"\small",
          r"\setlength{\tabcolsep}{3.5pt}",
          r"\caption{\textbf{Cost.} Wall-clock milliseconds for one pass over $N=%s$"
          r" observations, single-threaded, minimum over %d interleaved repetitions"

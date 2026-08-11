@@ -1,27 +1,44 @@
 Data availability statement
 
 Information Sciences applies Option C of Elsevier's research data guidelines: data should be
-deposited in a repository, and cited and linked from the article.
+deposited in a repository, and cited and linked from the article. This is satisfied -- the
+code and results are archived on Zenodo with a DOI, and cited in the reference list as a
+software reference.
 
 Statement to enter in the submission system:
 
   All code, saved results and derived data needed to reproduce every number, figure and table
-  in this article are publicly available at
+  in this article are archived on Zenodo. The release used to produce the results reported
+  here is:
+
+    Kendiukhov, I. (2026). Streaming inversion-free quasi-Newton estimation and inference on
+    dependent data (version release1) [Software]. Zenodo.
+    https://doi.org/10.5281/zenodo.21891313
+
+  The concept DOI https://doi.org/10.5281/zenodo.21891312 always resolves to the most recent
+  release, and development continues at
   https://github.com/Kendiukhov/streaming-quasi-newton-dependent-data
-  The repository contains the estimator, the experiment scripts, the result files from which
-  every reported number is generated, and tests that validate every closed-form population
-  quantity against long simulation. The two real data sets analysed are third-party and are
-  not redistributed; they are downloaded from the UCI Machine Learning Repository by
-  experiments/fetch_data.py and are cited in the reference list:
+
+  The archive contains the estimator, the experiment scripts, the result files from which every
+  reported number is generated, and the tests that validate every closed-form population
+  quantity against long simulation.
+
+  The two real data sets analysed are third-party and are not redistributed. They are
+  downloaded from the UCI Machine Learning Repository by experiments/fetch_data.py and are
+  cited in the reference list:
 
     Metro Interstate Traffic Volume, UCI Machine Learning Repository,
       https://doi.org/10.24432/C5X60B
     Beijing Multi-Site Air Quality, UCI Machine Learning Repository,
       https://doi.org/10.24432/C5RK5G
 
-NOTE FOR SUBMISSION. A GitHub repository is a public archive but it does not mint a
-persistent identifier and its contents can change. Before or at acceptance, archive the
-repository (for example through the GitHub-Zenodo integration), and replace the URL above
-with the resulting DOI in both this statement and the manuscript's Data availability
-section. No DOI has been minted at the time of submission, and the statement above
-deliberately does not claim one.
+Which DOI to give the journal: use the VERSION DOI (...313) wherever the point is
+reproducibility of the results in this article, which is what the manuscript does. Use the
+CONCEPT DOI (...312) when the point is the software as an ongoing project. The manuscript's
+Data availability section gives both and says which is which.
+
+ONE THING TO FIX ON ZENODO. The record's creator field currently reads "Kendiukhov" with no
+given name, so an automatically generated citation will render as "Kendiukhov" alone. Edit the
+record to "Kendiukhov, Ihor", add an ORCID iD and the University of Tuebingen affiliation, and
+publish the metadata change; the DOI is unaffected by metadata edits. The reference list entry
+in the manuscript already spells the name in full.

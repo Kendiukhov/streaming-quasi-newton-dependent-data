@@ -1,8 +1,8 @@
 %% Figure block, shared by ../paper/main.tex and ../submission/*.tex so the caption has
 %% exactly one source.
-\begin{figure}[t]
+\begin{figure}[tbp]
 \centering
-\IfFileExists{fig7_lrv_rate.pdf}{\includegraphics[width=\linewidth]{fig7_lrv_rate.pdf}}{\fbox{\parbox{0.9\linewidth}{\centering\vspace{2em}\texttt{\detokenize{fig7_lrv_rate}} pending\vspace{2em}}}}
+\figorbox{fig7_lrv_rate.pdf}
 \caption{\textbf{The rate claim, measured, on the object an interval actually uses.}
 Both axes logarithmic; error bars are $\pm1.96$ Monte Carlo standard errors; fitted slopes in
 the legends. \textbf{(a)} Relative operator-norm error in estimating the whole sandwich

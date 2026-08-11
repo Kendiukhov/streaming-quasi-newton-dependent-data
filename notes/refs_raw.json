@@ -700,5 +700,11 @@
   "status": "verified",
   "evidence_url": "https://projecteuclid.org/journals/annals-of-applied-probability/volume-19/issue-4/Recursive-estimation-of-time-average-variance-constants/10.1214/08-AAP587.pdf",
   "notes": "Ann. Appl. Probab. 19(4) 1529-1552 (2009) confirmed on Project Euclid; arXiv:0908.4540."
+ },
+ {
+  "bibtex": "@software{kendiukhov2026bgsn,\n  author       = {Ihor Kendiukhov},\n  title        = {Streaming inversion-free {q}uasi-{N}ewton estimation and inference on\n                  dependent data},\n  year         = {2026},\n  publisher    = {Zenodo},\n  version      = {release1},\n  doi          = {10.5281/zenodo.21891313},\n  note         = {Software, version release1, MIT licence. Concept DOI\n                  10.5281/zenodo.21891312 resolves to the latest release}\n}",
+  "status": "verified",
+  "evidence_url": "https://zenodo.org/records/21891313",
+  "notes": "Checked on the Zenodo record page: title 'Streaming inversion-free quasi-Newton estimation and inference on dependent data', resource type Software, version release1, published 11 August 2026, licensed MIT, version DOI 10.5281/zenodo.21891313. The DOI supplied to us, 10.5281/zenodo.21891312, is the CONCEPT DOI: fetching it redirects to this record, which is Zenodo's documented behaviour for a concept DOI resolving to the latest version. Both are given in the entry and the manuscript. Note for the author: the record's creator field reads 'Kendiukhov' with no given name, so Zenodo's own generated citation renders a surname alone; the bib entry spells 'Ihor Kendiukhov' in full, which is the correct form and matches the manuscript's author block."
  }
 ]

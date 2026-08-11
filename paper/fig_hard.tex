@@ -1,17 +1,20 @@
 %% Figure block, shared by ../paper/main.tex and ../submission/*.tex so the caption has
 %% exactly one source.
-\begin{figure}[t]
+\begin{figure}[tbp]
 \centering
-\IfFileExists{fig8_hard_design.pdf}{\includegraphics[width=\linewidth]{fig8_hard_design.pdf}}{\fbox{\parbox{0.9\linewidth}{\centering\vspace{2em}\texttt{\detokenize{fig8_hard_design}} pending\vspace{2em}}}}
-\caption{\textbf{Separating ``the variance estimate is wrong'' from ``the central limit theorem
-has not taken hold''} on the regime-switching design, whose covariate chain has an integrated
-autocorrelation time of about $\HardTau$ observations. \textbf{(a)} Coverage of nominal $95\%$
-intervals against $N$. The infeasible curve uses the exact $H^{-1}SH^{-1}$ at the same iterate,
-so the vertical distance between it and ours is everything our covariance estimator is
-responsible for; the largest such distance over the sweep is $\HardMaxGap$. Both rise towards
-nominal; the dependence-blind curve does not. \textbf{(b)} The reason the left panel starts low:
-the root-mean-square error of the point estimate, divided by the efficient standard error, is
-still above one at small $N$, so $\sqrt N(\theta_T-\ts)$ is not yet close to its limit and no
-choice of variance can give nominal coverage.}
+\figorbox{fig8_hard_design.pdf}
+\caption{\textbf{Separating ``the variance estimate is wrong'' from ``the central limit theorem has
+not taken hold''} on the two designs whose point estimate has not converged at the sample sizes of
+\Cref{tab:main}. \textbf{(a)} The regime-switching design, whose covariate chain has an integrated
+autocorrelation time of about $\HardTau$ observations. \textbf{(b)} The dependent-logistic design,
+where instead the curvature weight $\alpha=\sigma'(x^{\!\top}\theta)$ is largest at the $\theta_0$
+the warm-up evaluates it at. In both, the infeasible curve uses the exact $H^{-1}SH^{-1}$ at the
+same iterate, so the vertical distance between it and ours is everything our covariance estimator is
+responsible for: that distance is at most $\HardMaxGapMarkov$ on the Markov design and falls from
+$\HardLogitGapSmall$ to $\HardLogitGapBig$ on the logistic one. Ours and the infeasible curve rise
+towards nominal together; the dependence-blind curve does not. \textbf{(c)} Why both left panels
+start low: the root-mean-square error of the point estimate, divided by the efficient standard
+error, is still above one, so $\sqrt N(\theta_T-\ts)$ is not yet close to its limit and no choice of
+variance can give nominal coverage.}
 \label{fig:hard}
 \end{figure}

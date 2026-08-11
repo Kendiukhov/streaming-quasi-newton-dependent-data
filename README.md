@@ -1,5 +1,12 @@
 # Streaming inversion-free quasi-Newton estimation and inference on dependent data
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21891312.svg)](https://doi.org/10.5281/zenodo.21891312)
+
+Archived release: [10.5281/zenodo.21891313](https://doi.org/10.5281/zenodo.21891313) (`release1`).
+The concept DOI [10.5281/zenodo.21891312](https://doi.org/10.5281/zenodo.21891312) always resolves
+to the most recent release. Cite the version DOI when the point is reproducing the results in the
+paper, the concept DOI when the point is the software itself.
+
 Reference implementation and full experimental pipeline for the paper
 
 > **Inference, Not Just Optimisation: Streaming Inversion-Free Quasi-Newton Estimation on

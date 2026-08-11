@@ -33,6 +33,23 @@ def _ok(name):
     return os.path.exists(p)
 
 
+
+def _logticks(ax, values):
+    """Label a log x-axis at exactly the sampled values, compactly, with no minor ticks.
+
+    Matplotlib's default log locator adds 2x, 3x, 4x minor labels which, at the width of a
+    three-panel figure, overlap into an unreadable smear.
+    """
+    import matplotlib.ticker as mt
+    vals = sorted(set(values))
+    ax.set_xticks(vals)
+    ax.set_xticklabels([("%g" % (v / 10 ** int(np.floor(np.log10(v)))))
+                        + r"$\times10^{%d}$" % int(np.floor(np.log10(v))) for v in vals],
+                       fontsize=7)
+    ax.xaxis.set_minor_locator(mt.NullLocator())
+    ax.set_xlim(min(vals) / 1.35, max(vals) * 1.35)
+
+
 def savefig(fig, name):
     path = os.path.join(common.FIGURES, name)
     fig.savefig(path)
@@ -46,7 +63,8 @@ def fig1_headline():
         return
     d2 = common.load("exp2_coverage_law.json")
     d1 = common.load("exp1_main.json")
-    fig, ax = plt.subplots(1, 2, figsize=(7.2, 2.9))
+    fig, ax = plt.subplots(1, 2, figsize=(7.4, 3.1),
+                           gridspec_kw={"width_ratios": [1.0, 1.25], "wspace": 0.28})
 
     # (a) the coverage law
     r = d2["rows"]
@@ -72,32 +90,51 @@ def fig1_headline():
                 loc="left")
     a.legend(loc="lower left")
 
-    # (b) width vs coverage on the AR-hom design
+    # (b) coverage by method on the AR-hom design.
+    # A width-versus-coverage scatter was the original design and it no longer works: with the
+    # final estimator, BGSN, plain batch means, the oracle and offline HAC all land within 0.01
+    # of one another at coverage ~0.95 and width ~1.0, so markers and labels sat on top of each
+    # other.  The clustering is the result, so the fix is an encoding in which coincident values
+    # cannot hide -- one row per method, coverage on the axis, width printed alongside.
     a = ax[1]
     rows = {q["method"]: q for q in d1["AR-hom"]["rows"]}
-    style = {"BGSN": ("BGSN (ours)", C["ours"], "s"),
-             "BGSN-BM": ("BGSN, plain batch means", C["bm"], "v"),
-             "BGSN-plugin": ("BGSN, i.i.d. plug-in variance", C["plugin"], "o"),
-             "SN-iid": ("streaming Newton, i.i.d. theory", C["base"], "D"),
-             "ASGD-plugin": ("ASGD, i.i.d. plug-in", C["asgd"], "o"),
-             "ASGD-2scale": ("ASGD + our variance", C["asgd"], "s"),
-             "ASGD-RS": ("ASGD + random scaling", C["rs"], "^"),
-             "Offline-HAC": ("offline HAC (not streaming)", C["offline"], "P"),
-             "Oracle-var": ("oracle variance", C["oracle"], "*")}
-    for m, (lab, col, mk) in style.items():
-        if m not in rows:
-            continue
+    order = ["Oracle-var", "Offline-HAC", "BGSN", "BGSN-BM", "SN-iid+2scale",
+             "BGSN-plugin", "SN-iid", "AdaGrad-2scale", "ASGD-RS", "ASGD-2scale",
+             "ASGD-plugin"]
+    label = {"BGSN": "BGSN (ours)", "BGSN-BM": "BGSN, plain batch means",
+             "BGSN-plugin": "BGSN, i.i.d. plug-in", "SN-iid": "streaming Newton, i.i.d. theory",
+             "SN-iid+2scale": "streaming Newton + our variance",
+             "ASGD-plugin": "ASGD, i.i.d. plug-in", "ASGD-2scale": "ASGD + our variance",
+             "ASGD-RS": "ASGD + random scaling", "AdaGrad-2scale": "AdaGrad + our variance",
+             "Offline-HAC": "offline HAC (not streaming)", "Oracle-var": "oracle variance"}
+    colour = {"BGSN": C["ours"], "BGSN-BM": C["bm"], "BGSN-plugin": C["plugin"],
+              "SN-iid": C["base"], "SN-iid+2scale": C["ours"], "ASGD-plugin": C["asgd"],
+              "ASGD-2scale": C["asgd"], "ASGD-RS": C["rs"], "AdaGrad-2scale": C["asgd"],
+              "Offline-HAC": C["offline"], "Oracle-var": C["oracle"]}
+    present = [m for m in order if m in rows]
+    y = list(range(len(present)))[::-1]
+    a.axvline(0.95, color="k", ls=":", lw=1, zorder=1)
+    for yi, m in zip(y, present):
         q = rows[m]
-        a.scatter(q["width_rel"], q["coverage"], s=46 if mk != "*" else 90, c=col,
-                  marker=mk, zorder=3,
-                  edgecolors="white" if mk != "*" else "none", linewidths=0.6)
-        a.annotate(lab, (q["width_rel"], q["coverage"]),
-                   textcoords="offset points", xytext=(6, -2), fontsize=7,
-                   color=col if m != "Oracle-var" else "k")
-    a.axhline(0.95, color="k", ls=":", lw=1)
-    a.set_xlabel("interval width relative to the oracle interval")
-    a.set_ylabel("coverage")
-    a.set_xlim(0.4, 2.6)
+        a.plot([0, q["coverage"]], [yi, yi], color=colour[m], lw=1.1, alpha=0.45, zorder=2)
+        a.plot(q["coverage"], yi, "o", ms=5.5, color=colour[m], zorder=3,
+               mec="white", mew=0.6)
+        a.text(1.005, yi, r"$\times$%.2f" % q["width_rel"], va="center", ha="left",
+               fontsize=6.4, color="0.25")
+    # Row labels go INSIDE the panel: as y-tick labels they were wide enough to run into
+    # panel (a) and collide with its legend.
+    for yi, m in zip(y, present):
+        a.text(-0.03, yi, label[m], va="center", ha="right", fontsize=6.6,
+               color=colour[m] if m not in ("Oracle-var", "Offline-HAC") else "0.2")
+    a.set_yticks([])
+    a.set_xlim(-0.78, 1.17)
+    a.set_ylim(-0.8, len(present) - 0.2)
+    a.set_xticks([0.0, 0.25, 0.5, 0.75, 0.95])
+    a.set_xticklabels(["0", "0.25", "0.5", "0.75", "0.95"])
+    a.set_xlabel("coverage of a nominal 95% interval")
+    a.grid(axis="y", visible=False)
+    a.spines["left"].set_visible(False)
+    a.text(1.005, len(present) - 0.42, "width", fontsize=6.4, color="0.25", va="center")
     a.set_title("(b) Only the long-run variance reaches\nnominal coverage", loc="left")
     savefig(fig, "fig1_headline.pdf")
 
@@ -227,13 +264,17 @@ def fig4_cost():
     big = d.get("flop_exponents_large_N", {})
     ratio = np.median([q["BGSN_plugin"] / q["BGSN"] for q in
                        [{k: r[k] for k in ("BGSN", "BGSN_plugin")} for r in r[2:]]])
-    ttl = ("The long-run interval costs $%.0f\\times$ less than\nthe i.i.d. plug-in at every"
-           " $d$" % ratio)
+    rr = [q["BGSN_plugin"] / q["BGSN"] for q in r]
+    ttl = ("The long-run interval is cheaper at every $d$:\n"
+           "$%.1f$--$%.1f\\times$ faster than the i.i.d. plug-in" % (min(rr), max(rr)))
     if big:
         ttl += " (asymptotically $d^{%.2f}$ vs $d^{%.2f}$)" % (big["BGSN"],
                                                               big["BGSN_plugin"])
-    a.set_title(ttl, loc="left", fontsize=8.6)
-    a.legend(loc="upper left")
+    a.set_title(ttl, loc="left", fontsize=8.2)
+    # Five curves fan across the whole panel, so there is no free corner: put the legend below
+    # the axes.  savefig uses bbox_inches="tight", so it is not clipped.
+    a.legend(loc="upper center", bbox_to_anchor=(0.5, -0.24), ncol=2, fontsize=6.3,
+             frameon=False, handlelength=1.6, columnspacing=1.1, labelspacing=0.25)
     savefig(fig, "fig4_cost.pdf")
 
 
@@ -242,7 +283,7 @@ def fig5_ablations():
     if not _ok("exp5_ablations.json"):
         return
     d = common.load("exp5_ablations.json")
-    fig, ax = plt.subplots(1, 3, figsize=(7.2, 2.5))
+    fig, ax = plt.subplots(1, 3, figsize=(7.4, 2.7), gridspec_kw={"wspace": 0.42})
     a = ax[0]
     r = d["N"]
     n = [q["N"] for q in r]
@@ -253,8 +294,9 @@ def fig5_ablations():
                    marker=mk, ms=4, color=col, capsize=2, lw=1.3, label=lab)
     a.axhline(0.95, color="k", ls=":", lw=1)
     a.set_xscale("log"); a.set_xlabel("stream length $N$"); a.set_ylabel("coverage")
-    a.set_ylim(0.6, 1.0); a.set_title("(a) sample size", loc="left")
-    a.legend(loc="center right")
+    a.set_ylim(0.6, 1.0); a.set_title("(a) sample size", loc="left", fontsize=8.4)
+    a.legend(loc="center right", fontsize=6.4, framealpha=0.95, borderpad=0.3,
+             labelspacing=0.22)
 
     a = ax[1]
     r = d["b"]
@@ -264,9 +306,11 @@ def fig5_ablations():
     a.errorbar(bb, [q["cov_bm"] for q in r], yerr=[1.96 * q["cov_bm_se"] for q in r],
                marker="v", ms=4, color=C["bm"], capsize=2, lw=1.3, label="batch means")
     a.axhline(0.95, color="k", ls=":", lw=1)
-    a.set_xscale("log"); a.set_xlabel("block length $b$   ($N=200{,}000$)")
-    a.set_ylabel("coverage"); a.set_ylim(0.6, 1.0)
-    a.set_title("(b) block length", loc="left"); a.legend(loc="lower center")
+    a.set_xscale("log"); a.set_xlabel("block length $b$")
+    a.set_ylim(0.6, 1.0)          # same scale as (a); a second "coverage" label collided with it
+    a.set_title("(b) block length ($N=200{,}000$)", loc="left", fontsize=8.4)
+    a.legend(loc="lower center", fontsize=6.4, framealpha=0.95, borderpad=0.3,
+             labelspacing=0.22)
 
     a = ax[2]
     r = d["warm"]
@@ -279,9 +323,9 @@ def fig5_ablations():
     a2.tick_params(axis="y", colors=C["plugin"]); a2.grid(False)
     a.axhline(0.95, color="k", ls=":", lw=1)
     a.set_xscale("log")
-    a.set_xlabel(r"warm-up $c_{\mathrm{w}}$ (curvature updates $/\,d$)")
+    a.set_xlabel(r"warm-up $c_{\mathrm{w}}$ (updates $/\,d$)")
     a.set_ylabel("coverage", color=C["ours"])
-    a.set_title("(c) curvature warm-up", loc="left")
+    a.set_title("(c) curvature warm-up", loc="left", fontsize=8.4)
     savefig(fig, "fig5_ablations.pdf")
 
 
@@ -300,8 +344,8 @@ def fig6_real():
     col = {"BGSN": C["ours"], "BGSN-BM": C["bm"], "SN-iid": C["base"],
            "BGSN-plugin": C["plugin"], "ASGD-2scale": C["asgd"],
            "ASGD-plugin": C["plugin"], "ASGD-RS": C["rs"]}
-    fig, ax = plt.subplots(1, 3, figsize=(7.4, 2.9),
-                           gridspec_kw=dict(width_ratios=[1.15, 1.15, 1]))
+    fig, ax = plt.subplots(1, 3, figsize=(7.4, 3.0),
+                           gridspec_kw=dict(width_ratios=[1.35, 0.95, 1.1], wspace=0.34))
     for k, (key, title) in enumerate([("protoA_metro", "(a) traffic, exact truth"),
                                       ("protoA_airq", "(b) air quality, exact truth")]):
         a = ax[k]
@@ -318,8 +362,13 @@ def fig6_real():
         a.set_yticks(y); a.set_yticklabels([lab[m] for m in ms] if k == 0 else [])
         a.invert_yaxis()
         a.axvline(0.95, color="k", ls=":", lw=1)
-        a.set_xlim(0, 1.0); a.set_xlabel("coverage of a nominal 95% interval")
-        a.set_title(title, loc="left")
+        a.set_xlim(0, 1.0)
+        a.set_xticks([0, 0.25, 0.5, 0.75, 0.95])
+        a.set_xticklabels(["0", "", "0.5", "", "0.95"])
+        # one label under the pair: two full-length labels collided in the middle
+        if k == 0:
+            a.set_xlabel("coverage of a nominal 95% interval", x=1.02)
+        a.set_title(title, loc="left", fontsize=8.6)
         a.grid(axis="y", alpha=0)
 
     a = ax[2]
@@ -331,11 +380,26 @@ def fig6_real():
            label="batch means")
     a.plot(bb, [q["coverage"]["BGSN-plugin"] for q in r], "o-", ms=4, color=C["plugin"],
            label="i.i.d. plug-in")
+    # The oracle-variance curve is the comparison that matters here: the shortfall from 0.95 on
+    # a 8000-hour segment is the point estimate, not the covariance, and our curve tracking the
+    # oracle's is what shows that.
+    if all("Oracle-var" in q["coverage"] for q in r):
+        a.plot(bb, [q["coverage"]["Oracle-var"] for q in r], "--", lw=1.1, color=C["oracle"],
+               marker="*", ms=6, label="oracle variance")
     a.axhline(0.95, color="k", ls=":", lw=1)
     a.set_xscale("log"); a.set_xlabel("block length $b$ (traffic)")
-    a.set_ylabel("coverage"); a.set_ylim(0.3, 1.0)
-    a.set_title("(c) block length, real covariates", loc="left")
-    a.legend(loc="lower right")
+    a.set_ylabel("coverage"); a.set_ylim(0.25, 1.02)
+    a.set_title("(c) block length, real covariates", loc="left", fontsize=8.6)
+    a.legend(loc="lower left", fontsize=5.9, handlelength=1.5, framealpha=0.95,
+             frameon=True, borderpad=0.3, labelspacing=0.22)
+    # The block-adequacy diagnostic on a twin axis.  The caption claims it is overlaid here, so
+    # it has to be drawn: an earlier version described a curve that was not in the figure.
+    a2 = a.twinx()
+    a2.plot(bb, [q["adequacy"] for q in r], "--", lw=1.2, color="0.35", marker="x", ms=4)
+    a2.set_ylabel(r"diagnostic $r_j$", color="0.35", fontsize=8)
+    a2.tick_params(axis="y", labelcolor="0.35", labelsize=7)
+    a2.set_ylim(0, max(q["adequacy"] for q in r) * 1.35)
+    a2.grid(False)
     savefig(fig, "fig6_real.pdf")
 
 
@@ -367,7 +431,10 @@ def fig7_lrv_rate():
     a.set_ylabel(r"$\|\widehat\Sigma-\Sigma\|_2/\|\Sigma\|_2$")
     a.set_title("(a) The same object, two ways:\nthe sandwich an interval actually uses",
                 loc="left")
-    a.legend(loc="lower left")
+    # both curves are flat-ish, one high one low, so the middle of the panel is the only place a
+    # legend does not sit on top of data
+    a.legend(loc="center left", fontsize=6.6, framealpha=0.95, borderpad=0.3,
+             labelspacing=0.24, handlelength=1.8)
 
     # (b) the long-run covariance itself, under each estimator's own optimal schedule
     a = ax[1]
@@ -391,7 +458,8 @@ def fig7_lrv_rate():
     a.set_xlabel("stream length $N$")
     a.set_ylabel(r"$\|\widehat S-S\|_2/\|S\|_2$")
     a.set_title("(b) The long-run covariance itself,\neach at its own optimal $b$", loc="left")
-    a.legend(loc="lower left")
+    a.legend(loc="lower left", fontsize=6.6, framealpha=0.95, borderpad=0.3,
+             labelspacing=0.24, handlelength=1.8, bbox_to_anchor=(-0.02, -0.03))
     savefig(fig, "fig7_lrv_rate.pdf")
 
 
@@ -421,10 +489,12 @@ def fig8_hard_design():
         a.plot(N, [q["cov_plugin"] for q in r], marker="v", ms=4, color=C["plugin"], lw=1.5,
                label="dependence-blind")
         a.set_xscale("log"); a.set_xlabel("stream length $N$")
+        _logticks(a, N)
         if k == 0:
             a.set_ylabel("coverage")
-            a.legend(fontsize=6.5, loc="center right", framealpha=0.9)
-        a.set_ylim(0.0, 1.0)
+            a.legend(fontsize=6.2, loc="lower right", framealpha=0.95, frameon=True,
+                     borderpad=0.3, labelspacing=0.22, handlelength=1.5)
+        a.set_ylim(0.0, 1.06)
         a.set_title(f"({chr(97 + k)}) {label}", fontsize=9, loc="left")
 
     a = ax[-1]
@@ -434,9 +504,11 @@ def fig8_hard_design():
         a.plot([q["N"] for q in r], [q["rmse_rel_median"] for q in r], marker=mk, ms=5,
                lw=1.5, label=label)
     a.set_xscale("log"); a.set_xlabel("stream length $N$")
+    _logticks(a, [q["N"] for q in designs[0][1]["rows"]])
     a.set_ylabel("RMSE / efficient s.e.")
     a.set_title(f"({chr(97 + len(designs))}) why: the point estimate", fontsize=9, loc="left")
-    a.legend(fontsize=6.5)
+    a.legend(fontsize=6.2, loc="upper right", framealpha=0.95, borderpad=0.3,
+             labelspacing=0.22, handlelength=1.5)
 
     savefig(fig, "fig8_hard_design.pdf")
 

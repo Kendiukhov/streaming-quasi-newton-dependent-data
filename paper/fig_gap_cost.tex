@@ -1,10 +1,10 @@
 %% Figure block, shared by ../paper/main.tex and ../submission/*.tex so the caption has
 %% exactly one source.
-\begin{figure}[t]
+\begin{figure}[tbp]
 \centering
 \begin{minipage}[t]{0.485\linewidth}
 \centering
-\IfFileExists{fig3_gapping.pdf}{\includegraphics[width=\linewidth]{fig3_gapping.pdf}}{\fbox{\parbox{0.9\linewidth}{\centering\vspace{2em}\texttt{\detokenize{fig3_gapping}} pending\vspace{2em}}}}
+\figorbox{fig3_gapping.pdf}
 \caption{\textbf{At matched cost, a deterministic gap decorrelates curvature updates
 exponentially in $m$ while random thinning only does so linearly} (\Cref{prop:gap}).
 Vertical axis: $n\,\E\lVert\Hb-H\rVert_F^2$ divided by its exact independent-data value
@@ -15,7 +15,7 @@ $\ts$, so only estimation quality is compared. $\kappa_H=(1+\phi^2)/(1-\phi^2)$ 
 \end{minipage}\hfill
 \begin{minipage}[t]{0.485\linewidth}
 \centering
-\IfFileExists{fig4_cost.pdf}{\includegraphics[width=\linewidth]{fig4_cost.pdf}}{\fbox{\parbox{0.9\linewidth}{\centering\vspace{2em}\texttt{\detokenize{fig4_cost}} pending\vspace{2em}}}}
+\figorbox{fig4_cost.pdf}
 \caption{\textbf{The statistically correct interval is the cheaper one.} Wall-clock
 milliseconds for one pass over $N=200{,}000$ observations (vertical axis, log scale) against
 dimension $d$ (horizontal, log scale), single-threaded, minimum over seven interleaved

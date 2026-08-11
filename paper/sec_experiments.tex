@@ -347,8 +347,10 @@ the batch-means quadratic form, not the two-scale one: $\Sbm$ is a sum of outer 
 its quadratic forms are non-negative, whereas those of $\Sft$ can be negative
 (\Cref{rem:psd}), and an earlier version of this diagnostic divided by the latter and produced
 meaningless numbers on the real streams. On the traffic stream $r_j$ is
-$\RealAdeqMetro$ at $b=\RealBMetro$ while coverage there is $\RealCovBgsnMetroA$; the sweep in
-\Cref{fig:real}(c) shows coverage improving with $b$ and $r_j$ moving with it. We say
-``moving with it'' and not ``predicting it'': the diagnostic is a bias estimate for plain batch
-means, it is informative about whether $b$ is too small, and it is not a calibration
-guarantee.
+$\RealAdeqMetro$ at the $b=\RealBMetro$ we use, and the sweep in \Cref{fig:real}(c) shows what it is
+good for: $r_j$ is U-shaped in $b$, rising both for short blocks, where plain batch means carry the
+$O(1/b)$ bias, and for long ones, where too few blocks remain for a stable estimate. Our coverage
+over that fortyfold range in $b$ is flat and stays within a few hundredths of the infeasible
+oracle-variance curve, which is the evidence that the shortfall from nominal on these segments is
+the point estimate rather than the covariance. So $r_j$ is a guide to choosing $b$, not a
+calibration guarantee, and we do not claim it predicts coverage.
