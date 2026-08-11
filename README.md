@@ -151,15 +151,21 @@ src/bgsn/
 experiments/
   _env.py         BLAS thread pinning (import before numpy)
   common.py       method registry, Monte Carlo driver, tuning, summaries
-  exp0..exp7      one file per experiment; each writes results/expN_*.json
+  exp0..exp10     one file per experiment; each writes results/expN_*.json
   make_figures.py, make_tables.py
 tests/
   test_oracles.py every closed-form S, Gamma_0 and H checked against a long simulation;
                   the two-scale algebraic identity; the streaming dyadic accumulators
                   checked against an explicit batch-means computation
-paper/            LaTeX sources.  Every refs.bib entry was verified against a live
-                  publisher / arXiv / dataset page; the evidence URLs and the list of
+paper/            LaTeX sources for the preprint.  Section bodies, figure captions, tables,
+                  the abstract and numbers.tex are shared with the journal submission, so the
+                  two versions cannot drift apart.  Every refs.bib entry was verified against
+                  a live publisher / arXiv / dataset page; the evidence URLs and the list of
                   corrections are in notes/refs_raw.json
+submission/       the Information Sciences (Elsevier) submission package: manuscript in
+                  elsarticle format, supplementary material, highlights, cover letter and the
+                  required declarations.  `make submission` builds it; submission/README.md
+                  lists what the journal requires and what the author must still complete
 notes/            provenance: design notes written before the code, the binding list of
                   what we may and may not claim relative to prior art, the adversarial
                   review and what each finding changed, and the bibliography verification
@@ -189,6 +195,22 @@ biasing results in the paper's favour, which is why they are called out here rat
 redrawn per Monte Carlo replicate, the empirical covariance of the estimator mixes sampling
 with population variability and cannot be compared to any single oracle sandwich. Every
 experiment goes through `DGP.sample(N, seed)`, which varies the realised path only.
+
+## The paper
+
+Two versions are built from one set of sources, so they cannot disagree:
+
+* `paper/main.pdf` — the preprint: every figure and table in the body, single column.
+* `submission/manuscript.pdf` — the Information Sciences submission: `elsarticle`, line-numbered,
+  a 200-word abstract, ten figures + tables in the main text (the journal's guideline for a
+  theoretical article) with four further figures in `submission/supplementary.pdf`, and the
+  declarations the journal requires.
+
+`make paper` builds the first, `make submission` the second. The shared fragments are
+`paper/sec_*.tex`, `paper/fig_*.tex`, `paper/tab_*.tex`, `paper/abstract.tex` and
+`paper/numbers.tex`; the two main files own only their own preamble, title page and float
+placement. `tests/test_paper_sources.py` checks that no shared fragment has been truncated and
+that every numeric macro used in the prose is actually generated from `results/`.
 
 ## Data
 

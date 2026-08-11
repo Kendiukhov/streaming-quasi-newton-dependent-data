@@ -1,0 +1,17 @@
+%% Figure block, shared by ../paper/main.tex and ../submission/*.tex so the caption has
+%% exactly one source.
+\begin{figure}[t]
+\centering
+\IfFileExists{fig6_real.pdf}{\includegraphics[width=\linewidth]{fig6_real.pdf}}{\fbox{\parbox{0.9\linewidth}{\centering\vspace{2em}\texttt{\detokenize{fig6_real}} pending\vspace{2em}}}}
+\caption{\textbf{Two real hourly streams.} (a, b) Coverage of nominal $95\%$ intervals
+under Protocol~A (real covariates, synthetic autoregressive errors, exact target and exact
+conditional long-run covariance). The air-quality stream's median estimated variance inflation
+is $\RealKappaAirq$, so dependence-blind intervals fail badly there.
+(c) Coverage (vertical) against block length $b$ (horizontal, log scale) on the traffic stream,
+with the free block-adequacy diagnostic
+$r_j=|u_j^{\!\top}(\Sft-\Sbm)u_j|/(u_j^{\!\top}\Sbm u_j)$ --- an estimate of the relative
+block-length bias of plain batch means, defined where it is first used in
+\Cref{sec:exp} --- overlaid. Coverage improves with $b$ and $r_j$ moves with it; the
+diagnostic tells you whether $b$ is too small, and it is not a calibration guarantee.}
+\label{fig:real}
+\end{figure}

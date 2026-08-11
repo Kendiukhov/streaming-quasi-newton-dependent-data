@@ -2,7 +2,8 @@
 #
 #   make all            everything (a few CPU-hours; safe to interrupt and resume)
 #   make test           validation of every closed-form population quantity
-#   make paper          rebuild the PDF from whatever results exist
+#   make paper          rebuild the preprint PDF from whatever results exist
+#   make submission     rebuild the Information Sciences submission package
 #   make clean-results  delete results (keeps the downloaded data)
 #
 # Set NJOBS to control parallelism (default 5) and R to shrink the Monte Carlo sizes,
@@ -14,9 +15,9 @@ RES     := results
 NJOBS   ?= 5
 export NJOBS
 
-.PHONY: all data test exp figures tables paper clean-results clean
+.PHONY: all data test exp figures tables paper submission clean-results clean
 
-all: data test exp figures tables paper
+all: data test exp figures tables paper submission
 
 data:
 	$(PY) $(EXP)/fetch_data.py
@@ -46,8 +47,16 @@ paper: tables
 	  pdflatex -interaction=nonstopmode main.tex >/dev/null 2>&1; \
 	  echo "paper/main.pdf written"
 
+# Information Sciences (Elsevier) submission: manuscript, supplementary material, highlights
+# and cover letter.  Shares all prose, tables, figures and generated numbers with paper/.
+submission: tables
+	sh submission/build.sh
+	$(PY) submission/check_highlights.py
+
 clean-results:
 	rm -f $(RES)/*.json $(RES)/*.log $(RES)/*.npz
 
 clean: clean-results
 	rm -f paper/*.aux paper/*.bbl paper/*.blg paper/*.log paper/*.out paper/*.pdf
+	rm -f submission/*.aux submission/*.bbl submission/*.blg submission/*.log \
+	      submission/*.out submission/*.spl submission/*.pdf

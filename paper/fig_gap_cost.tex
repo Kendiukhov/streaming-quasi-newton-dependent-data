@@ -1,0 +1,30 @@
+%% Figure block, shared by ../paper/main.tex and ../submission/*.tex so the caption has
+%% exactly one source.
+\begin{figure}[t]
+\centering
+\begin{minipage}[t]{0.485\linewidth}
+\centering
+\IfFileExists{fig3_gapping.pdf}{\includegraphics[width=\linewidth]{fig3_gapping.pdf}}{\fbox{\parbox{0.9\linewidth}{\centering\vspace{2em}\texttt{\detokenize{fig3_gapping}} pending\vspace{2em}}}}
+\caption{\textbf{At matched cost, a deterministic gap decorrelates curvature updates
+exponentially in $m$ while random thinning only does so linearly} (\Cref{prop:gap}).
+Vertical axis: $n\,\E\lVert\Hb-H\rVert_F^2$ divided by its exact independent-data value
+$(\tr\Sigma)^2+\lVert\Sigma\rVert_F^2$ --- a computed constant, not a fitted normalisation.
+Pale bands are the two predictions; markers are measurements with the optimisation frozen at
+$\ts$, so only estimation quality is compared. $\kappa_H=(1+\phi^2)/(1-\phi^2)$ here.}
+\label{fig:gap}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.485\linewidth}
+\centering
+\IfFileExists{fig4_cost.pdf}{\includegraphics[width=\linewidth]{fig4_cost.pdf}}{\fbox{\parbox{0.9\linewidth}{\centering\vspace{2em}\texttt{\detokenize{fig4_cost}} pending\vspace{2em}}}}
+\caption{\textbf{The statistically correct interval is the cheaper one.} Wall-clock
+milliseconds for one pass over $N=200{,}000$ observations (vertical axis, log scale) against
+dimension $d$ (horizontal, log scale), single-threaded, minimum over seven interleaved
+repetitions. The i.i.d.\ plug-in score covariance costs $O(d^2)$ per \emph{observation}; the
+blocked long-run covariance costs $O(d^2)$ per \emph{block}. Slopes are fitted on the four
+largest $d$; at this $N$ they are inflated by the one-off warm-up (see \eqref{eq:cost} and
+\Cref{tab:cost}, which also gives the asymptotic exponents), and the two smallest $d$ are
+dominated by fixed per-block overhead rather than by either term of \eqref{eq:cost}. The
+message of the figure is the vertical separation, which holds at every $d$.}
+\label{fig:cost}
+\end{minipage}
+\end{figure}

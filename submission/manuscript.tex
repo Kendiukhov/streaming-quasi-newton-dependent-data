@@ -1,0 +1,131 @@
+%% Information Sciences (Elsevier) submission.
+%%
+%% Built with Elsevier's elsarticle class.  Single-column ("preprint") layout, which is what
+%% Elsevier asks for at submission; "5p" or "3p" produce the typeset journal layout and are not
+%% used here.  Line numbering is on to help reviewers refer to specific passages.
+%%
+%% This file owns everything venue-specific: title page, abstract, keywords, float placement, the
+%% declarations Information Sciences requires, and the appendix ordering.  The scientific prose is
+%% shared verbatim with the preprint version in ../paper, so the two cannot drift apart:
+%%   ../paper/abstract.tex        the abstract (200 words, the journal's limit)
+%%   ../paper/sec_*.tex           the section bodies
+%%   numbers.tex         every numeric claim, generated from results/*.json
+%%   ../paper/tab_*.tex           every table, generated from results/*.json
+%% Four figures that do not fit the journal's 10-item guideline on figures + tables are in
+%% supplementary.tex; the macros \RefLrvRate, \RefGapFig, \RefCostFig and \RefAblFig point the
+%% shared prose at them.
+\documentclass[preprint,11pt,authoryear]{elsarticle}
+
+\usepackage{lineno}
+\linenumbers
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,
+            urlcolor=blue!55!black]{hyperref}
+\usepackage{cleveref}   % before \newtheorem so cleveref can record the environment names
+\usepackage{enumitem}
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf}
+
+\graphicspath{{../figures/}}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{assumption}{Assumption}
+\newtheorem{remark}{Remark}
+\newtheorem{definition}[theorem]{Definition}
+
+\crefname{theorem}{Theorem}{Theorems}
+\Crefname{theorem}{Theorem}{Theorems}
+\crefname{proposition}{Proposition}{Propositions}
+\Crefname{proposition}{Proposition}{Propositions}
+\crefname{lemma}{Lemma}{Lemmas}
+\Crefname{lemma}{Lemma}{Lemmas}
+\crefname{corollary}{Corollary}{Corollaries}
+\Crefname{corollary}{Corollary}{Corollaries}
+\crefname{assumption}{Assumption}{Assumptions}
+\Crefname{assumption}{Assumption}{Assumptions}
+\crefname{remark}{Remark}{Remarks}
+\Crefname{remark}{Remark}{Remarks}
+\crefname{equation}{}{}
+\Crefname{equation}{}{}
+\crefname{section}{Section}{Sections}
+\Crefname{section}{Section}{Sections}
+% elsarticle folds the word "Appendix" into \thesection inside the appendix, so cleveref must
+% contribute no name of its own or every reference reads "Appendix Appendix A".
+\crefname{appendix}{}{}
+\Crefname{appendix}{}{}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\ts}{\theta^\star}
+\newcommand{\Hb}{\bar{H}}
+\newcommand{\gb}{\bar{g}}
+\newcommand{\Sbm}{\widehat{S}^{\mathrm{BM}}}
+\newcommand{\Sft}{\widehat{S}^{\mathrm{FT}}}
+\newcommand{\Gz}{\widehat{\Gamma}_0}
+\newcommand{\opnorm}[1]{\lVert #1 \rVert_{\mathrm{op}}}
+\newcommand{\norm}[1]{\lVert #1 \rVert}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\Hh}{\widehat H}          % block Hessian
+\newcommand{\Tw}{T_{\mathrm w}}        % last warm-up block
+\newcommand{\Fil}{\mathcal{F}}
+\newcommand{\ind}{\mathbf{1}}
+\newcommand{\bgsn}{\textsc{bgsn}}
+\newcommand{\cmix}{c_{\mathrm{mix}}}
+\newcommand{\qr}{q_{\mathrm r}}
+
+% The four figures held in the Supplementary Material for this venue.
+\newcommand{\RefLrvRate}{Supplementary Fig.~S1}
+\newcommand{\RefGapFig}{Supplementary Fig.~S2}
+\newcommand{\RefCostFig}{Supplementary Fig.~S3}
+\newcommand{\RefAblFig}{Supplementary Fig.~S4}
+
+\IfFileExists{numbers.tex}{\input{numbers}}{}
+
+\journal{Information Sciences}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{Inference, Not Just Optimisation: Streaming Inversion-Free
+       Quasi-Newton Estimation on Dependent Data Streams}
+
+\author[tue]{Ihor Kendiukhov\corref{cor1}}
+\ead{ihor.kendiukhov@student.uni-tuebingen.de}
+\cortext[cor1]{Corresponding author.}
+
+\affiliation[tue]{organization={Institute of Medical Genetics and Applied Genomics,
+                               University of T\"ubingen},
+                  city={T\"ubingen},
+                  country={Germany}}
+
+\begin{abstract}
+\input{abstract}
+\end{abstract}
+
+\begin{keyword}
+streaming estimation \sep stochastic Newton \sep dependent data \sep
+long-run variance \sep confidence intervals \sep mixing
+\end{keyword}
+
+\end{frontmatter}
+
+\input{body}
+
+\end{document}

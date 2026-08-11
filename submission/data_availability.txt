@@ -1,0 +1,27 @@
+Data availability statement
+
+Information Sciences applies Option C of Elsevier's research data guidelines: data should be
+deposited in a repository, and cited and linked from the article.
+
+Statement to enter in the submission system:
+
+  All code, saved results and derived data needed to reproduce every number, figure and table
+  in this article are publicly available at
+  https://github.com/Kendiukhov/streaming-quasi-newton-dependent-data
+  The repository contains the estimator, the experiment scripts, the result files from which
+  every reported number is generated, and tests that validate every closed-form population
+  quantity against long simulation. The two real data sets analysed are third-party and are
+  not redistributed; they are downloaded from the UCI Machine Learning Repository by
+  experiments/fetch_data.py and are cited in the reference list:
+
+    Metro Interstate Traffic Volume, UCI Machine Learning Repository,
+      https://doi.org/10.24432/C5X60B
+    Beijing Multi-Site Air Quality, UCI Machine Learning Repository,
+      https://doi.org/10.24432/C5RK5G
+
+NOTE FOR SUBMISSION. A GitHub repository is a public archive but it does not mint a
+persistent identifier and its contents can change. Before or at acceptance, archive the
+repository (for example through the GitHub-Zenodo integration), and replace the URL above
+with the resulting DOI in both this statement and the manuscript's Data availability
+section. No DOI has been minted at the time of submission, and the statement above
+deliberately does not claim one.

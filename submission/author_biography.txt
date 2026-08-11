@@ -1,0 +1,26 @@
+Author biography (Vitae)  --  TEMPLATE, REQUIRES COMPLETION BY THE AUTHOR
+
+Information Sciences asks for a short biography of at most 100 words per author, in an
+editable format, together with a passport-type photograph supplied as a separate figure.
+
+This file is deliberately left as a template. Only the author knows his degrees, positions,
+prior publications and research interests, and a biography is a factual claim about a real
+person that must not be guessed at. Below is a skeleton whose second sentence is drawn from
+the present manuscript and is therefore safe; everything in [square brackets] must be
+replaced or deleted before submission, and the whole text should be read as a draft.
+
+  Ihor Kendiukhov is [position] at the Institute of Medical Genetics and Applied Genomics,
+  University of Tuebingen, Germany. His work in this article concerns the statistical and
+  algorithmic foundations of one-pass estimation on data streams: online second-order
+  methods, long-run variance estimation under temporal dependence, and the reproducible
+  validation of asymptotic theory on real data. [He received his degree(s) in FIELD from
+  INSTITUTION in YEAR.] [His other research interests include ... .] [He is a member of ... .]
+
+Word budget: the skeleton above is about 60 words excluding the bracketed placeholders, which
+leaves roughly 40 words for the biographical detail.
+
+CHECKLIST BEFORE UPLOAD
+  [ ] every [placeholder] replaced or removed
+  [ ] total length at most 100 words
+  [ ] saved in an editable format (.docx or .doc), not PDF
+  [ ] passport-type photograph attached as a separate image file

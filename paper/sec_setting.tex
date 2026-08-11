@@ -1,0 +1,226 @@
+%% Section body, shared verbatim by ../paper/main.tex (preprint) and
+%% ../submission/body.tex (Information Sciences submission).  The section heading and
+%% label live in the including file, because the two versions number sections the same
+%% way but the submission adds the journal's required unnumbered sections after them.
+We observe a strictly stationary stream $\xi_1,\xi_2,\dots$ on $\R^{p}$ and wish to
+estimate
+\begin{equation}
+\ts=\argmin_{\theta\in\R^d} F(\theta),\qquad F(\theta)=\E[f(\theta;\xi)],
+\label{eq:obj}
+\end{equation}
+where $f(\cdot;\xi)$ is a loss. Write $g_i(\theta)=\nabla_\theta f(\theta;\xi_i)$ and
+$g_i=g_i(\ts)$, so $\E[g_i]=0$. Let $H=\nabla^2F(\ts)$, $\Gamma_k=\E[g_0g_k^{\!\top}]$
+and let $S$ be as in \eqref{eq:S}. Throughout, $\Phi(x)$ is the standard normal
+distribution function, $z_{\alpha/2}=\Phi^{-1}(1-\alpha/2)$, $\opnorm{\cdot}$ is the
+operator norm, and $N$ counts observations while $T$ counts blocks.
+
+\paragraph{Terminology.}
+Five terms recur and are used in their standard senses.
+The \emph{score} is the gradient of the loss at one observation, $g_i(\theta)$; an
+\emph{$M$-estimator} is a minimiser of an empirical average of losses.
+A \emph{sandwich} covariance is one of the form $H^{-1}\Sigma H^{-1}$; it is
+\emph{instantaneous} when $\Sigma=\Gamma_0$ and \emph{long-run} when $\Sigma=S$.
+\emph{Batch means} estimates a variance by averaging within consecutive blocks and taking
+the sample covariance of the block averages.
+The strong (or $\alpha$-) \emph{mixing coefficient} of the stream at lag $k$ is
+\begin{equation}
+\alpha_{\mathrm{mix}}(k)=\sup\big\{|\Prob(A\cap B)-\Prob(A)\Prob(B)|:
+A\in\sigma(\xi_i,i\le0),\ B\in\sigma(\xi_i,i\ge k)\big\},
+\label{eq:mixdef}
+\end{equation}
+a measure of how nearly independent the distant past and the distant future are; it is zero
+for all $k\ge1$ if and only if the stream is independent.
+
+Nothing below requires the model to be correctly specified. All that is used is that
+$\ts$ solves $\nabla F(\ts)=0$ for the \emph{working} loss, so under misspecification $\ts$
+is the pseudo-true parameter and $H^{-1}SH^{-1}$ is the corresponding long-run sandwich, in
+the usual sense of \citet{white1982mle} and \citet{domowitz1982misspecified}. This matters
+in practice, because omitted dynamics are one of the commonest ways for a score to become
+serially correlated (\Cref{rem:mds}).
+
+\begin{remark}[Dependence in the covariates is not enough]
+\label{rem:mds}
+If the conditional law of $y$ given $x$ is correctly specified and its innovations are
+independent over time, then $(g_i)$ is a martingale difference sequence and $S=\Gamma_0$
+\emph{exactly}, however persistent $x$ is. A genuine long-run-variance problem needs the
+\emph{score} to be serially correlated: serially correlated errors, a latent dynamic
+factor, or omitted dynamics. All our designs therefore couple dependent covariates with a
+dependent error or latent process, and we report the resulting $\kappa_j$ explicitly.
+Covariate dependence still matters for the effective sample size of the curvature
+estimate, which is what \Cref{prop:gap} is about.
+\end{remark}
+
+\subsection{The algorithm}
+
+\paragraph{Blocks.} Partition the stream into contiguous blocks
+$B_t=\{(t-1)b+1,\dots,tb\}$, $t=1,2,\dots$, and write
+$\gb_t(\theta)=b^{-1}\sum_{i\in B_t}g_i(\theta)$ for the block gradient and
+$\eps_t=\gb_t(\ts)$ for the block score.
+
+\paragraph{Curvature.} Let $\mathcal{C}=\{i\ge 1: i\equiv 0 \bmod m\}$ be the
+\emph{gapped} curvature slots and let $n_t=|\mathcal{C}\cap[1,tb]|$ count the rank-one
+updates made by the end of block $t$. Maintain an unnormalised accumulator $A$ and a
+weight $W$:
+\begin{equation}
+A_{n}=A_{n-1}+\iota_n e_{k_n}e_{k_n}^{\!\top}+\alpha_{i_n}\Psi_{i_n}\Psi_{i_n}^{\!\top},
+\qquad W_n=W_{n-1}+1,
+\label{eq:curv}
+\end{equation}
+where $\alpha_{i}=\alpha(\theta_{t-1};\xi_{i})$ and $\Psi_i=\Psi(\theta_{t-1};\xi_i)$ for
+$i\in B_t$, $e_{k}$ cycles through the canonical basis, and
+$\iota_n=c_\iota\, \varsigma_\star\, n^{-q_{\mathrm r}}$ with $q_{\mathrm r}\in(0,1/4)$ is a
+vanishing ridge that keeps $\lambda_{\min}$ of the curvature estimate bounded below without any
+matrix operation. Its scale $\varsigma_\star$ is the mean curvature magnitude of the
+\emph{first} block carrying curvature slots,
+$\varsigma_\star=(d\,|\mathcal{C}\cap B_1|)^{-1}\sum_{i\in\mathcal{C}\cap B_1}
+\alpha_i\norm{\Psi_i}^2$, computed once and then frozen. Freezing matters and is not a detail:
+a scale that tracked the \emph{running} curvature would shrink exactly when the curvature
+estimate degenerated, and \Cref{lem:ridge} would then presuppose its own conclusion. With
+$\varsigma_\star$ fixed, positive and finite almost surely under \Cref{as:curv}, the lemma holds
+unconditionally. The scale exists only to make $c_\iota$ dimensionless; setting
+$\varsigma_\star=1$ recovers an unscaled ridge and \Cref{tab:ablation}(d) shows the results are
+the same. The curvature estimate and preconditioner are
+\begin{equation}
+\Hb_t=A_{n_t}/W_{n_t},\qquad \Hb_t^{-1}=W_{n_t}A_{n_t}^{-1},
+\label{eq:Hbar}
+\end{equation}
+and $A^{-1}$ is updated by two rank-one Sherman--Morrison steps per curvature slot, each
+$O(d^2)$; no matrix is ever inverted. Maintaining $A^{-1}$ rather than $\Hb^{-1}$ is what
+keeps every update exactly rank one despite the changing normalisation $W$.
+
+\paragraph{Parameter step.} With $A_0=\lambda_0 I$, $W_0=1$ ($\lambda_0$ a small positive
+constant in the units of the curvature; \Cref{tab:ablation}(e) varies it over eight orders of
+magnitude), and
+$\Hb_{t-1}$ built only from blocks $1,\dots,t-1$, the raw step is
+\begin{equation}
+\theta_t=\theta_{t-1}-\Pi_t\!\left[\frac{1}{t}\,\Hb_{t-1}^{-1}\gb_t(\theta_{t-1})\right],
+\qquad
+\Pi_t[v]=v\cdot\min\!\left\{1,\ \frac{c_D\,(1+\norm{\theta_{t-1}})}{\norm{v}}\right\},
+\label{eq:step}
+\end{equation}
+where $\Pi_t$ is a step-length safeguard, explained next, that is inactive whenever the step is
+of a reasonable size. The step $1/t$ is what makes the last iterate efficient without averaging;
+because it is preconditioned by $\Hb^{-1}$ there is no learning-rate constant to tune. A weighted
+averaged variant (step $t^{-a}$, $a\in(1/2,1)$, with logarithmically weighted Polyak--Ruppert
+averaging) is available and reported alongside.
+
+\paragraph{Why a blocked step needs a safeguard.} Linearising \eqref{eq:step} at $\ts$, ignoring
+$\Pi_t$, gives the error recursion
+\begin{equation}
+\theta_t-\ts=\big(I-\gamma_t\Hb_{t-1}^{-1}\Hh_t\big)(\theta_{t-1}-\ts)
+             -\gamma_t\Hb_{t-1}^{-1}\eps_t+o(\norm{\theta_{t-1}-\ts}),
+\label{eq:err}
+\end{equation}
+where $\Hh_t=b^{-1}\sum_{i\in B_t}\alpha_i\Psi_i\Psi_i^{\!\top}$ is the Hessian of block $t$
+alone. Since $\Hb^{-1}\Hh_t$ is a product of two positive semidefinite matrices, its eigenvalues
+are real and non-negative, so the spectral radius of the linear map in \eqref{eq:err} is below
+one exactly when
+\begin{equation}
+\gamma_t\,\lambda_{\max}\!\big(\Hb_{t-1}^{-1}\Hh_t\big)<2 ,
+\qquad\text{for which}\qquad
+\gamma_t\,\opnorm{\Hb_{t-1}^{-1}\Hh_t}<2
+\label{eq:contract}
+\end{equation}
+is sufficient, since $\lambda_{\max}\le\opnorm{\cdot}$. We work with the operator norm because it
+is what we can compute and because it is the conservative choice; and we say ``spectral radius''
+rather than ``contraction'' deliberately, because for a non-symmetric map a spectral radius below
+one bounds the \emph{asymptotic} growth of powers, not the norm of a single step. What
+\eqref{eq:contract} rules out is the regime we actually observe, in which
+$\gamma_t\lambda_{\max}\gg2$ and a single step multiplies the error by a large factor.
+On an \emph{independent} stream with $b\ge d$ the block Hessian has full rank and is close to
+$H$, so $\opnorm{\Hb^{-1}\Hh_t}\approx1$ and \eqref{eq:contract} holds already at $\gamma_1=1$.
+On a \emph{dependent} stream it need not: a block of $b$ observations from a persistent stream
+spans far fewer than $b$ distinct covariate directions, $\Hh_t$ is close to singular, and the
+norm is inflated by roughly the ratio of the largest to the smallest curvature. We measured
+$\opnorm{H^{-1}\Hh_t}$ at $b=20$: median $20$ on our autoregressive design and $33$ on our
+regime-switching design, with per-block maxima of $55$ and $89$. So \eqref{eq:contract} is
+violated at $\gamma_1=1$ on \emph{both}, and the autoregressive designs are lucky rather than
+safe. Taking a full-length step under those numbers makes the first iterates overshoot by orders
+of magnitude, and with $\gamma_t=1/t$ the excursion is undone only at rate $1/t$, so at realistic
+$N$ it can survive to the end of the stream: without a safeguard our own method's relative
+variance on the regime-switching design is $\ShiftEffMarkovNone$ times the efficient value,
+against $\ShiftEffMarkovCap$ with the safeguard (\Cref{tab:ablation}(i)), and individual
+replicates diverge outright. This is not a defect of the
+base method. It is created by \emph{blocking} the gradient, which is the one thing we add to it,
+so it is ours to fix and ours to report.
+
+The fix in \eqref{eq:step} bounds each step relative to the current iterate,
+$\norm{\Pi_t[v]}\le c_D(1+\norm{\theta_{t-1}})$ with $c_D=1$. It is scale-free in $\theta$, costs
+$O(d)$, and --- the point --- it is \emph{self-limiting}: it acts only on steps that are actually
+too long, and leaves every other step exactly as \eqref{eq:step} prescribes.
+
+\begin{proposition}[The safeguard is eventually inactive]
+\label{prop:shift}
+Let $\mathcal A=\{\Pi_t \text{ is active for only finitely many } t\}$. On $\mathcal A$ there is a
+finite $T_0(\omega)$ with $\theta_t=\theta_{t-1}-\gamma_t\Hb_{t-1}^{-1}\gb_t(\theta_{t-1})$ for
+all $t>T_0$, so the safeguarded and unsafeguarded iterates coincide from $T_0$ on and every
+asymptotic statement about one holds for the other; in particular
+\Cref{thm:as,thm:rate,thm:clt} and \Cref{prop:blockfree} are unaffected. Moreover
+$\Prob(\mathcal A)=1$ whenever $\theta_t\to\ts$ and $\opnorm{\Hb_t^{-1}}\gb_{t+1}\to0$ almost
+surely, because then $\norm{\gamma_t\Hb_{t-1}^{-1}\gb_t}\to0$ while
+$c_D(1+\norm{\theta_{t-1}})\to c_D(1+\norm{\ts})>0$.
+\end{proposition}
+
+\noindent
+We state \Cref{prop:shift} conditionally on $\mathcal A$ because that is what we can prove, and
+we say plainly what is therefore \emph{not} proved: we do not establish almost sure convergence
+for the safeguarded recursion from scratch. The obstruction is real and worth naming --- the
+factor $\min\{1,c_D(1+\norm{\theta_{t-1}})/\norm{v}\}$ depends on the current block's gradient,
+so it is $\mathcal F_t$- rather than $\mathcal F_{t-1}$-measurable and correlates with the noise,
+which breaks the martingale structure the proofs use. A complete treatment is available in the
+stochastic-approximation literature on expanding truncations
+\citep{andrieu2005stability,kushner2003stochastic}, at the price of machinery we do not need
+here. What we do instead is measure $\mathcal A$: across every design and every sample size we
+report, the safeguard binds between $2$ and $7$ times, and the count does not grow with $N$
+(\Cref{tab:ablation}(i), \Cref{tab:hard}), which is the empirical content of
+$\Prob(\mathcal A)=1$. A unit test asserts it.
+
+\paragraph{The alternative we rejected, and why.} \eqref{eq:contract} suggests a different
+remedy: shift the schedule to $\gamma_t=(t+t_0)^{-1}$ with
+$t_0=\tfrac12\max_{t\le\Tw}\opnorm{\Hb_{\Tw}^{-1}\Hh_t}$ measured on the warm-up blocks, which
+makes \eqref{eq:contract} hold at $t=1$ by construction and has a cleaner proof (it is a finite
+deterministic reindexing; see \Cref{app:shift}). We implemented it and it is worse, for a reason
+worth stating: it slows \emph{every} step, whereas the overshoot needs correcting on only a
+handful. On the regime-switching design at $N=200{,}000$ the shift leaves the relative variance at
+$\ShiftEffMarkovShift$ against $\ShiftEffMarkovCap$ for the safeguard, and on a stream short enough that $t_0$ is comparable to
+the number of steps --- which is the case for our real-data segments --- it freezes the estimator
+altogether. Both variants are in the code and both are reported
+(\Cref{tab:ablation}(i)); the safeguard is the default.
+
+\paragraph{Curvature warm-up.} The first
+$\min\{\lceil c_{\mathrm w}d/b\rceil,\lfloor \varpi_{\mathrm w}N/b\rfloor\}$ blocks are spent on
+curvature updates only, with no parameter step and with every observation contributing a rank-one
+update. The first term is the rule; the second caps the warm-up at a fraction
+$\varpi_{\mathrm w}=0.1$ of the stream and binds only when $c_{\mathrm w}d>\varpi_{\mathrm w}N$,
+which is exactly the regime in which calling an $O(d)$-observation warm-up negligible would be
+false. It matters: on a $4000$-observation stream with $d=11$, spending $c_{\mathrm w}d=2200$
+observations on curvature leaves $\WarmFracStepsUncapped$ blocked steps and a relative variance of
+$\WarmFracEffUncapped$, whereas capping at $10\%$ leaves $\WarmFracStepsCapped$ steps and a
+relative variance of $\WarmFracEffCapped$ (\Cref{tab:ablation}(j)). Our real-data segments are of exactly that length. This consumes $O(d)$ observations and $O(c_{\mathrm w}d^3)$ flops---%
+$O(1)$ in $N$---and changes no asymptotic statement. It is not cosmetic: a $1/t$ step
+taken while $\Hb$ is still uninformative leaves a component that decays like $t^{-c}$ with
+$c<1$, and at realistic $N$ that component dominates the sampling error and destroys
+coverage (\Cref{tab:ablation}). We regard ``do not start the efficient schedule before the
+curvature estimate is informative'' as a practical finding of independent interest.
+
+\paragraph{Cost.} Per block after the warm-up: $O(bd)$ for the gradient, $O(d^2)$ for the
+$\lceil b/m\rceil$ curvature updates and the preconditioned step, and $O(d^2)$ for the
+covariance accumulators. With $b=m=d$ this is $O(d^2)$ per block of $d$ observations, i.e.\
+$O(d)$ amortised per observation, matching \citet{godichonbaggioni2025adaptive}. The warm-up
+adds a one-off $O(c_{\mathrm w}d^3)$: it performs $c_{\mathrm w}d$ rank-one updates at $O(d^2)$
+each, which is the unavoidable cost of producing a $d\times d$ curvature estimate at all and is
+of the same order as a single matrix factorisation. The stability shift \eqref{eq:t0} adds a
+further one-off $O(c_{\mathrm w}(d^2+db)d/b)$, which is $4$--$5\%$ of the total operation count
+at the settings of \Cref{tab:cost} and vanishes relative to the streaming pass as $N$ grows.
+Total time is therefore
+\begin{equation}
+O\big(dN+c_{\mathrm w}d^3\big),
+\qquad\text{i.e.\ } O(dN)\ \text{once } N\gtrsim c_{\mathrm w}d^2 ,
+\label{eq:cost}
+\end{equation}
+and \Cref{tab:cost} reports the crossover explicitly rather than hiding it in the constant.
+Memory is $O(d^2)$: the running inverse and two $d\times d$ covariance accumulators. We state
+both plainly because it is easy to misread an $O(dN)$ \emph{time} claim as an $O(d)$
+\emph{memory} claim; it is not, and the same is true of the independent-data method we build
+on.
+

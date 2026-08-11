@@ -1,0 +1,19 @@
+%% Figure block, shared by ../paper/main.tex and ../submission/*.tex so the caption has
+%% exactly one source.
+\begin{figure}[t]
+\centering
+\IfFileExists{fig7_lrv_rate.pdf}{\includegraphics[width=\linewidth]{fig7_lrv_rate.pdf}}{\fbox{\parbox{0.9\linewidth}{\centering\vspace{2em}\texttt{\detokenize{fig7_lrv_rate}} pending\vspace{2em}}}}
+\caption{\textbf{The rate claim, measured, on the object an interval actually uses.}
+Both axes logarithmic; error bars are $\pm1.96$ Monte Carlo standard errors; fitted slopes in
+the legends. \textbf{(a)} Relative operator-norm error in estimating the whole sandwich
+$\Sigma=H^{-1}SH^{-1}$. Ours is $\Hb^{-1}\Sft\Hb^{-1}$ at $b\asymp\log N$; the comparator is
+overlapping batch means on the \emph{iterate} path at the block length $b_n\asymp T^{3/4}$ that
+analysis requires (\Cref{app:hyper} gives the form), which uses no gradients and no curvature
+estimate. Same target, so the comparison is meaningful; but read the levels, not the slopes. The
+iterate-path curve is flat here, and its published $N^{-1/8}$ rate is too slow for our range to
+resolve, so its fitted slope says nothing about it. What the panel shows is that over the sample
+sizes we can reach, one estimator is accurate and the other is not. \textbf{(b)} Error in estimating $S$ alone, each estimator at its own optimal block
+length: the two-scale form at $b\asymp\log N$ against the $-1/2$ of \Cref{thm:lrv}(iv), plain
+batch means at $b\asymp N^{1/3}$ against $-1/3$.}
+\label{fig:lrvrate}
+\end{figure}

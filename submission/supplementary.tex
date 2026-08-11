@@ -1,0 +1,99 @@
+%% Supplementary Material for the Information Sciences submission.
+%%
+%% Information Sciences suggests at most 10 figures + tables for a theoretical manuscript.  The
+%% main text uses exactly ten (four figures, six tables).  The four figures here support claims
+%% that the main text also establishes by other means, so nothing essential is displaced:
+%%   S1  the rate at which the long-run covariance estimator converges (Theorem 10(iv))
+%%   S2  deterministic gapping against Bernoulli thinning of the curvature updates (Prop. 11)
+%%   S3  wall-clock cost against dimension (the same measurements as Table 6)
+%%   S4  the ablations (the same measurements as Table 5)
+%%
+%% The captions are \input from ../paper so they are identical to the preprint's.  Build with
+%% `sh build.sh`, which puts ../paper on TEXINPUTS.
+\documentclass[11pt]{article}
+
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,
+            urlcolor=blue!55!black]{hyperref}
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf}
+
+\graphicspath{{../figures/}}
+
+% Supplementary numbering: Fig. S1, S2, ...
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\thetable}{S\arabic{table}}
+
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\ts}{\theta^\star}
+\newcommand{\Hb}{\bar{H}}
+\newcommand{\gb}{\bar{g}}
+\newcommand{\Sbm}{\widehat{S}^{\mathrm{BM}}}
+\newcommand{\Sft}{\widehat{S}^{\mathrm{FT}}}
+\newcommand{\Gz}{\widehat{\Gamma}_0}
+\newcommand{\opnorm}[1]{\lVert #1 \rVert_{\mathrm{op}}}
+\newcommand{\norm}[1]{\lVert #1 \rVert}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\Hh}{\widehat H}
+\newcommand{\Tw}{T_{\mathrm w}}
+\newcommand{\Fil}{\mathcal{F}}
+\newcommand{\ind}{\mathbf{1}}
+\newcommand{\bgsn}{\textsc{bgsn}}
+\newcommand{\cmix}{c_{\mathrm{mix}}}
+\newcommand{\qr}{q_{\mathrm r}}
+
+% The captions cross-reference numbered results in the manuscript.  cleveref is not loaded here,
+% so \Cref is redirected to a plain-text form that names the manuscript explicitly; a reader of
+% the Supplementary Material alone then knows where to look.
+\renewcommand{\eqref}[1]{the corresponding equation of the manuscript}
+\newcommand{\Cref}[1]{the manuscript}
+\newcommand{\cref}[1]{the manuscript}
+\newcommand{\RefLrvRate}{Fig.~S1}
+\newcommand{\RefGapFig}{Fig.~S2}
+\newcommand{\RefCostFig}{Fig.~S3}
+\newcommand{\RefAblFig}{Fig.~S4}
+
+\IfFileExists{numbers.tex}{\input{numbers}}{}
+
+\title{Supplementary Material for\\
+       \emph{Inference, Not Just Optimisation: Streaming Inversion-Free
+       Quasi-Newton Estimation on Dependent Data Streams}}
+\author{Ihor Kendiukhov}
+\date{}
+
+\begin{document}
+\maketitle
+
+\noindent
+This Supplementary Material contains four figures. Each supports a claim that the manuscript also
+establishes by other means, so the manuscript is self-contained without them; they are collected
+here because Information Sciences suggests a maximum of ten figures plus tables for a theoretical
+article, and the main text uses exactly ten. Section, theorem and equation numbers referred to in
+the captions are those of the manuscript. Every number in the captions is generated from the
+saved result files in the public repository,
+\url{https://github.com/Kendiukhov/streaming-quasi-newton-dependent-data}.
+
+\bigskip
+
+\input{fig_lrvrate}
+
+\input{fig_gap_cost}
+
+\input{fig_ablation}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+
+\end{document}

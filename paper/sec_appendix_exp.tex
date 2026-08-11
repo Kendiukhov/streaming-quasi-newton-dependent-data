@@ -191,7 +191,7 @@ generous to that baseline. We also flag a normalisation trap: several papers quo
 i.e.\ the two-sided $90\%$ value, and using it would make the random-scaling intervals
 substantially too narrow.
 
-\paragraph{The iterate-path comparator.} \Cref{fig:lrvrate}(a) compares against overlapping
+\paragraph{The iterate-path comparator.} \RefLrvRate{}(a) compares against overlapping
 batch means computed from the iterate path, in the matrix form of the estimator used in the
 dependent-data literature: with $T$ recorded iterates, window length $b_n$, window averages
 $\bar\theta_{b_n,t}=b_n^{-1}\sum_{k=t}^{t+b_n-1}\theta_k$ and overall average $\bar\theta$,
@@ -210,6 +210,15 @@ particular published recursion.
 \subsection{Reproduction and compute}
 \label{app:compute}
 
+Everything in this paper is public: the estimator, the experiment scripts, the saved result files
+from which every number, figure and table is generated, and the tests that validate every
+closed-form population quantity against long simulation, at
+\begin{center}
+\url{https://github.com/Kendiukhov/streaming-quasi-newton-dependent-data}.
+\end{center}
+The two real data sets are third-party and are not redistributed; \texttt{fetch\_data.py}
+downloads them from the UCI Machine Learning Repository
+\citep{hogue2019metro,chen2019beijingairuci,kellyuci}.
 \texttt{make all} runs everything. All BLAS libraries are pinned to a single thread and
 parallelism is over Monte Carlo replicates (\texttt{experiments/\_env.py} explains why: on the
 machine used, an unpinned tall-skinny $(d,N)\times(N,d)$ product with $N\approx4\times10^4$,
@@ -225,5 +234,3 @@ counts are the authoritative statement; the times corroborate them.
 \subsection{Additional results}
 \label{app:extra}
 
-\IfFileExists{tab_ablation.tex}{\input{tab_ablation}}{}
-\IfFileExists{tab_cost.tex}{\input{tab_cost}}{}

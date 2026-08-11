@@ -1,0 +1,130 @@
+%% Section body, shared verbatim by ../paper/main.tex (preprint) and
+%% ../submission/body.tex (Information Sciences submission).  The section heading and
+%% label live in the including file, because the two versions number sections the same
+%% way but the submission adds the journal's required unnumbered sections after them.
+The algorithm forms $\gb_t(\theta_{t-1})$ once per block and then discards it. Retain it
+for two $O(d^2)$ accumulations. Over a retained window $\mathcal{T}$ of $T'$ blocks
+(see below), define
+\begin{equation}
+\Sbm=\frac{b}{T'}\sum_{t\in\mathcal{T}}\gb_t\gb_t^{\!\top},
+\qquad
+\hat\Lambda_1=\frac{1}{T'-1}\sum_{t,\,t+1\in\mathcal{T}}\gb_t\gb_{t+1}^{\!\top},
+\qquad
+\Sft=\Sbm+b\big(\hat\Lambda_1+\hat\Lambda_1^{\!\top}\big).
+\label{eq:Sft}
+\end{equation}
+$\Sbm$ is the non-overlapping batch-means estimator at block resolution. $\Sft$ is the
+two-scale (flat-top, or ``lugsail'') correction. It has the same expectation as
+$2\Sbm(2b)-\Sbm(b)$ --- Richardson extrapolation in $1/b$ --- and coincides with it exactly
+if $\hat\Lambda_1$ is formed from disjoint rather than all adjacent block pairs; we use all
+adjacent pairs because it has the same expectation and a smaller variance. Either way the
+expectation is that of a lag-window estimator with weights $1$ for $|k|\le b$ and
+$(2b-|k|)/b$ for $b<|k|<2b$. \textbf{This device is not new}: it is the flat-top window of
+\citet{politis1995bias}, refined by \citet{politis2011higher} and recast as ``lugsail'' by
+\citet{vats2022lugsail}, and \citet[Eqs.~(15) and (17)]{singh2025utility} apply exactly these
+two forms to stochastic gradient descent under independent data. Nor is the $O(\rho^b)$ bias
+order a new mechanism: for a stationary sequence whose autocovariances decay geometrically it
+is the classical tail-sum property of a flat-top window. What we contribute is that it is
+available \emph{at block-gradient resolution on a dependent stream}, where it is what makes
+$b\asymp\log N$ admissible and therefore what buys the rate, together with the streaming
+implementation below.
+
+\paragraph{Confidence intervals.} With $u_j=\Hb^{-1}e_j$ (one $O(d^2)$ product using the
+already-maintained inverse), report
+$\theta_{T,j}\pm z_{\alpha/2}\{u_j^{\!\top}\Sft u_j/N\}^{1/2}$. Only the requested
+coordinates cost anything; the full $d\times d$ sandwich is never needed.
+
+\paragraph{Retained window (a streaming detail that matters).} Early blocks have
+$\theta_{t-1}$ far from $\ts$ and inflate \eqref{eq:Sft}. Discarding a fixed fraction
+requires knowing $N$ in advance, which a streaming method does not. We instead keep two
+accumulators covering the current and previous dyadic windows
+$[2^{k},2^{k+1})$ and report from their union, so at any time at least half and at most
+three quarters of the blocks are retained and the discarded set is a prefix. This
+answers, in our setting, the open problem of an online implementation of equal-batch-size
+estimators raised by \citet[Remark~4]{singh2025utility}.
+
+\begin{theorem}[$L^2$ rate]
+\label{thm:l2}
+Under the assumptions of \Cref{thm:as}, $\E\norm{\theta_t-\ts}^2=O(\log(N_t)/N_t)$,
+uniformly over $b\le C\log N$.
+\end{theorem}
+
+The $L^2$ statement is separate from the almost sure one because the drift analysis in
+\Cref{thm:lrv} needs a moment bound and an almost sure rate with an unspecified random
+constant does not supply one. All remainder bounds in \Cref{app:proofs} are uniform over
+$b\le C\log N$, which is the only regime in which we use them.
+
+\begin{theorem}[Long-run covariance estimation]
+\label{thm:lrv}
+Let \Cref{as:reg,as:mom,as:curv,as:ident,as:mix} hold and let $b=b_N\to\infty$ with
+$b_N\le C\log N$.
+Write $\Delta=\sum_{k\ge1}k\,(\Gamma_k+\Gamma_k^{\!\top})$. Then, entrywise,
+\begin{enumerate}[label=(\roman*),leftmargin=1.9em,itemsep=1pt,topsep=1pt]
+\item $\E\big[\Sbm\big]=S-\Delta/b+O(\rho^{b})+O(\tau_{b,N})$;
+\item $\E\big[\Sft\big]=S+O(\rho^{b})+O(\tau_{b,N})$;
+\item $\Var\big[\Sft_{jk}\big]=O(b/N)$; and consequently
+\item $\opnorm{\Sft-S}=O_p\big(d\sqrt{b/N}+\rho^{b}+\tau_{b,N}\big)$, which at fixed $d$
+      and $b\asymp\log N$ gives $\opnorm{\Sft-S}=\widetilde O_p(N^{-1/2})$, whereas
+      $\opnorm{\Sbm-S}=O_p(d\sqrt{b/N}+1/b)$ is minimised at $b\asymp(N/d^2)^{1/3}$ and
+      gives $O_p((d^2/N)^{1/3})$.
+\end{enumerate}
+The factor $d$ in (iv) is the cost of converting the entrywise bound (iii) into an operator
+norm; we make no attempt to remove it, and every rate statement in this paper is at fixed
+$d$.
+Here $\tau_{b,N}=(b+d)\log^2N/N$ is the contribution of the drift $\theta_{t-1}\ne\ts$: the
+$b$ comes from the parameter error and the $d$ from the fact that the block curvature
+$\widehat H_t$ is a $b$-sample estimate of a $d\times d$ matrix, so that
+$\E\opnorm{\widehat H_t\delta}^2\lesssim(1+d/b)\opnorm{H\delta}^2$. Both are dominated by the
+$\sqrt{b/N}$ standard deviation whenever $b+d=o(\sqrt{N})$ up to logarithms. Consequently
+$\sqrt{N}\,(\theta_{T,j}-\ts_j)/\{u_j^{\!\top}\Sft u_j\}^{1/2}\rightsquigarrow
+\mathcal{N}(0,1)$ and the intervals above have asymptotically exact coverage.
+\end{theorem}
+
+\begin{remark}[Why blocking gradients beats blocking iterates]
+\label{rem:whyfast}
+Batch-means estimators for stochastic approximation are usually built from the
+\emph{iterate} path \citep{chen2020statistical,zhu2023online,roy2023online,singh2025utility,samsonov2025statistical}.
+Under dependent sampling this forces long blocks: the iterates $\theta_k$ move by
+$\gamma_k\asymp k^{-a}$, so a block must span $\sum_{k=t+1}^{t+b}\gamma_k$ of parameter
+movement before its average behaves like an independent draw, which requires
+$b\asymp N^{a}$ and yields rates of order $N^{-1/8}$
+\citep[e.g.][Prop.~2 and Cor.~2]{samsonov2025statistical}. Block \emph{gradients} do not
+have this problem: their serial dependence is inherited from the data process, whose
+mixing time is a constant, and the iterate's own movement enters only through the
+$O(b/N)$ drift term in \Cref{thm:lrv}. This is the substantive reason for the rate
+difference, and it is available only to an algorithm that forms block gradients and keeps
+a curvature estimate. It is also why the minimax rate $\Theta(N^{-(1-a)/2})$ for
+\emph{Hessian-free} covariance estimation from an SGD trajectory
+\citep{ni2026online} does not apply: a quasi-Newton method is outside that class.
+\end{remark}
+
+\begin{remark}[Positive semidefiniteness]
+\label{rem:psd}
+$\Sft$ is a difference of positive semidefinite matrices and need not be positive
+semidefinite; the same caveat attaches to all flat-top and lugsail estimators
+\citep[Remark~5]{singh2025utility}. For marginal intervals only the scalars
+$u_j^{\!\top}\Sft u_j$ must be positive, and we fall back to $u_j^{\!\top}\Sbm u_j$ if
+one is not. We report the frequency of that fallback in every experiment; it is
+$0.0\%$ throughout.
+\end{remark}
+
+\begin{proposition}[Gapping versus Bernoulli thinning at matched cost]
+\label{prop:gap}
+Let $Y_i=\alpha(\ts;\xi_i)\Psi_i\Psi_i^{\!\top}$, $\Gamma^H_k=\Cov(Y_0,Y_k)$,
+$S^H=\sum_k\Gamma^H_k$ and $\kappa_H=\opnorm{S^H}/\opnorm{\Gamma^H_0}$. From a stream of
+length $N$, take $n$ rank-one curvature updates either at a deterministic gap $m=N/n$ or
+by Bernoulli($p=n/N$) thinning of every index. Then, as $n\to\infty$,
+\[
+n\Var\big[\widehat{H}^{\mathrm{gap}}\big]=\Gamma_0^H+O(\rho^{m}),
+\qquad
+n\Var\big[\widehat{H}^{\mathrm{Bern}}\big]=\Gamma^H_0+\tfrac{1}{m}\big(S^H-\Gamma^H_0\big).
+\]
+\end{proposition}
+
+So the excess over the independent-data benchmark $\Gamma_0^H/n$ is exponentially small in
+$m$ for gapping and of order $(\kappa_H-1)/m$ for Bernoulli thinning. Gapping also makes
+the per-block work deterministic. We verify both statements in \RefGapFig{}. We are
+explicit that this is a curvature-side improvement: $\Hb$ enters the limit distribution
+only through the rate $\nu_H$ of \Cref{thm:curv}, so the end-to-end effect on
+$\hat\theta$ is second order, and we do not claim otherwise.
+

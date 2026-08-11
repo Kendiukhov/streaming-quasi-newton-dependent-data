@@ -10,7 +10,7 @@ data/*.csv.gz
 data/*.JPG
 data/airq/
 
-# LaTeX build artefacts
+# LaTeX build artefacts (the PDFs themselves are tracked)
 paper/*.aux
 paper/*.bbl
 paper/*.blg
@@ -18,6 +18,13 @@ paper/*.log
 paper/*.out
 paper/*.toc
 paper/*.synctex.gz
+submission/*.aux
+submission/*.bbl
+submission/*.blg
+submission/*.log
+submission/*.out
+submission/*.spl
+submission/*.synctex.gz
 
 # large caches (regenerated on demand)
 results/*.npz

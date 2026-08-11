@@ -1,0 +1,16 @@
+%% Figure block, shared by ../paper/main.tex and ../submission/*.tex so the caption has
+%% exactly one source.
+\begin{figure}[t]
+\centering
+\IfFileExists{fig2_lrv.pdf}{\includegraphics[width=\linewidth]{fig2_lrv.pdf}}{\fbox{\parbox{0.9\linewidth}{\centering\vspace{2em}\texttt{\detokenize{fig2_lrv}} pending\vspace{2em}}}}
+\caption{\textbf{The long-run covariance estimator, and why the moving iterate does not
+spoil it.} (a) Measured $\E[\widehat S]/S$ against block length: plain batch means follow
+the closed-form bias $1-\Delta/(bS)$ (no fitted constants), while the two-scale form is
+unbiased at every $b$, as \Cref{thm:lrv} predicts under geometric mixing.
+(b) The algorithm's block gradients decomposed exactly into the score at $\ts$ and the
+drift $\widehat H_t(\theta_{t-1}-\ts)$. The drift's contribution to $\widehat S$ is $0.1\%$
+of $S$ at $b=20$ and $0.9\%$ at $b=320$, growing like $(b+d)/N$ as
+\Cref{thm:lrv} predicts, and the estimator built from the algorithm's iterates is
+indistinguishable from the one built at $\ts$. This is why our block length need only grow like $\log N$ rather than like a power of $N$ (\Cref{rem:whyfast}).}
+\label{fig:lrv}
+\end{figure}

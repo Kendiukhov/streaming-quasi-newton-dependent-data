@@ -1,0 +1,17 @@
+Declaration of competing interest
+
+Manuscript: Inference, Not Just Optimisation: Streaming Inversion-Free Quasi-Newton
+            Estimation on Dependent Data Streams
+Author:     Ihor Kendiukhov (Institute of Medical Genetics and Applied Genomics,
+            University of Tuebingen, Tuebingen, Germany)
+
+The author declares that he has no known competing financial interests or personal
+relationships that could have appeared to influence the work reported in this paper.
+
+Funding: This research did not receive any specific grant from funding agencies in the
+public, commercial, or not-for-profit sectors.
+
+NOTE FOR SUBMISSION. Information Sciences asks that this declaration be produced with
+Elsevier's declarations tool during submission and uploaded as a .doc/.docx file at the
+"attach/upload files" step. Use the text above when completing that tool; this plain-text
+copy is for reference only and is not itself an acceptable upload format.

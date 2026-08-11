@@ -1,0 +1,15 @@
+%% Figure block, shared by ../paper/main.tex and ../submission/*.tex so the caption has
+%% exactly one source.
+\begin{figure}[t]
+\centering
+\IfFileExists{fig1_headline.pdf}{\includegraphics[width=\linewidth]{fig1_headline.pdf}}{\fbox{\parbox{0.9\linewidth}{\centering\vspace{2em}\texttt{\detokenize{fig1_headline}} pending\vspace{2em}}}}
+\caption{\textbf{Dependence-blind confidence intervals fail by a computable amount, and
+only estimating the long-run score covariance repairs them.}
+(a) Coverage of nominal $95\%$ intervals on the homogeneous autoregressive design as the
+dependence strength varies, against the parameter-free prediction of
+\Cref{prop:coverage}; error bars are $\pm1.96$ Monte Carlo standard errors.
+(b) Coverage (vertical) against interval width divided by the width of the infeasible
+oracle interval (horizontal); the dotted line is the nominal level. Methods to the left of
+$1$ on the horizontal axis buy their narrowness with lost coverage.}
+\label{fig:coverage}
+\end{figure}

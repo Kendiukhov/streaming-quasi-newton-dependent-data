@@ -1,0 +1,18 @@
+% Shared abstract: used by the preprint (main.tex) and the journal submission.
+% Information Sciences allows at most 200 words; keep it under that and self-contained.
+Streaming quasi-Newton methods fit a model in one pass, as cheaply as stochastic gradient descent
+but with the accuracy of Newton's method. Their error bars, however, assume that observations are
+independent, and real streams -- traffic counts, air quality, sensor readings -- are not. The
+resulting confidence intervals do not merely lose a little coverage: they converge to a wrong
+coverage and stay there. On the hourly air-quality stream studied here, a nominal 95\% interval
+covers about 47\%.
+
+One change repairs the estimate and the interval together, within the same cost budget: read the
+stream in contiguous blocks. The block-averaged gradients such a method already computes are
+exactly the ingredients of a consistent estimator of the variance the intervals need, so the
+correct statistical object and the computational shortcut coincide -- and the valid interval turns
+out cheaper than the invalid one it replaces. We prove consistency, a rate and a central limit
+theorem with the correct limit under geometric mixing, derive the exact coverage that
+dependence-blind intervals converge to, and report the one cost of blocking: a step-size condition
+it makes non-trivial, with a remedy. Across simulated designs and two real hourly streams,
+coverage rises from 0.46--0.83 to 0.78--0.95.

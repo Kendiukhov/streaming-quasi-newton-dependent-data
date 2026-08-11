@@ -1,0 +1,13 @@
+%% Figure block, shared by ../paper/main.tex and ../submission/*.tex so the caption has
+%% exactly one source.
+\begin{figure}[t]
+\centering
+\IfFileExists{fig5_ablations.pdf}{\includegraphics[width=\linewidth]{fig5_ablations.pdf}}{\fbox{\parbox{0.9\linewidth}{\centering\vspace{2em}\texttt{\detokenize{fig5_ablations}} pending\vspace{2em}}}}
+\caption{\textbf{Ablations.} (a) Coverage converges to nominal in $N$ for the two-scale
+variance; the dependence-blind interval converges to $0.749$, the value predicted by
+\Cref{prop:coverage}. (b) Coverage is flat in the block length for the two-scale variance
+and degrades at both ends for plain batch means. (c) The curvature warm-up is required:
+without it the $1/t$ schedule leaves a slowly decaying error that destroys coverage even
+though the variance estimate is accurate.}
+\label{fig:ablation}
+\end{figure}

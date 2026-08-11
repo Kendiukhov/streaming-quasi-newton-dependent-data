@@ -1,0 +1,99 @@
+%% Cover letter for the Information Sciences submission.
+\documentclass[11pt]{article}
+\usepackage[margin=1.15in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+\usepackage{parskip}
+\pagestyle{empty}
+\begin{document}
+
+\noindent
+Ihor Kendiukhov\\
+Institute of Medical Genetics and Applied Genomics\\
+University of T\"ubingen, T\"ubingen, Germany\\
+\href{mailto:ihor.kendiukhov@student.uni-tuebingen.de}{ihor.kendiukhov@student.uni-tuebingen.de}
+
+\bigskip
+\noindent
+To the Editors-in-Chief, \emph{Information Sciences}
+
+\bigskip
+\noindent
+Dear Professor Senatore and Professor Yan,
+
+I am submitting the manuscript \emph{Inference, Not Just Optimisation: Streaming Inversion-Free
+Quasi-Newton Estimation on Dependent Data Streams} for consideration as an original research
+article in \emph{Information Sciences}.
+
+\textbf{The problem.} Streaming quasi-Newton methods fit a model in a single pass at the cost of
+stochastic gradient descent while retaining the efficiency of Newton's method, and they are now
+well developed. Their inference is not. The confidence intervals they report are derived assuming
+independent observations, and the streams these methods are built for --- sensor networks, traffic,
+air quality, click logs --- are serially dependent. The manuscript shows that the consequence is
+not a small correction that vanishes with more data: the reported variance omits the
+autocovariances of the score, so a nominal 95\% interval converges to a coverage below 95\% and
+stays there. We derive that limiting coverage exactly, as a function of a single
+variance-inflation factor, and confirm the prediction to within 0.009 across a sweep of dependence
+strengths with no fitted constants. On the hourly air-quality stream we study, the limit is near
+47\%.
+
+\textbf{The contribution.} The repair is a change of reading order rather than an extra estimation
+stage. If the stream is consumed in contiguous blocks with one preconditioned step per block, then
+the block-averaged gradients the algorithm already forms are, up to a factor, the non-overlapping
+batch means of the score process --- that is, an estimator of precisely the long-run variance the
+interval needs. The statistically correct object and the computational shortcut coincide, and the
+valid interval ends up \emph{cheaper} than the invalid one it replaces, because an instantaneous
+plug-in covariance costs $O(d^2)$ per observation whereas the blocked long-run covariance costs
+$O(d^2)$ per block. We prove almost sure convergence, an $O(\log N / N)$ rate and a central limit
+theorem with the correct long-run sandwich for the inversion-free rank-one curvature recursion
+under geometric mixing --- the regime in which the martingale argument behind the independent-data
+analysis fails --- and we give a covariance estimator with an exponentially small block-length
+bias whose block length is set by the mixing time of the \emph{data} rather than of the
+optimisation path, so that $b \asymp \log N$ suffices.
+
+\textbf{What we report against ourselves.} Blocking the gradient is not free, and the manuscript
+says so. It makes the step's contraction condition non-trivial: on a dependent stream a block of
+$b$ observations can span far fewer than $b$ distinct covariate directions, and without a
+safeguard our own method diverges on a persistent regime-switching design. We state the condition,
+give an $O(d)$ remedy, prove it is inactive after finitely many steps, and report the alternative
+remedy we implemented first and rejected on measured grounds. Two designs in which no streaming
+point estimate has reached its asymptotic regime at the sample sizes we can afford are reported
+against an infeasible oracle interval rather than against the nominal level, and on one of them
+the residual gap is ours and is traced to a finite-sample bias we show closing. Section~6 lists
+what we do not prove, including the two places where a hypothesis is stated but not verified.
+
+\textbf{Fit and reproducibility.} The work sits in the journal's scope under design of algorithms,
+symbolic/numeric and statistical techniques, and data engineering: it concerns the algorithmic and
+inferential foundations of one-pass estimation on streams. Everything is reproducible: the
+estimator, the experiment scripts, the saved results from which every number, figure and table in
+the manuscript is generated, and tests that validate every closed-form population quantity against
+long simulation are public at
+\url{https://github.com/Kendiukhov/streaming-quasi-newton-dependent-data}. Each of the 99
+references was verified against its published source. The total compute is a few CPU-hours on one
+machine.
+
+\textbf{Notes on format.} The manuscript is a theoretical contribution and its main narrative is
+approximately 42 double-spaced pages, within the 45-page guideline, with the proofs in appendices
+as is usual for this kind of work. The main text uses exactly ten figures plus tables, matching
+the journal's guideline; four further figures, each supporting a claim the manuscript also
+establishes by other means, are supplied as Supplementary Material. I confirm that this work is
+original, has not been published elsewhere and is not under consideration by another journal, that
+there are no competing interests and no specific funding to declare, and that I have included the
+declaration on the use of generative AI tools required by the journal, which I ask you to read: a
+large language model was used substantially, under my direction and review, in implementing the
+software, running the experiments and drafting the manuscript, and I take full responsibility for
+its contents.
+
+Thank you for considering this submission.
+
+\bigskip
+\noindent
+Yours sincerely,
+
+\bigskip
+\noindent
+Ihor Kendiukhov
+
+\end{document}

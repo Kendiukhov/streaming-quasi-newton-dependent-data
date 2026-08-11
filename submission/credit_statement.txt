@@ -1,0 +1,8 @@
+CRediT authorship contribution statement
+
+Ihor Kendiukhov: Conceptualization, Methodology, Formal analysis, Software, Investigation,
+Validation, Visualization, Writing - original draft, Writing - review and editing.
+
+This is a single-author manuscript; the author performed all of the roles listed above.
+The same statement appears in the manuscript, in the unnumbered section following the
+Conclusions.

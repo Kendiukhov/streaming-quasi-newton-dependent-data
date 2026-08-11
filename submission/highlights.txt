@@ -1,0 +1,7 @@
+Highlights
+
+- Streaming quasi-Newton intervals converge to a wrong coverage on dependent data.
+- That limiting coverage is derived exactly from one variance-inflation factor.
+- Blocking the gradient step makes the long-run variance estimable for free.
+- The valid interval is cheaper: per block, not per observation.
+- Blocking creates a step-size condition; an O(d) safeguard restores it.

@@ -12,8 +12,14 @@ import re
 import sys
 
 PAPER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "paper")
-SECTIONS = ["sec_experiments.tex", "sec_related.tex", "sec_limits.tex",
-            "sec_appendix.tex", "sec_appendix_exp.tex"]
+# Every shared fragment: section bodies, the abstract and the figure blocks.  These are
+# \input by BOTH paper/main.tex (preprint) and submission/manuscript.tex (Information
+# Sciences), so a stray preamble or a macro used but never emitted breaks two documents.
+SECTIONS = ["sec_intro.tex", "sec_setting.tex", "sec_theory.tex", "sec_lrv.tex",
+            "sec_experiments.tex", "sec_related.tex", "sec_limits.tex",
+            "sec_conclusions.tex", "sec_appendix.tex", "sec_appendix_exp.tex",
+            "abstract.tex", "fig_coverage.tex", "fig_lrv.tex", "fig_lrvrate.tex",
+            "fig_gap_cost.tex", "fig_ablation.tex", "fig_real.tex", "fig_hard.tex"]
 
 
 def test_only_main_is_a_document():
@@ -26,10 +32,21 @@ def test_only_main_is_a_document():
 
 
 def test_sections_are_nonempty():
+    """Guard against the failure mode that motivated this test: a scripted edit truncating or
+    overwriting a shared fragment, which pdflatex in nonstopmode will happily ignore.
+
+    The floor is per-file because the fragments are legitimately of very different sizes: a
+    figure block is a caption, the abstract is capped at 200 words by the journal, and the
+    section bodies are thousands of characters.
+    """
+    FLOOR = {"abstract.tex": 900, "fig_coverage.tex": 600, "fig_lrv.tex": 600,
+             "fig_lrvrate.tex": 600, "fig_gap_cost.tex": 900, "fig_ablation.tex": 500,
+             "fig_real.tex": 600, "fig_hard.tex": 600}
     for f in SECTIONS:
         n = len(open(os.path.join(PAPER, f)).read())
-        assert n > 1500, f"{f} is only {n} characters long"
-    print("section files are all non-trivial: OK")
+        floor = FLOOR.get(f, 1500)
+        assert n > floor, f"{f} is only {n} characters long (floor {floor})"
+    print(f"all {len(SECTIONS)} shared fragments are non-trivial: OK")
 
 
 def test_every_data_macro_is_defined():

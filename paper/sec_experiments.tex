@@ -192,7 +192,7 @@ estimator is within Monte Carlo error of $1$ for $b\ge10$ (at $b=20$: $\LrvFtAtB
 small residual at $b=5$ is the $O(\rho^{b})$ term, which is only $\rho^5=0.03$ there. This is
 \Cref{thm:lrv}(i)--(ii) with no fitted constants.
 
-\Cref{fig:lrvrate} measures the rate. Panel (b) is the rate for $S$ itself: under the
+\RefLrvRate{} measures the rate. Panel (b) is the rate for $S$ itself: under the
 $b\asymp\log N$ schedule the two-scale estimator's relative error falls with fitted exponent
 $\RateExpFt$ against the $-1/2$ of \Cref{thm:lrv}(iv), while plain batch means under their own
 optimal $b\asymp N^{1/3}$ schedule give $\RateExpBm$ against $-1/3$.
@@ -227,7 +227,7 @@ length is set by the data's mixing time, not the optimiser's.
 
 \subsection{Curvature schedules}
 
-\Cref{fig:gap} compares deterministic gapping with Bernoulli thinning at a matched number of
+\RefGapFig{} compares deterministic gapping with Bernoulli thinning at a matched number of
 rank-one updates, with the optimisation frozen at $\ts$ so that only estimation quality is
 measured. The excess variance over the independent-data benchmark follows the two predicted
 curves --- $O(\rho^{m})$ for gapping, $(\kappa_H-1)/m$ for thinning --- over more than an
@@ -243,14 +243,14 @@ updates are placed --- on a deterministic gap of $m=d$ against Bernoulli retenti
 At these settings the wall-clock difference is $\GapSpeedupArhom\times$, which is within our
 timing noise, so we do not claim a speed-up: a gap avoids drawing and testing a random variable
 per observation, but that saving is small next to the $O(d^2)$ update it guards. The case for
-gapping is therefore the one \Cref{prop:gap} makes and \Cref{fig:gap} measures --- a strictly
+gapping is therefore the one \Cref{prop:gap} makes and \RefGapFig{} measures --- a strictly
 better curvature estimate at a matched number of updates, $O(\rho^m)$ excess variance against
 $(\kappa_H-1)/m$ --- together with the fact that it makes the per-block cost deterministic
 rather than random. It is a better cost knob, not a faster one.
 
 \subsection{Ablations}
 
-\Cref{fig:ablation} and \Cref{tab:ablation} vary one design choice at a time.
+\RefAblFig{} and \Cref{tab:ablation} vary one design choice at a time.
 (a) Coverage rises monotonically to nominal with $N$, and the gap to the dependence-blind
 interval does \emph{not} close --- it converges to the predicted $0.749$.
 (b) Coverage as a function of $b$ is flat for the two-scale estimator over
@@ -313,6 +313,8 @@ runs in $\TimeRatioArhom$ times the time of the dependence-blind streaming Newto
 is, our valid intervals cost less than the invalid ones, not more. The measured wall-clock
 exponents, on a shared and heavily loaded machine, are $d^{\CostExpBgsn}$ and
 $d^{\CostExpPlugin}$; they are noisier than the counts and we report them only as corroboration.
+\RefCostFig{} plots the same timings against $d$, where the message is the vertical separation
+rather than either slope.
 
 \subsection{Real streams}
 
