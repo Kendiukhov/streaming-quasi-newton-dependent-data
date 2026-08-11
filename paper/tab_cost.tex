@@ -2,18 +2,22 @@
 \centering
 \small
 \setlength{\tabcolsep}{3.5pt}
-\caption{\textbf{Cost.} Wall-clock milliseconds for one pass over $N=200{,}000$ observations, single-threaded, minimum over 7 interleaved repetitions (interleaved so that a change in the load of this shared machine cannot be mistaken for a difference between methods; the minimum because load can only make a measurement slower). $s_{\mathrm{time}}$ and $s_{\mathrm{flop}}$ are the exponents in $d$ fitted on the four largest $d$ to the times and to the exact operation counts at this $N$. Both are dominated by the one-off $O(c_{\mathrm w}d^{3})$ warm-up here and should \emph{not} be read as the streaming cost: $s_{\mathrm{str}}$ is the same exact count with the warm-up excluded and $s_{\infty}$ is it at $N=10^{8}$, where the warm-up is negligible and \eqref{eq:cost} reduces to $O(dN)$. Those last two columns are the design claim: the streaming pass is linear in $d$ for \bgsn{} and quadratic once the i.i.d.\ plug-in variance is added, because the plug-in score covariance costs $O(d^2)$ per \emph{observation} while our long-run covariance costs $O(d^2)$ per \emph{block}. The measured \emph{levels} say the same thing and are robust to load: the plug-in variant costs between $1.4$ and $3.4$ times more than \bgsn{}, at every $d$ here.}
+\caption{\textbf{Cost.} Wall-clock milliseconds for one pass over $N=200{,}000$ observations, single-threaded, minimum over 7 interleaved repetitions (interleaved so that a change in the load of this shared machine cannot be mistaken for a difference between methods; the minimum because load can only make a measurement slower). $s_{\mathrm{time}}$ is the exponent in $d$ fitted to those times on the four largest $d$. It is dominated by the one-off $O(c_{\mathrm w}d^{3})$ warm-up here and should \emph{not} be read as the streaming cost: $s_{\mathrm{str}}$ is the exact operation count with the warm-up excluded and $s_{\infty}$ is it at $N=10^{8}$, where the warm-up is negligible and \eqref{eq:cost} reduces to $O(dN)$. Those last two columns are the design claim: the streaming pass is linear in $d$ for \bgsn{} and quadratic once the i.i.d.\ plug-in variance is added, because the plug-in score covariance costs $O(d^2)$ per \emph{observation} while our long-run covariance costs $O(d^2)$ per \emph{block}. The measured \emph{levels} say the same thing and are robust to load: the plug-in variant costs between $1.4$ and $3.4$ times more than \bgsn{}, at every $d$ here.}
 \label{tab:cost}
-\begin{tabular}{lrrrrrrrrrr}
+\small
+\setlength{\tabcolsep}{4pt}
+\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{%
+\begin{tabular}{lrrrrrrrrr}
 \toprule
-method & $d{=}5$ & $d{=}10$ & $d{=}20$ & $d{=}40$ & $d{=}80$ & $d{=}160$ & $s_{\mathrm{time}}$ & $s_{\mathrm{flop}}$ & $s_{\mathrm{str}}$ & $s_{\infty}$ \\
+method & $d{=}5$ & $d{=}10$ & $d{=}20$ & $d{=}40$ & $d{=}80$ & $d{=}160$ & $s_{\mathrm{time}}$ & $s_{\mathrm{str}}$ & $s_{\infty}$ \\
 \midrule
-\textbf{BGSN} (long-run interval) & 7.4 & 6.2 & 10.3 & 21.4 & 115.4 & 534.9 & 1.95 & 2.07 & 1.00 & 1.01 \\
-\quad with the i.i.d.\ plug-in variance & 10.2 & 10.9 & 31.8 & 73.5 & 313.9 & 1392.3 & 1.85 & 2.02 & 1.86 & 1.86 \\
-streaming Newton, Bernoulli $p=1/d$ & 9.4 & 7.7 & 11.2 & 27.0 & 111.2 & 533.9 & 1.88 & 2.07 & -- & -- \\
-streaming Newton, every observation ($p=1$) & 20.6 & 28.8 & 78.4 & 260.7 & 1135.1 & 4608.5 & 1.98 & 1.97 & 1.97 & 1.97 \\
-ASGD (first order, random scaling) & 4.2 & 3.5 & 5.5 & 8.3 & 20.2 & 51.5 & 1.09 & -- & -- & -- \\
-offline HAC, $L=100$ \emph{(not streaming)} & 151.1 & 263.2 & 604.1 & 2303.0 & -- & -- & -- & -- & -- & -- \\
+\textbf{BGSN} (long-run interval) & 7.4 & 6.2 & 10.3 & 21.4 & 115.4 & 534.9 & 1.95 & 1.00 & 1.01 \\
+\quad with the i.i.d.\ plug-in variance & 10.2 & 10.9 & 31.8 & 73.5 & 313.9 & 1392.3 & 1.85 & 1.86 & 1.86 \\
+streaming Newton, Bernoulli $p=1/d$ & 9.4 & 7.7 & 11.2 & 27.0 & 111.2 & 533.9 & 1.88 & -- & -- \\
+streaming Newton, every observation ($p=1$) & 20.6 & 28.8 & 78.4 & 260.7 & 1135.1 & 4608.5 & 1.98 & 1.97 & 1.97 \\
+ASGD (first order, random scaling) & 4.2 & 3.5 & 5.5 & 8.3 & 20.2 & 51.5 & 1.09 & -- & -- \\
+offline HAC, $L=100$ \emph{(not streaming)} & 151.1 & 263.2 & 604.1 & 2303.0 & -- & -- & -- & -- & -- \\
 \bottomrule
 \end{tabular}
+}
 \end{table}

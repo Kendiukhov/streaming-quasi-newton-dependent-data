@@ -4,82 +4,38 @@
 %% way but the submission adds the journal's required unnumbered sections after them.
 \subsection{Assumptions}
 
-\begin{assumption}[Regularity]
-\label{as:reg}
-$F$ is twice continuously differentiable with $\opnorm{\nabla^2F(\theta)}\le L$ for all
-$\theta$; $H=\nabla^2F(\ts)\succ0$; and $\nabla^2 F$ is Lipschitz on a neighbourhood of
-$\ts$, so that $\norm{\nabla F(\theta)-H(\theta-\ts)}\le L_\delta\norm{\theta-\ts}^2$ for
-all $\theta$.
-\end{assumption}
-
-\begin{assumption}[Expected smoothness and moments]
-\label{as:mom}
-There are $C,C'\ge0$ with $\E\norm{g(\theta)}^2\le C+C'(F(\theta)-F(\ts))$ for all
-$\theta$; there is $\eta>0$ with
-$\E\norm{g(\theta)}^{2+2\eta}\le C_\eta(1+F(\theta)-F(\ts))^{1+\eta}$; and
-$\theta\mapsto\E[g(\theta)g(\theta)^{\!\top}]$ is continuous at $\ts$.
-\end{assumption}
-
-
-
-\begin{assumption}[Curvature form]
-\label{as:curv}
-$\nabla^2F(\theta)=\E[\alpha(\theta;\xi)\Psi(\theta;\xi)\Psi(\theta;\xi)^{\!\top}]$ with
-$\alpha\ge0$; $\E\opnorm{\alpha(\theta;\xi)\Psi\Psi^{\!\top}}^{\eta'}\le C_{\eta'}$ for
-some $\eta'>2$ uniformly on a neighbourhood of $\ts$; and
-$\theta\mapsto\alpha(\theta;\xi)\Psi(\theta;\xi)\Psi(\theta;\xi)^{\!\top}$ is Lipschitz in
-$\theta$ in $L^2$ near $\ts$.
-\end{assumption}
-
-\begin{assumption}[Identifiability]
-\label{as:ident}
-$\ts$ is the only stationary point of $F$ outside which the gradient points away from it:
-for every $\eta>0$, $\inf_{\norm{\theta-\ts}\ge\eta}\langle\nabla F(\theta),\theta-\ts\rangle>0$.
-\end{assumption}
-
-\noindent
-\Cref{as:ident} holds whenever $F$ is convex with a unique minimiser, which covers every
-objective we consider (least squares, logistic, ridge, softmax, the geometric median). It is
-what turns ``the gradient step cannot keep moving'' into ``$\theta_t\to\ts$'', and the
-independent-data analysis needs it too.
-
-\begin{assumption}[Geometric mixing]
-\label{as:mix}
-$(\xi_i)_{i\ge1}$ is strictly stationary and its mixing coefficient \eqref{eq:mixdef}
-decays geometrically: $\alpha_{\mathrm{mix}}(k)\le K\cmix^{\,k}$ for some $\cmix\in(0,1)$,
-$K<\infty$. Moreover $\E\norm{g_1}^{4+\nu'}<\infty$ for some $\nu'>0$,
-$\E\norm{g_1}^{2+\nu}<\infty$ for some $\nu>0$ (without loss of generality $\nu\le2\eta$), and
-$S\succ0$. The fourth moment with a margin is used only for the variance of the covariance
-estimator in \Cref{thm:lrv}(iii): the products $b\,\bar g_{tj}\bar g_{tk}$ whose autocovariances
-that bound needs are quadratic in the scores, and Davydov's inequality applied to them requires
-$2+\delta$ moments of the products, i.e.\ $4+2\delta$ of the scores. Plain fourth moments would
-leave the argument one $\epsilon$ of integrability short, which is why we ask for the margin
-rather than quietly using it.
-\end{assumption}
+Five assumptions are used, always together. They are stated in full in \Cref{app:assumptions} and
+summarised here. \emph{Regularity} (\Cref{as:reg}): $F$ is twice continuously differentiable with
+bounded Hessian, $H=\nabla^2F(\ts)\succ0$, and $\nabla^2F$ is Lipschitz near $\ts$.
+\emph{Expected smoothness and moments} (\Cref{as:mom}): the second moment of the score is controlled by
+the excess objective, with a $2+2\eta$ margin, and $\theta\mapsto\E[gg^{\!\top}]$ is continuous at
+$\ts$. \emph{Curvature form} (\Cref{as:curv}): $\nabla^2F(\theta)=\E[\alpha\Psi\Psi^{\!\top}]$ with
+$\alpha\ge0$, a uniform moment bound, and an $L^2$-Lipschitz condition in $\theta$ near $\ts$. \emph{Identifiability} (\Cref{as:ident}): $\ts$ is
+the only stationary point of $F$ and elsewhere the gradient points away from it, which holds whenever
+$F$ is convex with a unique minimiser. \emph{Geometric mixing} (\Cref{as:mix}): the stream is strictly
+stationary with $\alpha_{\mathrm{mix}}(k)\le K\cmix^{\,k}$ for some $\cmix\in(0,1)$, the score has
+$4+\nu'$ moments, and $S\succ0$.
 
 \Cref{as:reg,as:mom,as:curv} are those of the independent-data analysis
-\citep{godichonbaggioni2025adaptive}, with \Cref{as:curv} strengthened from a moment
-bound to a local Lipschitz condition that we need because the curvature terms are now
-dependent. \Cref{as:mix} is the only genuinely new assumption; a geometrically ergodic
-Markov chain \citep{meyn2009markov} satisfies it, as do stationary causal
-ARMA/GARCH-type recursions with geometrically decaying dependence in Wu's sense
-\citep{wu2005nonlinear,wu2011asymptotic}. Davydov's covariance inequality
-\citep{davydov1968convergence,rio1993covariance} converts \Cref{as:mix} into a geometric
-bound on the score autocovariances that we use repeatedly:
+\citep{godichonbaggioni2025adaptive}, with \Cref{as:curv} strengthened to a local Lipschitz condition
+because the curvature terms are now dependent. \Cref{as:mix} is the only genuinely new assumption, and
+\Cref{app:asdisc} lists the processes that satisfy it. Davydov's covariance inequality
+\citep{davydov1968convergence} converts it into the geometric bound on score autocovariances that we use
+repeatedly,
 \begin{equation}
 \opnorm{\Gamma_k}\;\le\;C_\Gamma\,\rho^{\,|k|},
-\qquad \rho=\cmix^{\,\nu/(2+\nu)}\in(0,1).
+\qquad \rho=\cmix^{\,\nu/(2+\nu)}\in(0,1),
 \label{eq:geoGamma}
 \end{equation}
-In particular $S$ in \eqref{eq:S} converges absolutely.
+so that $S$ in \eqref{eq:S} converges absolutely.
 
 \subsection{The curvature recursion}
 
 The first result is where dependence bites. Under independence the terms accumulated in
-\eqref{eq:curv} form (conditionally on the iterates) an independent array and standard
-strong laws apply. Under \Cref{as:mix} they are dependent, and the gapped design is what
-restores control: the subsequence indexed by $\mathcal{C}$ is itself stationary with
-mixing coefficients $\alpha_{\mathrm{mix}}(jm)\le K\cmix^{jm}$.
+\eqref{eq:curv} form, conditionally on the iterates, an independent array and standard strong laws
+apply; under \Cref{as:mix} they are dependent, and the gapped design is what restores control,
+because the subsequence indexed by $\mathcal{C}$ is itself stationary with mixing coefficients
+$\alpha_{\mathrm{mix}}(jm)\le K\cmix^{jm}$.
 
 \begin{lemma}[The curvature estimate is never ill-conditioned]
 \label{lem:ridge}
@@ -90,14 +46,14 @@ a finite random $c_1>0$ with
 \lambda_{\min}(\Hb_t)\ \ge\ c_1\,n_t^{-\qr}
 \qquad\text{and hence}\qquad
 \opnorm{\Hb_t^{-1}}\ \le\ c_1^{-1}n_t^{\qr}=O(t^{\qr})
-\qquad\text{for \emph{all} }t,\ \text{a.s.}
 \]
+for \emph{all} $t$, almost surely.
 \end{lemma}
 
-This is the whole purpose of the vanishing ridge, and it needs no assumption on the iterates:
-it makes $\sum_t \gamma_t^2\opnorm{\Hb_{t-1}^{-1}}^2=\sum_tO(t^{2\qr-2})<\infty$, the
-square-summability half of the Robbins--Monro condition, for \emph{every} $t$ rather than
-eventually, and without any eigenvalue computation.
+This is the whole purpose of the vanishing ridge, and it needs no assumption on the iterates: it
+makes $\sum_t \gamma_t^2\opnorm{\Hb_{t-1}^{-1}}^2=\sum_tO(t^{2\qr-2})<\infty$, the square-summability
+half of the Robbins--Monro condition, for \emph{every} $t$ rather than eventually, and without any
+eigenvalue computation.
 
 \begin{theorem}[Curvature rate]
 \label{thm:curv}
@@ -112,44 +68,28 @@ $\nu_H<\qr$,
 \]
 \end{theorem}
 
-\begin{remark}[Order of the proofs]
-\label{rem:ladder}
 \Cref{thm:curv} presupposes a rate for the iterates while the results below use
-\Cref{thm:curv}, so the logical order must be stated. It is a four-rung ladder, each rung
-using only the ones below it: (i) \Cref{lem:ridge}, from the ridge alone, with no assumption
-on the iterates; (ii) \Cref{thm:as}, $\theta_t\to\ts$ a.s., using only \Cref{lem:ridge};
-(iii) a preliminary rate $\norm{\theta_t-\ts}=O(t^{-1/2}\log^{1+\varpi}t)$ a.s.\
-(\Cref{lem:prelim}, proved in \Cref{app:prelim}), from \eqref{eq:decomp} with
-$\Hb_{t-1}^{-1}$ bounded by \Cref{lem:ridge} and $\Hb_t\to H$ --- consistency only, which
-follows from (ii); (iv) \Cref{thm:curv}, and then \Cref{thm:rate,thm:clt,thm:l2,thm:lrv}.
-\Cref{app:proofs} is organised in this order, and rung (iii) is where the restriction
-$\qr<1/4$ is used --- everything else needs only $\qr<1/2$.
-\end{remark}
+\Cref{thm:curv}, so the logical order matters. It is a four-rung ladder, each rung using only the
+ones below it: \Cref{lem:ridge} from the ridge alone, with no assumption on the iterates; then
+$\theta_t\to\ts$ almost surely (\Cref{thm:as}); then a preliminary rate (\Cref{lem:prelim}), which
+is the one place the restriction $\qr<1/4$ is used; then \Cref{thm:curv}, and after it
+\Cref{thm:rate,thm:clt,thm:l2,thm:lrv}. \Cref{app:ladder} states the ladder in full and
+\Cref{app:proofs} is organised in that order.
 
 \subsection{Consistency, rate, and the central limit theorem}
 
 The independent-data proofs use that $\eps_t$ is a martingale difference with respect to
-$\Fil_{t-1}=\sigma(\xi_1,\dots,\xi_{(t-1)b})$. Under \Cref{as:mix} it is not:
-$\E[\eps_t\mid\Fil_{t-1}]\ne0$, and no choice of block length repairs this, because the
-conditional bias of a block average is $O(1/b)$ and does not vanish at fixed $b$.
-
-Our substitute is Gordin's martingale--coboundary decomposition. Under \Cref{as:mix} the
-conditional expectations $\E[\eps_{n}\mid\Fil_0]$ decay geometrically in $L^2$, so
-\begin{equation}
-\eps_t=m_{t+1}+z_t-z_{t+1},
-\qquad \E[m_{t+1}\mid\Fil_t]=0,\quad \E\norm{z_1}^2<\infty,
-\label{eq:cobound}
-\end{equation}
-with $(m_t)$ stationary and square integrable and $\E[m_1m_1^{\!\top}]=S/b$
-(\Cref{lem:gordin}). Every weighted sum $\sum_t\gamma_t\Hb_{t-1}^{-1}\eps_t$ then splits into
-a square-integrable martingale, which converges almost surely because
-$\sum_t\gamma_t^2\opnorm{\Hb_{t-1}^{-1}}^2=\sum_tO(t^{2\qr-2})<\infty$ by \Cref{lem:ridge},
-and a telescoping coboundary, which converges because one rank-one Riccati
-update moves the preconditioner by only $O(1/t)$ (\Cref{lem:incr}). This is what makes the
-argument work with weights that are \emph{random and adapted} --- unavoidable here, since the
-weights contain $\Hb_{t-1}^{-1}$ --- and it is why the long-run covariance $S$, rather than
-the instantaneous $\Gamma_0$, is the object that appears: it is the second moment of the
-martingale part in \eqref{eq:cobound}. \Cref{app:proofs} gives the details.
+$\Fil_{t-1}=\sigma(\xi_1,\dots,\xi_{(t-1)b})$. Under \Cref{as:mix} it is not, and no block length repairs
+this, because the conditional bias of a block average is $O(1/b)$ and does not vanish at fixed $b$. Our
+substitute is Gordin's martingale--coboundary decomposition
+$\eps_t=m_{t+1}+z_t-z_{t+1}$ with $(m_t)$ a stationary square-integrable martingale difference and
+$\E[m_1m_1^{\!\top}]=S/b$ (\Cref{lem:gordin}); every weighted sum $\sum_t\gamma_t\Hb_{t-1}^{-1}\eps_t$
+then splits into a martingale that converges by \Cref{lem:ridge} and a telescoping coboundary that
+converges because one rank-one Riccati update moves the preconditioner by only $O(1/t)$
+(\Cref{lem:incr}). This is what makes the argument work with weights that are \emph{random and adapted}
+--- unavoidable here, since they contain $\Hb_{t-1}^{-1}$ --- and it is why the long-run covariance $S$,
+rather than the instantaneous $\Gamma_0$, is what appears in the limit: it is the second moment of the
+martingale part (\Cref{app:gordin}).
 
 \begin{theorem}[Almost sure convergence]
 \label{thm:as}
@@ -179,24 +119,13 @@ sequence $b_N$.
 \noindent
 We separate the two cases because only the first is proved unconditionally, and the difference
 matters: \Cref{thm:lrv} takes $b\asymp\log N$, so the interval we actually recommend lives in the
-second case. The proof of the fixed-$b$ statement is almost sure and goes through
-\Cref{lem:series}, whose conclusion carries a finite random constant; for a triangular array in
-which $b$ changes with $N$, ``finite for each $N$'' is not enough, and the naive route around it
---- Cauchy--Schwarz on $\E\opnorm{H^{-1}-P_{t-1}}\norm{\eps_t}$ --- is exactly the bound that the
-proof of term~(A) in \Cref{app:proofs} shows is too weak, by a factor $T^{1/2}$. Establishing the uniformity would
-require redoing \Cref{lem:series} with explicit constants in $b$, which we have not done. What we
-can say is that the condition is about the remainder terms and not about the limit, that growing
-$b$ makes the block scores \emph{less} dependent rather than more, and that empirically coverage
-is flat in $b$ over $b\in[10,320]$ at $N=200{,}000$ (\Cref{tab:ablation}(b)), which is the
-composition the two theorems need. \Cref{sec:limits} lists this as an open point rather than
-burying it.
+second case. \Cref{app:growingb} identifies the step of the proof that needs the uniformity, shows
+why the naive route around it loses a factor $T^{1/2}$, and gives what we can say in its place ---
+including that coverage is flat in $b$ over $b\in[10,320]$ at $N=200{,}000$
+(\Cref{tab:ablation}(b)), which is the composition the two theorems need. \Cref{sec:limits} lists
+this as an open point rather than burying it.
 
-The condition $b=o(\sqrt N)$ is what makes the number of steps $T=N/b$ large enough for the
-$1/t$ schedule to erase the initial condition: with $\gamma_t=1/t$ the effect of $\theta_0$
-decays like $1/T=b/N$, so its contribution to $\sqrt N(\theta_T-\ts)$ is of order
-$b/\sqrt N$. It is amply satisfied by the $b\asymp\log N$ of \Cref{thm:lrv}, and it is the
-reason \Cref{tab:ablation}(b) shows the point estimate degrading once $b$ becomes a
-substantial fraction of $\sqrt N$.
+
 
 \begin{proposition}[Blocking is free]
 \label{prop:blockfree}
@@ -208,38 +137,35 @@ Under the assumptions of \Cref{thm:clt},
 so the asymptotic variance in \Cref{thm:clt} is the same for every block length $b$.
 \end{proposition}
 
-\Cref{prop:blockfree} matters for the design argument. It says that, for this algorithm,
-averaging the gradient over a block costs nothing statistically---the leading term is the
-same sample average of scores whatever $b$ is---which is why we are free to choose $b$ for
-the covariance estimator. It also answers the objection that single-sample streaming
-updates are more sample-efficient than batched ones \citep{li2026stream}: that is true for
-a step size $\gamma_t\asymp t^{-a}$ with $a<1$, and false here.
+\Cref{prop:blockfree} matters for the design argument: averaging the gradient over a block costs
+nothing statistically, which is why we are free to choose $b$ for the covariance estimator. It also
+answers the objection that single-sample streaming updates are more sample-efficient than batched ones
+\citep{li2026stream} --- true for a step size $\gamma_t\asymp t^{-a}$ with $a<1$, and false here.
 
 \subsection{The variance-inflation factor and the exact failure of dependence-blind intervals}
 
 \begin{proposition}[Coverage of dependence-blind intervals]
 \label{prop:coverage}
-Let $\kappa_j=\left[H^{-1}SH^{-1}\right]_{jj}\big/\left[H^{-1}\Gamma_0H^{-1}\right]_{jj}$
+Let
+\[
+\kappa_j=\left[H^{-1}SH^{-1}\right]_{jj}\Big/\left[H^{-1}\Gamma_0H^{-1}\right]_{jj},
+\]
 and let $\Gz\to_p\Gamma_0$. Then the interval
-$\theta_{T,j}\pm z_{\alpha/2}\{[\Hb^{-1}\Gz\Hb^{-1}]_{jj}/N\}^{1/2}$ has asymptotic
-coverage
+$\theta_{T,j}\pm z_{\alpha/2}\{[\Hb^{-1}\Gz\Hb^{-1}]_{jj}/N\}^{1/2}$ has asymptotic coverage
 \[
 2\,\Phi\!\left(z_{\alpha/2}/\sqrt{\kappa_j}\right)-1 .
 \]
 \end{proposition}
 
-The proof is one line, and the content is entirely in $\kappa_j$: dependence-blind
-intervals do not merely lose a little coverage, their coverage converges to a computable
-number below the nominal level. For the homogeneous autoregressive design of
-\Cref{sec:exp}---covariates $x_t=\phi x_{t-1}+\cdots$, errors $u_t=\psi u_{t-1}+\cdots$,
-$x\perp u$---one gets $\Gamma_k=\sigma_u^2(\phi\psi)^{|k|}\Sigma_x$ and $H=\Sigma_x$, hence
+The proof is one line and the content is entirely in $\kappa_j$: dependence-blind intervals do not
+merely lose a little coverage, their coverage converges to a computable number below the nominal level.
+For the homogeneous autoregressive design of \Cref{sec:exp} --- covariates $x_t=\phi x_{t-1}+\cdots$,
+errors $u_t=\psi u_{t-1}+\cdots$, $x\perp u$ --- textbook geometric summation gives
 \begin{equation}
 \kappa_j=\frac{1+\phi\psi}{1-\phi\psi}\quad\text{for every }j,
 \label{eq:kappa}
 \end{equation}
-so at $\phi=\psi=0.7$ a nominal $95\%$ interval covers $74.9\%$. \Cref{eq:kappa} is
-textbook geometric summation and we present it only because it makes
-\Cref{prop:coverage} checkable with no free parameters (\Cref{fig:coverage}); the
-qualitative failure has been observed before \citep{liu2023mixing}, whose simulated
-coverage ``hovers around $85\%$'' at $\kappa=2$, against our prediction of $83.4\%$.
-
+so at $\phi=\psi=0.7$ a nominal $95\%$ interval covers $74.9\%$. We present \eqref{eq:kappa} only
+because it makes \Cref{prop:coverage} checkable with no free parameters (\Cref{fig:coverage}); the
+qualitative failure has been observed before \citep{liu2023mixing}, whose simulated coverage ``hovers
+around $85\%$'' at $\kappa=2$, against our prediction of $83.4\%$.

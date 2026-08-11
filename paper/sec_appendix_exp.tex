@@ -130,13 +130,15 @@ $\hat\theta_{\mathrm{full}}\approx R^{-1}\sum_k\hat\theta_k$, then
 \]
 so an interval built to cover $\ts$ with probability $1-\alpha$ covers
 $\hat\theta_{\mathrm{full}}$ with probability
-$2\Phi\big(z_{\alpha/2}/\sqrt{1-1/R}\big)-1$, which is what the header of \Cref{tab:real}
-reports. Assumption (iii) requires the full-stream estimator to be (approximately) the equally
-weighted average of the segment estimators, which holds when the segments have equal length
-and similar $\widehat H$; (i) is the same approximation that makes segments usable as
-replicates at all. The correction is small but not negligible---at the $R$ of our traffic stream
-it raises the target from $0.950$ to $\ProtoBNominalMetro$, and at the $R$ of the air-quality
-stream to $\ProtoBNominalAirq$---and both the corrected target and the raw coverage appear in
+\[
+2\Phi\big(z_{\alpha/2}/\sqrt{1-1/R}\big)-1,
+\]
+which is what the header of \Cref{tab:real} reports. Assumption (iii) requires the full-stream estimator to be, approximately, the equally
+weighted average of the segment estimators, which holds when the segments have equal length and
+similar $\widehat H$; assumption (i) is the same approximation that makes segments usable as
+replicates at all. The correction is small but not negligible --- at the $R$ of our traffic stream it raises the target
+from $0.950$ to $\ProtoBNominalMetro$, and at the $R$ of the air-quality stream to
+$\ProtoBNominalAirq$ --- and both the corrected target and the raw coverage appear in
 \Cref{tab:real}, computed from $R$ rather than quoted from memory. The correction is also least
 trustworthy exactly where it is largest: with only a handful of segments per stream, assumption
 (iii) is a crude approximation and the corrected target is close to one, which compresses the
@@ -216,13 +218,12 @@ closed-form population quantity against long simulation. The exact release used 
 results reported here is archived with a persistent identifier
 \citep{kendiukhov2026bgsn},
 \begin{center}
-\href{https://doi.org/10.5281/zenodo.21891313}{\texttt{10.5281/zenodo.21891313}}
-\quad(development version:
+\doi{10.5281/zenodo.21891313}\quad(development version:
 \url{https://github.com/Kendiukhov/streaming-quasi-newton-dependent-data}),
 \end{center}
-and the concept identifier \texttt{10.5281/zenodo.21891312} always resolves to the most recent
+and the concept identifier \doi{10.5281/zenodo.21891312} always resolves to the most recent
 release.
-The two real data sets are third-party and are not redistributed; \texttt{fetch\_data.py}
+The two real data sets are third-party and are not redistributed; \file{fetch_data.py}
 downloads them from the UCI Machine Learning Repository
 \citep{hogue2019metro,chen2019beijingairuci,kellyuci}.
 \texttt{make all} runs everything. All BLAS libraries are pinned to a single thread and
@@ -239,4 +240,40 @@ counts are the authoritative statement; the times corroborate them.
 
 \subsection{Additional results}
 \label{app:extra}
+
+\subsection{Designs and methods in full}
+\label{app:methods}
+
+\paragraph{Designs.}
+Four simulated dependent designs with $d=20$, described in full in \Cref{app:dgps}:
+\textbf{AR-hom} (autoregressive covariates and autoregressive errors, closed-form $S$, the
+same variance inflation $\kappa=\KappaLoArhom$ in every coordinate);
+\textbf{AR-het} (coordinatewise-varying persistence, closed-form $S$, $\kappa_j$ ranging
+over $[\KappaLoArhet,\KappaHiArhet]$, so a scalar correction cannot pass);
+\textbf{Markov} (covariates are a Markov-modulated Gaussian mixture with $d+1$ regimes, hence
+non-Gaussian with discrete latent state and regime dependence, closed-form $S$,
+$\kappa_j\equiv\KappaLoMarkov$);
+\textbf{Logistic} (a correctly specified marginal logistic model with a serially dependent
+latent error, so $\ts$ is exactly the generating value while the score is autocorrelated;
+$S$ from an independent long simulation, relative Monte Carlo error $7.5\times10^{-3}$).
+All covariate covariances are the ill-conditioned design of the base paper
+($\mathrm{cond}(H)$ up to $400$); \Cref{tab:wellcond} adds a well-conditioned counterpart, and
+two real hourly streams are described under \Cref{tab:real}.
+
+\paragraph{Methods compared.}
+Our estimator \bgsn{}; the same point estimator with plain batch means or with the i.i.d.\
+plug-in variance (so that the interval, and only the interval, changes); the base
+independent-data streaming Newton method with its own curvature schedule
+($m=1$, Bernoulli $p=1/d$) and its own prescribed plug-in variance; averaged SGD and
+streaming AdaGrad with tuned step sizes, each with the i.i.d.\ plug-in, with our long-run
+variance, or with random scaling (a studentisation that needs no variance estimate at all: it
+divides by a functional of the iterate path whose limit distribution is known and tabulated,
+\citealp{lee2022fast}); an offline HAC reference (heteroskedasticity- and
+autocorrelation-consistent: the textbook two-pass sandwich with a Bartlett-kernel long-run
+covariance, which stores the whole stream and is therefore not a streaming method); and an
+infeasible oracle-variance interval that uses the true $H$ and $S$. First-order baselines are given the \emph{true} Hessian for their sandwich --- an advantage no
+practitioner has --- and their step-size constants are tuned by grid search on pilot streams
+disjoint from the evaluation streams (\Cref{app:hyper}). Our method has no learning rate to
+tune: its step size is fixed at $1/t$ by the preconditioner, with the step-length safeguard of
+\eqref{eq:step} the only other free quantity and its constant fixed at $c_D=1$ throughout.
 

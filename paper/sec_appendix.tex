@@ -98,9 +98,11 @@ $\varpi>0$, then $\sum_t\gamma_tA_t\zeta_t$ converges almost surely.
 
 \begin{proof}
 \emph{Localisation.} For $K\in\mathbb N$ replace $A_t$ by
-$A_t\ind\{\sup_{s\le t}\max(\opnorm{A_s}/c_s,\;
-\opnorm{\gamma_{s+1}A_{s+1}-\gamma_sA_s}/u_s)\le K\}$, which is still
-$\Fil_{t-1}$-measurable (the indicator is decreasing in $t$ and $\Fil_{t-1}$-measurable at
+\[
+A_t\,\ind\Big\{\sup_{s\le t}\max\big(\opnorm{A_s}/c_s,\;
+\opnorm{\gamma_{s+1}A_{s+1}-\gamma_sA_s}/u_s\big)\le K\Big\},
+\]
+which is still $\Fil_{t-1}$-measurable (the indicator is decreasing in $t$ and $\Fil_{t-1}$-measurable at
 each $t$ because it involves $A_s$ only for $s\le t$, and $A_{s+1}$ enters only through
 $s+1\le t$). On $\{\Lambda\le K\}$ the two processes agree and
 $\Prob(\bigcup_K\{\Lambda\le K\})=1$, so it suffices to prove the claims under the
@@ -366,14 +368,14 @@ Write $Y_n=\alpha(\ts;\xi_{i_n})\Psi(\ts;\xi_{i_n})\Psi(\ts;\xi_{i_n})^{\!\top}$
 $\tilde Y_n=\alpha(\theta_{t(n)-1};\xi_{i_n})\Psi\Psi^{\!\top}$ for the term actually
 accumulated, where $t(n)$ is the block containing $i_n$. Then, by \eqref{eq:curv} and
 \eqref{eq:Hbar},
-\begin{equation}
+\begin{multline}
 \Hb_t-H
-=\underbrace{\frac{\lambda_0\varsigma_0 I}{W_{n_t}}}_{(\mathrm i)}
-+\underbrace{\frac{1}{W_{n_t}}\sum_{n\le n_t}\iota_n e_{k_n}e_{k_n}^{\!\top}}_{(\mathrm{ii})}
+=\underbrace{\frac{\lambda_0 I}{W_{n_t}}}_{(\mathrm i)}
++\underbrace{\frac{1}{W_{n_t}}\sum_{n\le n_t}\iota_n e_{k_n}e_{k_n}^{\!\top}}_{(\mathrm{ii})}\\
 +\underbrace{\frac{1}{W_{n_t}}\sum_{n\le n_t}(Y_n-H)}_{(\mathrm{iii})}
 +\underbrace{\frac{1}{W_{n_t}}\sum_{n\le n_t}(\tilde Y_n-Y_n)}_{(\mathrm{iv})}.
 \label{eq:Hdecomp}
-\end{equation}
+\end{multline}
 Since $W_{n_t}=1+n_t\asymp t$, term (i) is $O(1/t)$. For (ii),
 $\opnorm{\cdot}\le n_t^{-1}\sum_{n\le n_t}\iota_n\le C n_t^{-q_{\mathrm r}}$ because
 $\iota_n\le C n^{-q_{\mathrm r}}$ and $q_{\mathrm r}<1$; the same bound from below along each basis
@@ -382,9 +384,12 @@ $\lambda_{\min}(\Hb_t)\ge c\,n_t^{-q_{\mathrm r}}$ for all $t$ (this is the only
 is used, and it is what bounds $\opnorm{\Hb_t^{-1}}$ for \emph{every} $t$ rather than
 eventually). Term (iv) is bounded, by the local Lipschitz property in \Cref{as:curv} and
 Cauchy--Schwarz, by
-$Cn_t^{-1}\sum_{n\le n_t}\norm{\theta_{t(n)-1}-\ts}\cdot\opnorm{\Psi\Psi^{\!\top}}$, which
-by \Cref{lem:prelim} is $O(n_t^{-1}\sum_{n\le n_t}n^{-1/2}\log^{1+\varpi}n)
-=O(n_t^{-1/2}\log^{1+\varpi}n_t)$ a.s.
+$Cn_t^{-1}\sum_{n\le n_t}\norm{\theta_{t(n)-1}-\ts}\cdot\opnorm{\Psi\Psi^{\!\top}}$, which by
+\Cref{lem:prelim} is
+\[
+O\Big(n_t^{-1}\sum_{n\le n_t}n^{-1/2}\log^{1+\varpi}n\Big)=O(n_t^{-1/2}\log^{1+\varpi}n_t)
+\quad\text{a.s.}
+\]
 
 The new content is term (iii). The array $(Y_n)_{n\ge1}$ is the subsequence of a stationary
 geometrically mixing sequence at spacing $m$, hence itself stationary with mixing
@@ -410,15 +415,15 @@ t\,\delta_t=(t-1)\delta_{t-1}+(I-P_{t-1}H)\delta_{t-1}-P_{t-1}\eps_t-P_{t-1}r_t 
 \label{eq:abel}
 \end{equation}
 so that, summing from $t=1$ to $T$ (Abel summation) and dividing by $T$,
-\begin{equation}
+\begin{multline}
 \delta_T=-\frac1T H^{-1}\sum_{t\le T}\eps_t
-\;+\;\underbrace{\frac1T\sum_{t\le T}(H^{-1}-P_{t-1})\eps_t}_{(\mathrm A)}
+\;+\;\underbrace{\frac1T\sum_{t\le T}(H^{-1}-P_{t-1})\eps_t}_{(\mathrm A)}\\
 \;+\;\underbrace{\frac1T\sum_{t\le T}(I-P_{t-1}H)\delta_{t-1}}_{(\mathrm B)}
 \;-\;\underbrace{\frac1T\sum_{t\le T}P_{t-1}r_t}_{(\mathrm C)} .
 \label{eq:decomp}
-\end{equation}
-The leading term is \emph{exactly}
-$-N_T^{-1}H^{-1}\sum_{i\le N_T}g_i$, because $\sum_{t\le T}\eps_t=b^{-1}\sum_{i\le N_T}g_i$
+\end{multline}
+The leading term is \emph{exactly} $-N_T^{-1}H^{-1}\sum_{i\le N_T}g_i$, because
+$\sum_{t\le T}\eps_t=b^{-1}\sum_{i\le N_T}g_i$
 and $N_T=bT$. This identity is \Cref{prop:blockfree}: the leading term does not depend on
 $b$.
 
@@ -427,12 +432,12 @@ $\Fil_{t-1}$-measurable weights $A_t=H^{-1}-P_{t-1}$: by \Cref{thm:curv} the env
 $c_t=t^{-\nu_H}$, and by \Cref{lem:incr}(b) the increments are $u_t=O(t^{-1})$. Hence
 $V_T=O(T^{1-2\nu_H})$ (as $\nu_H<1/2$), $U_T=O(\log T)$, and
 $\gamma_Tc_TT^{1/2+\varpi}=O(T^{1/2-\nu_H+\varpi})$, so
-\[
+\begin{multline*}
 \Big\lVert\sum_{t\le T}(H^{-1}-P_{t-1})\eps_t\Big\rVert
-=O\big(T^{1/2-\nu_H}\log^{1/2+\varpi}T\big)+O\big(\log^{2+\varpi}T\big)
+=O\big(T^{1/2-\nu_H}\log^{1/2+\varpi}T\big)+O\big(\log^{2+\varpi}T\big)\\
 +O\big(T^{1/2-\nu_H+\varpi}\big)
-=O\big(T^{1/2-\nu_H+\varpi}\big)\ \text{a.s.}
-\]
+=O\big(T^{1/2-\nu_H+\varpi}\big)\quad\text{a.s.}
+\end{multline*}
 Choosing $\varpi<\nu_H$ gives $(\mathrm A)=O(T^{-1/2-\nu_H+\varpi})=o(T^{-1/2})$ a.s.
 It is worth seeing what does the work. The only bound available without \eqref{eq:gordin} is
 $\norm{\E[(H^{-1}-P_{t-1})\eps_t]}\le\opnorm{H^{-1}-P_{t-1}}\norm{\eps_t}_2
@@ -442,9 +447,12 @@ $O(b^{-1/2}T^{-\nu_H})$, which is \emph{not} $o(T^{-1/2})$ for any admissible $\
 The extra $T^{-1/2}$ comes entirely from the exact cancellation
 $\E[A_tm_{t+1}\mid\Fil_t]=0$.
 
-\emph{Term (B).} $\norm{(\mathrm B)}\le T^{-1}\sum_{t\le T}\opnorm{I-P_{t-1}H}\norm{\delta_{t-1}}
-=T^{-1}\sum_{t\le T}O(t^{-\nu_H})\norm{\delta_{t-1}}$, which is a pathwise bound needing no
-lemma. With the rung-(iii) preliminary rate $\norm{\delta_t}=O(t^{-1/2}\log^{c}t)$ this is
+\emph{Term (B).}
+\[
+\norm{(\mathrm B)}\le T^{-1}\sum_{t\le T}\opnorm{I-P_{t-1}H}\norm{\delta_{t-1}}
+=T^{-1}\sum_{t\le T}O(t^{-\nu_H})\norm{\delta_{t-1}},
+\]
+which is a pathwise bound needing no lemma. With the rung-(iii) preliminary rate $\norm{\delta_t}=O(t^{-1/2}\log^{c}t)$ this is
 $O(T^{-1}\cdot T^{1/2-\nu_H}\log^{c}T)=o(T^{-1/2})$ a.s.
 
 \emph{Term (C).} $r_t=(\widehat H_t-H)\delta_{t-1}+O(\norm{\delta_{t-1}}^2)$, where
@@ -457,21 +465,27 @@ evaluated at $\ts$, plus a Lipschitz remainder in $\theta_{t-1}$ bounded exactly
 $\Fil_{t-1}$-measurable weights acting by $A_t\zeta_t=P_{t-1}\zeta_t\delta_{t-1}$. By
 \Cref{lem:ridge} and the rung-(iii) rate the envelope is
 $c_t=O(t^{\qr}\cdot t^{-1/2}\log^{c}t)$ and the increments are $u_t=O(t^{-1}c_t)$, so
+\begin{align*}
+V_T&=O\Big(\sum_{t\le T}t^{2\qr-1}\log^{2c}t\Big)=O(T^{2\qr}\log^{2c}T),\\
+U_T&=O\Big(\sum_t t^{\qr-3/2}\log^{c}t\Big)=O(1)\qquad(\qr<1/2),
+\end{align*}
+and $\gamma_Tc_TT^{1/2+\varpi}=O(T^{\qr+\varpi}\log^{c}T)$. Hence
 \[
-V_T=O\Big(\sum_{t\le T}t^{2\qr-1}\log^{2c}t\Big)=O(T^{2\qr}\log^{2c}T),
+\sum{}=O\big(T^{\qr+\varpi}\log^{c+1/2+\varpi}T\big),
 \qquad
-U_T=O\Big(\sum_t t^{\qr-3/2}\log^{c}t\Big)=O(1)\ \ (\qr<1/2),
+(\mathrm C)=O\big(T^{\qr-1+\varpi}\log^{c'}T\big)=o\big(T^{-1/2}\big)\ \text{a.s.}
 \]
-and $\gamma_Tc_TT^{1/2+\varpi}=O(T^{\qr+\varpi}\log^{c}T)$. Hence the sum is
-$O(T^{\qr+\varpi}\log^{c+1/2+\varpi}T)$ and
-$(\mathrm C)=O(T^{\qr-1+\varpi}\log^{c'}T)=o(T^{-1/2})$ a.s.\ because $\qr<1/2$.
+because $\qr<1/2$.
 No independence between $\widehat H_t$ and $\delta_{t-1}$ is used or needed: adjacent blocks
 are only $O(1/b)$ apart in the sense of \Cref{lem:davydov}, not $O(\rho^b)$, and an earlier
 version of this proof wrongly appealed to the latter.
 
 Substituting into \eqref{eq:decomp} gives $\norm{\delta_T}^2=O(\log N_T/N_T)$ a.s.\
 (\Cref{thm:rate}) and
-$\sqrt{N_T}\delta_T=-N_T^{-1/2}H^{-1}\sum_{i\le N_T}g_i+o_p(1)$. The central limit theorem
+\[
+\sqrt{N_T}\,\delta_T=-N_T^{-1/2}H^{-1}\sum_{i\le N_T}g_i+o_p(1).
+\]
+The central limit theorem
 for strongly mixing stationary sequences with geometric coefficients and $2+\nu$ moments
 \citep{ibragimov1962some,herrndorf1984functional} gives
 $N^{-1/2}\sum_{i\le N}g_i\rightsquigarrow\mathcal N(0,S)$, and Slutsky completes
@@ -505,10 +519,12 @@ $[\Hb^{-1}\Gz\Hb^{-1}]_{jj}\to_p[H^{-1}\Gamma_0H^{-1}]_{jj}=V_{jj}/\kappa_j$. He
 studentised statistic converges to $\mathcal N(0,\kappa_j)$ and
 $\Prob(|\mathcal N(0,\kappa_j)|\le z_{\alpha/2})=2\Phi(z_{\alpha/2}/\sqrt{\kappa_j})-1$.
 For the homogeneous AR design, $\Gamma_k=\sigma_u^2(\phi\psi)^{|k|}\Sigma_x$ gives
-$S=\sigma_u^2\Sigma_x\sum_k(\phi\psi)^{|k|}
-=\sigma_u^2\Sigma_x(1+\phi\psi)/(1-\phi\psi)$ and $H=\Gamma_0/\sigma_u^2=\Sigma_x$, so
-$V=\kappa\,\sigma_u^2\Sigma_x^{-1}$ with $\kappa=(1+\phi\psi)/(1-\phi\psi)$ and the
-inflation is the same in every coordinate. \hfill$\square$
+\[
+S=\sigma_u^2\Sigma_x\sum_k(\phi\psi)^{|k|}=\sigma_u^2\Sigma_x\frac{1+\phi\psi}{1-\phi\psi},
+\qquad H=\Gamma_0/\sigma_u^2=\Sigma_x,
+\qquad V=\kappa\,\sigma_u^2\Sigma_x^{-1},
+\]
+with $\kappa=(1+\phi\psi)/(1-\phi\psi)$, so the inflation is the same in every coordinate. \hfill$\square$
 
 \subsection{Long-run covariance estimation (\texorpdfstring{\Cref{thm:lrv}}{Theorem})}
 
@@ -524,8 +540,8 @@ and by \Cref{lem:davydov} both remainder sums are $O(b\rho^{b})$, giving
 $\E[\Sbm]=S-\Delta/b+O(\rho^{b})$ up to the drift term treated below.
 
 \emph{(ii) Bias of the two-scale estimator.} With
-$\Lambda_1=\E[\eps_0\eps_1^{\!\top}]=b^{-2}\sum_{i\in B_0,j\in B_1}\Gamma_{j-i}$ and
-counting multiplicities of each lag ($k$ for $1\le k\le b$, $2b-k$ for $b<k<2b$),
+$\Lambda_1=\E[\eps_0\eps_1^{\!\top}]=b^{-2}\sum_{i\in B_0,\,j\in B_1}\Gamma_{j-i}$
+and counting multiplicities of each lag ($k$ for $1\le k\le b$, $2b-k$ for $b<k<2b$),
 \begin{equation}
 b(\Lambda_1+\Lambda_1^{\!\top})
 =\sum_{1\le|k|\le b}\frac{|k|}{b}\Gamma_k+\sum_{b<|k|<2b}\frac{2b-|k|}{b}\Gamma_k .
@@ -568,12 +584,12 @@ $\E\opnorm{\widehat H_t\delta}^2
 under \Cref{as:curv} (the $d/b$ term is the fluctuation
 $\E[(\widehat H_t-H)M(\widehat H_t-H)]$, whose trace contributes a factor $\tr(HM)/b$).
 Hence
-\[
+\begin{multline*}
 b\,T'^{-1}\sum_{t\in\mathcal T}\E\norm{\Xi_t}^2
-=O\Big((1+d/b)\,T'^{-1}\sum_{t}\log t/t\Big)
+=O\Big((1+d/b)\,T'^{-1}\sum_{t}\log t/t\Big)\\
 =O\big((1+d/b)\,b\log^2 N/N\big)
 =O\big((b+d)\log^2N/N\big),
-\]
+\end{multline*}
 and the cross term is of smaller order by Cauchy--Schwarz. Writing
 $\tau_{b,N}=(b+d)\log^2N/N$, this is dominated by the $\sqrt{b/N}$ standard deviation in
 (iii) whenever $b+d=o(\sqrt N)$ up to logarithms; in the reported experiments
@@ -631,10 +647,28 @@ covariates and $\alpha\equiv1$, $\Gamma^H_k$ decays like $\phi^{2k}$ and
 $\kappa_H=(1+\phi^2)/(1-\phi^2)$.
 \end{remark}
 
+\section{Additional theory and discussion}
+\label{app:theorydetail}
+
+\input{sec_theory_detail}
+
 \section{Experimental details}
 \label{app:details}
 
 \input{sec_appendix_exp}
+
+\section{Additional experimental results}
+\label{app:moreexp}
+
+\input{fig_lrv}
+\input{fig_hard}
+\IfFileExists{tab_hard.tex}{\input{tab_hard}}{}
+\IfFileExists{tab_real.tex}{\input{tab_real}}{}
+\IfFileExists{tab_wellcond.tex}{\input{tab_wellcond}}{}
+\IfFileExists{tab_ablation.tex}{\input{tab_ablation}}{}
+\IfFileExists{tab_cost.tex}{\input{tab_cost}}{}
+
+\input{sec_experiments_detail}
 
 \section{Safeguarding the blocked step}
 \label{app:shift}
@@ -755,3 +789,15 @@ the shift is a trade, because a larger $t_0$ also slows the decay of the initial
 which decays like $t_0/(T+t_0)$ rather than $1/T$. This is why we set $t_0$ from
 \eqref{eq:contract} --- the smallest value that restores contraction --- rather than by taking a
 comfortable margin, and why \Cref{tab:ablation} reports the sensitivity.
+
+\input{sec_setting_detail}
+
+\section{Extended related work}
+\label{app:related}
+
+\input{sec_related_detail}
+
+\section{Extended discussion of the limitations}
+\label{app:limits}
+
+\input{sec_limits_detail}

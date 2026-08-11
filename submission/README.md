@@ -15,7 +15,7 @@ cd submission && sh build.sh
 | File | Purpose | Upload as |
 |---|---|---|
 | `manuscript.tex`, `body.tex` | The manuscript. `elsarticle`, single column, line-numbered. | Manuscript (source) |
-| `manuscript.pdf` | Compiled manuscript, 71 pages. | Manuscript (PDF, for review) |
+| `manuscript.pdf` | Compiled manuscript: 17-page main text, 59 pages including appendices and references. | Manuscript (PDF, for review) |
 | `supplementary.tex` / `.pdf` | Four figures held out of the main text (see below). | Supplementary material |
 | `highlights.tex` / `.txt` / `.pdf` | 5 bullets, each ≤ 85 characters. | Highlights (file name contains "highlights") |
 | `cover_letter.tex` / `.pdf` | Cover letter to the Editors-in-Chief. | Cover letter |
@@ -25,6 +25,7 @@ cd submission && sh build.sh
 | `author_biography.txt` | Vitae **template — must be completed by the author**. | Editable file + photograph |
 | `suggested_reviewers.md` | Candidate reviewers, with affiliations deliberately omitted. | Enter in the system |
 | `check_highlights.py` | Verifies the 3–5 bullets / 85-character limits. | — |
+| `check_overflow.py` | Lists every overfull box with the source file and line. | — |
 | `build.sh` | Builds all four PDFs. | — |
 
 ## How this stays consistent with the preprint
@@ -35,11 +36,17 @@ preprint in `../paper` — nothing is copied. `build.sh` puts `../paper` on `TEX
 only what is specific to this venue: the title page, keywords, float selection and ordering, the
 declarations the journal requires, and the appendix ordering.
 
-Four figures appear in `supplementary.pdf` rather than in the manuscript, because Information
-Sciences suggests at most ten figures plus tables for a theoretical article and the main text uses
-exactly ten (4 figures + 6 tables). The shared prose refers to them through the macros
-`\RefLrvRate`, `\RefGapFig`, `\RefCostFig` and `\RefAblFig`, which expand to `Supplementary Fig.
-S1`–`S4` here and to ordinary cross-references in the preprint.
+Four figures appear in `supplementary.pdf` rather than in the manuscript. The shared prose refers to
+them through the macros `\RefLrvRate`, `\RefGapFig`, `\RefCostFig` and `\RefAblFig`, which expand to
+`Supplementary Fig. S1`–`S4` here and to ordinary cross-references in the preprint.
+
+Each long section is split into a **core** fragment, which the body includes, and a **`_detail`**
+fragment, which the appendix includes — `sec_setting.tex` / `sec_setting_detail.tex`, and likewise
+for the theory, experiments, related-work and limitations sections. That is what keeps the numbered
+sections inside a 17-page budget without dropping anything: the detail fragments carry the
+derivation of the contraction condition, the full assumption statements, the secondary experiments,
+the complete literature survey and the long-form discussion of each limitation. No paragraph is in
+both halves, and `tests/test_paper_sources.py` checks every fragment in both sets.
 
 ## Compliance with the guide for authors
 
@@ -55,10 +62,20 @@ Checked against the Guide for Authors on 11 August 2026.
   for theoretical papers.
 - **Appendices** — lettered A, B, …; equations and floats inside them numbered `(A.1)`, `Table A.1`
   in the journal's format (handled by `elsarticle`'s `\appendix`).
-- **Length** — the main narrative is ≈ 42 double-spaced pages, inside the 45-page guideline for a
-  theoretical manuscript; the proofs are in appendices.
-- **Figures and tables** — exactly 10 in the main text. All are cited in the text. Figures are
-  vector PDFs in `../figures`.
+- **Length** — the numbered Sections 1–8 occupy 17 pages, well inside the 45-page guideline for a
+  theoretical manuscript; the proofs, the full experimental record and the extended discussion are
+  in lettered appendices. `elsarticle`'s `preprint` mode sets a deliberately narrow five-inch text
+  block, which inflates a page count by about half, so `manuscript.tex` loads `geometry` with an
+  ordinary one-inch measure — single column, line numbered, and legible, which is all the journal
+  asks for at submission.
+- **Figures and tables** — 10 in the manuscript (Figures 1–2 and Table 1 in the main text, Figures
+  D.1–D.2 and Tables D.1–D.5 in the appendices), matching the guideline of 10 for a theoretical
+  article; 4 more are in the Supplementary Material. Appendix floats are numbered within their
+  appendix, so there is no gap in the sequence. All are cited in the text. Figures are vector PDFs in `../figures`.
+- **Overfull boxes** — `check_overflow.py` reports one benign 30 pt overfull `\vbox` on the title
+  page, from `elsarticle`'s corresponding-author footnote; the rendered page is inside its margins
+  (checked pixelwise). No line or table protrudes past the text block by more than 0.08 in
+  anywhere in either document.
 - **Declarations** — competing interest, funding, CRediT, data availability, and the declaration on
   generative AI use all appear as unnumbered sections after the Conclusions, and are also provided
   as separate files here.

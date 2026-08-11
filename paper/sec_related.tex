@@ -1,117 +1,56 @@
-This paper sits at the intersection of three literatures, and the honest statement of
-what is new requires being precise about each.
+%% Section body, shared verbatim by ../paper/main.tex (preprint) and
+%% ../submission/body.tex (Information Sciences submission).  The literatures are surveyed in full,
+%% with their citations, in sec_related_detail.tex (\Cref{app:related}); this section states only
+%% where our contribution begins and ends.  Nothing is duplicated between the two.
+This paper sits at the intersection of four literatures. \Cref{app:related} surveys each with its
+citations; here we state only the boundaries of what is new, because that is what a reader needs in
+order to judge the contribution.
 
-\paragraph{Streaming second-order methods with $O(dN)$ cost.}
-Inversion-free stochastic Newton methods maintain a running inverse curvature estimate by
-rank-one Sherman--Morrison updates \citep{sherman1950adjustment} and have been developed
-for logistic regression \citep{bercu2020efficient}, Gauss--Newton problems
-\citep{cenac2025efficient}, the geometric median
-\citep{godichonbaggioni2024online}, and general conditioned stochastic gradient descent
-\citep{leluc2023asymptotic,boyer2023asymptotic}; \citet{chau2024inversion} survey the
-inversion-free idea more broadly, and \citet{byrd2016stochastic,wang2017stochastic,moritz2016linearly}
-give the stochastic quasi-Newton and L-BFGS counterparts. Our starting point is
-\citet{godichonbaggioni2025adaptive}, who thin the rank-one updates with a Bernoulli
-variable and take mini-batches of size $d$ to reach $O(dN)$ total cost with asymptotic
-efficiency, and \citet{godichonbaggioni2026complexity}, who reach the same budget by
-masking Hessian columns. \textbf{The $O(dN)$ budget and the idea of skipping curvature
-updates are theirs, not ours}; \citet{chen2024online} independently thin Hessian
-\emph{entries} with probability $O(1/d^2)$ in a zeroth-order method. All of this work assumes independent
-observations. Most of it proves central limit theorems and stops there, but not all: for
-averaged first-order algorithms under independent data \citet{godichonbaggioni2019online}
-gives a recursive online estimator of the asymptotic variance with almost sure and $L^2$
-rates, and \citet{chen2020statistical,zhu2023online,godichonbaggioni2024online} supply
-plug-in and batch-means constructions. \textbf{Online estimation of the
-\emph{instantaneous} sandwich under independent data is therefore not new either}; what is
-missing is the long-run object under dependence, and the streaming second-order setting. Our contribution on this axis is
-(i) the analysis of the rank-one recursion when the accumulated terms are dependent,
-(ii) replacing Bernoulli thinning by a deterministic gap, which is strictly better at
-matched cost (\Cref{prop:gap}), and (iii) turning the central limit theorem into usable
-intervals.
+\paragraph{Streaming second-order methods at $O(dN)$ cost.}
+Inversion-free stochastic Newton methods maintain a running inverse curvature estimate by rank-one
+Sherman--Morrison updates. Our starting point is \citet{godichonbaggioni2025adaptive}, who thin those
+updates with a Bernoulli variable and take mini-batches of size $d$ to reach $O(dN)$ total cost with
+asymptotic efficiency. \textbf{The $O(dN)$ budget and the idea of skipping curvature updates are
+theirs, not ours.} All of this work assumes independent observations. Ours adds the analysis of the
+rank-one recursion when the accumulated terms are dependent, the replacement of Bernoulli thinning by
+a deterministic gap (\Cref{prop:gap}), and intervals.
 
 \paragraph{Online inference for stochastic approximation.}
-Under independent sampling this is a mature area.
-\citet{chen2020statistical} give the plug-in and increasing-batch-means variance
-estimators for averaged stochastic gradient descent; \citet{zhu2023online} make batch
-means fully recursive with growing overlapping windows and obtain
-$\|\widehat\Sigma-\Sigma\|=O(N^{-1/8})$; \citet{singh2025utility} show equal batch sizes
-are preferable and apply the flat-top bias correction; \citet{ni2026online} improve the
-batch-means rate to $N^{-1/6}$ and establish the minimax rate
-$\Theta(N^{-(1-a)/2})$ for \emph{Hessian-free} covariance estimation from the iterate path;
-\citet{wei2026refining} give a fully online de-biased estimator that needs no second-order
-information and reaches $N^{(a-1)/2}\sqrt{\log N}$, i.e.\ that minimax rate up to a logarithm,
-so the Hessian-free class is close to saturated. \citet{fang2018online,fang2019scalable} bootstrap;
-\citet{su2023higrad} split the trajectory; \citet{lee2022fast,li2026stream,chen2024online}
-studentise by a random scaling matrix and estimate nothing.
-\citet{leung2026principles} and \citet{wu2009recursive} design recursive long-run
-variance estimators directly. \textbf{None of these is a claim we duplicate};
-what we take from them is the batch-means template and the flat-top correction, and what
-we add is the block-\emph{gradient} construction and its consequence for the rate
-(\Cref{rem:whyfast}).
-
-Two recent papers give online covariance estimation for streaming \emph{second-order}
-methods: \citet{kuang2026online} for a sketched Newton method and
-\citet{wang2026inference} for Nesterov-accelerated sketching. Both are under independent
-data, both target the instantaneous sandwich, and both require the gradient noise to be a
-martingale difference with respect to the algorithm's filtration
-(\citealp[Assumption 3.2]{kuang2026online}) --- exactly the condition that temporal
-dependence destroys. \citet{kuang2026online} remark that their analysis extends to
-conditioned stochastic gradient methods generally, which would include an
-independent-data version of our algorithm; the martingale assumption is what keeps that
-remark from covering the present setting.
+Under independent sampling this is a mature area, from plug-in and batch-means variance estimators for
+averaged stochastic gradient descent \citep{chen2020statistical,zhu2023online} to random scaling, which
+estimates nothing at all \citep{lee2022fast}, and including the minimax rate for \emph{Hessian-free}
+covariance estimation from the iterate path \citep{ni2026online}, which is close to attained
+\citep{wei2026refining}. \textbf{Online estimation of the instantaneous sandwich under independent data is
+therefore not new, and none of these is a claim we duplicate}: what we take is the batch-means template,
+and what we add is the block-\emph{gradient} construction and its consequence for the rate
+(\Cref{rem:whyfast}). The two papers that do give online covariance estimation for streaming
+\emph{second-order} methods \citep{kuang2026online,wang2026inference} are under independent data, target
+the instantaneous sandwich, and require the gradient noise to be a martingale difference for the
+algorithm's filtration --- exactly the condition temporal dependence destroys.
 
 \paragraph{Stochastic approximation on dependent data.}
-Convergence of stochastic approximation under Markovian or mixing noise is classical
-\citep{benveniste1990adaptive,kushner2003stochastic,borkar2008stochastic,andrieu2005stability,fort2015central,karimi2019nonasymptotic},
-and modern rates are available for Markov-chain gradient descent
-\citep{sun2018markov,doan2020convergence,even2023stochastic,duchi2012ergodic,nagaraj2020least,kowshik2021streaming,agarwal2013generalization}.
-\citet{godichonbaggioni2023learning} analyse streaming stochastic gradient methods with
-time-dependent and biased gradients, and identify blocked or growing mini-batches as the
-device that breaks dependence; they give $L^2$ rates but no central limit theorem and no
-inference. \textbf{Blocked gradients as a dependence-breaking device are theirs.}
-
-On the inference side, \citet{liu2023mixing} give a multiplier bootstrap for
-$\phi$-mixing streams using alternating growing blocks, and establish the long-run
-sandwich limit and, qualitatively, the failure of dependence-blind intervals;
-\citet{li2023markovian} give a functional central limit theorem and the semiparametric
-efficiency bound $H^{-1}SH^{-1}$ under Markovian sampling, with random scaling for
-inference; \citet{samsonov2025statistical} give Berry--Esseen bounds and an
-overlapping-batch-means variance for \emph{linear} stochastic approximation with Markovian
-noise; \citet{roy2023online} give an online batch-means estimator of the Markovian
-long-run sandwich; \citet{li2026stream} treat controlled Markov chains with random scaling.
-\textbf{The long-run sandwich limit, the efficiency bound, and the existence of online
-long-run covariance estimators under dependence are all prior art} --- for first-order
-methods. Every one of these works is first-order; none maintains a curvature inverse, and
-the two that estimate a long-run covariance do so from the iterate path, at
-$O(N^{-1/8})$, with block lengths that must grow like $N^{3/4}$
-(\citealp[Prop.~2, Cor.~2]{samsonov2025statistical}). \Cref{rem:whyfast} explains why
-block gradients escape that constraint, and \Cref{thm:lrv} quantifies the gain.
+Convergence under Markovian or mixing noise is classical, and modern rates are available for
+Markov-chain gradient descent. \citet{godichonbaggioni2023learning} identify blocked or growing
+mini-batches as the device that breaks dependence, with $L^2$ rates but no central limit theorem and
+no inference: \textbf{blocked gradients as a dependence-breaking device are theirs.} On the inference
+side, \citet{liu2023mixing} give a multiplier bootstrap for $\phi$-mixing streams,
+\citet{li2023markovian} the functional central limit theorem and the semiparametric efficiency bound
+$H^{-1}SH^{-1}$ under Markovian sampling, \citet{samsonov2025statistical} Berry--Esseen bounds and an
+overlapping-batch-means variance for \emph{linear} stochastic approximation, and
+\citet{roy2023online} an online batch-means estimator of the Markovian long-run sandwich.
+\textbf{The long-run sandwich limit, the efficiency bound, and the existence of online long-run
+covariance estimators under dependence are all prior art} --- for first-order methods. Every one of
+these works is first-order; none maintains a curvature inverse, and the two that estimate a long-run
+covariance do so from the iterate path, at $O(N^{-1/8})$, with block lengths that must grow like
+$N^{3/4}$ \citep[Prop.~2, Cor.~2]{samsonov2025statistical}. \Cref{rem:whyfast} explains why block
+gradients escape that constraint and \Cref{thm:lrv} quantifies the gain.
 
 \paragraph{Long-run variance estimation.}
-The statistical device is heteroskedasticity- and autocorrelation-consistent covariance
-estimation \citep{newey1987simple,andrews1991heteroskedasticity,andrews1992improved,newey1994automatic,white1980hetero,white1984asymptotic},
-its fixed-$b$ alternative \citep{kiefer2002heteroskedasticity,kiefer2005new,sun2008optimal},
-and the batch-means literature from simulation output analysis and Markov chain Monte
-Carlo \citep{glynn1991estimating,glynn1992asymptotic,damerdji1994strong,flegal2010batch,jones2006fixed,vats2019multivariate}.
-The two-scale correction we use is the flat-top lag window of
-\citet{politis1995bias}, refined by \citet{politis2011higher} and recast as ``lugsail''
-lag windows by \citet{vats2022lugsail}; \citet{singh2025utility} bring it to stochastic
-gradient descent under independent data, where their Eqs.~(15) and (17) coincide with our
-\eqref{eq:Sft} and their Corollary~1 shows the convergence \emph{rate} is unchanged.
-\textbf{We do not claim the correction.} We claim the bias order it attains at
-block-gradient resolution under geometric mixing, which is the property that makes
-$b\asymp\log N$ admissible, and the streaming implementation.
-Block bootstrap and subsampling \citep{kunsch1989jackknife,politis1999subsampling,lahiri2003resampling}
-are the resampling counterparts.
-
-\paragraph{Asymptotics for dependent $M$-estimation.}
-The population statements we use are standard: sandwich asymptotics for $M$-estimators and
-generalised method of moments \citep{huber1967behavior,hansen1982gmm,white1982mle,vandervaart1998asymptotic},
-misspecified models with dependent observations \citep{domowitz1982misspecified}, marginal
-models for correlated responses \citep{liang1986longitudinal,zeger1986longitudinal} --- the
-setting our logistic design imitates --- and central limit theorems for mixing sequences
-\citep{rosenblatt1956central,ibragimov1962some,herrndorf1984functional,wooldridge1988invariance,doukhan1994mixing,bradley2005basic,merlevede2006recent,rio2017asymptotic,dedecker2007weak}.
-The technical inputs to our proofs are Davydov's covariance inequality
-\citep{davydov1968convergence,rio1993covariance}, the Bernstein-type inequality for weakly
-dependent sequences of \citet{merlevede2011bernstein}, the almost sure behaviour of
-stochastic algorithms \citep{pelletier1998almost,pelletier2000asymptotic,fabian1968asymptotic,mokkadem2011generalization,robbins1971convergence},
-and the functional central limit theorem of \citet{herrndorf1984functional}.
+The statistical device is heteroskedasticity- and autocorrelation-consistent covariance estimation and the
+batch-means literature it shares with simulation output analysis. The two-scale correction we use is the
+flat-top lag window of \citet{politis1995bias}, recast as ``lugsail'' by \citet{vats2022lugsail}, which
+\citet[Eqs.~(15) and (17)]{singh2025utility} bring to stochastic gradient descent under independent data.
+\textbf{We do not claim the correction.} We claim the bias order it attains at block-gradient resolution
+under geometric mixing --- the property that makes $b\asymp\log N$ admissible --- and the streaming
+implementation. The population sandwich asymptotics for dependent $M$-estimation that we use are likewise
+standard.

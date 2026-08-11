@@ -1,0 +1,161 @@
+%% Material moved out of \Cref{sec:theory} to keep the main text short.  Included from the
+%% appendix; shared by ../paper/main.tex and ../submission/body.tex.
+
+\subsection{The assumptions in full}
+\label{app:assumptions}
+
+\begin{assumption}[Regularity]
+\label{as:reg}
+$F$ is twice continuously differentiable with $\opnorm{\nabla^2F(\theta)}\le L$ for all
+$\theta$; $H=\nabla^2F(\ts)\succ0$; and $\nabla^2 F$ is Lipschitz on a neighbourhood of
+$\ts$, so that $\norm{\nabla F(\theta)-H(\theta-\ts)}\le L_\delta\norm{\theta-\ts}^2$ for
+all $\theta$.
+\end{assumption}
+
+\begin{assumption}[Expected smoothness and moments]
+\label{as:mom}
+There are $C,C'\ge0$ with $\E\norm{g(\theta)}^2\le C+C'(F(\theta)-F(\ts))$ for all
+$\theta$; there is $\eta>0$ with
+$\E\norm{g(\theta)}^{2+2\eta}\le C_\eta(1+F(\theta)-F(\ts))^{1+\eta}$; and
+$\theta\mapsto\E[g(\theta)g(\theta)^{\!\top}]$ is continuous at $\ts$.
+\end{assumption}
+
+
+
+\begin{assumption}[Curvature form]
+\label{as:curv}
+Writing $\Psi=\Psi(\theta;\xi)$ and $\alpha=\alpha(\theta;\xi)$,
+\[
+\nabla^2F(\theta)=\E[\alpha\,\Psi\Psi^{\!\top}],\qquad \alpha\ge0,
+\qquad
+\E\opnorm{\alpha\,\Psi\Psi^{\!\top}}^{\eta'}\le C_{\eta'}
+\]
+for some $\eta'>2$, uniformly on a neighbourhood of $\ts$; and
+$\theta\mapsto\alpha\,\Psi\Psi^{\!\top}$ is Lipschitz in $\theta$ in $L^2$ near $\ts$.
+\end{assumption}
+
+\begin{assumption}[Identifiability]
+\label{as:ident}
+$\ts$ is the only stationary point of $F$ outside which the gradient points away from it:
+for every $\eta>0$, $\inf_{\norm{\theta-\ts}\ge\eta}\langle\nabla F(\theta),\theta-\ts\rangle>0$.
+\end{assumption}
+
+\noindent
+\Cref{as:ident} holds whenever $F$ is convex with a unique minimiser, which covers every objective we
+consider, and the independent-data analysis needs it too.
+
+\begin{assumption}[Geometric mixing]
+\label{as:mix}
+$(\xi_i)_{i\ge1}$ is strictly stationary and its mixing coefficient \eqref{eq:mixdef}
+decays geometrically: $\alpha_{\mathrm{mix}}(k)\le K\cmix^{\,k}$ for some $\cmix\in(0,1)$,
+$K<\infty$. Moreover $\E\norm{g_1}^{4+\nu'}<\infty$ for some $\nu'>0$,
+$\E\norm{g_1}^{2+\nu}<\infty$ for some $\nu>0$ (without loss of generality $\nu\le2\eta$), and
+$S\succ0$. The fourth moment with a margin is used only for the variance of the covariance estimator in
+\Cref{thm:lrv}(iii), and \Cref{app:moments} explains why plain fourth moments would leave the
+argument one $\epsilon$ of integrability short.
+\end{assumption}
+
+\subsection{Why the moment condition in \texorpdfstring{\Cref{as:mix}}{Assumption 5} carries a margin}
+\label{app:moments}
+
+The fourth moment with a margin is used only for the variance of the covariance
+estimator in \Cref{thm:lrv}(iii): the products $b\,\bar g_{tj}\bar g_{tk}$ whose autocovariances
+that bound needs are quadratic in the scores, and Davydov's inequality applied to them requires
+$2+\delta$ moments of the products, i.e.\ $4+2\delta$ of the scores. Plain fourth moments would
+leave the argument one $\epsilon$ of integrability short, which is why we ask for the margin
+rather than quietly using it.
+
+\subsection{The order in which the results are proved}
+\label{app:ladder}
+
+\begin{remark}[Order of the proofs]
+\label{rem:ladder}
+
+\Cref{thm:curv} presupposes a rate for the iterates while the results below use
+\Cref{thm:curv}, so the logical order must be stated. It is a four-rung ladder, each rung
+using only the ones below it: (i) \Cref{lem:ridge}, from the ridge alone, with no assumption
+on the iterates; (ii) \Cref{thm:as}, $\theta_t\to\ts$ a.s., using only \Cref{lem:ridge};
+(iii) a preliminary rate $\norm{\theta_t-\ts}=O(t^{-1/2}\log^{1+\varpi}t)$ a.s.\
+(\Cref{lem:prelim}, proved in \Cref{app:prelim}), from \eqref{eq:decomp} with
+$\Hb_{t-1}^{-1}$ bounded by \Cref{lem:ridge} and $\Hb_t\to H$ --- consistency only, which
+follows from (ii); (iv) \Cref{thm:curv}, and then \Cref{thm:rate,thm:clt,thm:l2,thm:lrv}.
+\Cref{app:proofs} is organised in this order, and rung (iii) is where the restriction
+$\qr<1/4$ is used --- everything else needs only $\qr<1/2$.
+\end{remark}
+
+\subsection{The central limit theorem with a growing block length}
+\label{app:growingb}
+
+We separate the two cases because only the first is proved unconditionally, and the difference
+matters: \Cref{thm:lrv} takes $b\asymp\log N$, so the interval we actually recommend lives in the
+second case. The proof of the fixed-$b$ statement is almost sure and goes through
+\Cref{lem:series}, whose conclusion carries a finite random constant; for a triangular array in
+which $b$ changes with $N$, ``finite for each $N$'' is not enough, and the naive route around it
+--- Cauchy--Schwarz on $\E\opnorm{H^{-1}-P_{t-1}}\norm{\eps_t}$ --- is exactly the bound that the
+proof of term~(A) in \Cref{app:proofs} shows is too weak, by a factor $T^{1/2}$. Establishing the uniformity would
+require redoing \Cref{lem:series} with explicit constants in $b$, which we have not done. What we
+can say is that the condition is about the remainder terms and not about the limit, that growing
+$b$ makes the block scores \emph{less} dependent rather than more, and that empirically coverage
+is flat in $b$ over $b\in[10,320]$ at $N=200{,}000$ (\Cref{tab:ablation}(b)), which is the
+composition the two theorems need. \Cref{sec:limits} lists this as an open point rather than
+burying it.
+
+The condition $b=o(\sqrt N)$ is what makes the number of steps $T=N/b$ large enough for the
+$1/t$ schedule to erase the initial condition: with $\gamma_t=1/t$ the effect of $\theta_0$
+decays like $1/T=b/N$, so its contribution to $\sqrt N(\theta_T-\ts)$ is of order
+$b/\sqrt N$. It is amply satisfied by the $b\asymp\log N$ of \Cref{thm:lrv}, and it is the
+reason \Cref{tab:ablation}(b) shows the point estimate degrading once $b$ becomes a
+substantial fraction of $\sqrt N$.
+
+\subsection{Which objectives satisfy the identifiability assumption}
+\label{app:asdisc}
+
+\Cref{as:ident} holds whenever $F$ is convex with a unique minimiser. That covers every objective we
+consider --- least squares, logistic, ridge, softmax regression and the geometric median --- and it
+is what turns ``the gradient step cannot keep moving'' into ``$\theta_t\to\ts$''.
+
+\subsection{The two-scale correction and its exact expectation}
+\label{app:flattop}
+
+$\Sft$ coincides exactly with $2\Sbm(2b)-\Sbm(b)$ if $\hat\Lambda_1$ is formed from disjoint rather
+than all adjacent block pairs. Either way the expectation is that of a lag-window estimator with
+weights $1$ for $|k|\le b$ and $(2b-|k|)/b$ for $b<|k|<2b$, which is what \Cref{thm:lrv}(i)--(ii)
+computes.
+
+\subsection{The \texorpdfstring{$L^2$}{L2} rate}
+\label{app:l2}
+
+\begin{theorem}[$L^2$ rate]
+\label{thm:l2}
+Under the assumptions of \Cref{thm:as}, $\E\norm{\theta_t-\ts}^2=O(\log(N_t)/N_t)$,
+uniformly over $b\le C\log N$.
+\end{theorem}
+
+The $L^2$ statement is separate from the almost sure one because the drift analysis in
+\Cref{thm:lrv} needs a moment bound, and an almost sure rate with an unspecified random constant does
+not supply one. All remainder bounds in \Cref{app:proofs} are uniform over $b\le C\log N$, the only
+regime in which we use them.
+
+\subsection{Which processes satisfy the mixing assumption}
+\label{app:mixproc}
+
+A geometrically ergodic Markov chain \citep{meyn2009markov} satisfies \Cref{as:mix}, as do stationary
+causal ARMA/GARCH-type recursions with geometrically decaying dependence in Wu's sense
+\citep{wu2005nonlinear,wu2011asymptotic}. Davydov's inequality is used in the form given by
+\citet{rio1993covariance}.
+
+\subsection{Gordin's decomposition, in full}
+\label{app:gordin}
+
+Under \Cref{as:mix} the conditional expectations $\E[\eps_{n}\mid\Fil_0]$ decay geometrically in
+$L^2$, so
+\begin{equation}
+\eps_t=m_{t+1}+z_t-z_{t+1},
+\qquad \E[m_{t+1}\mid\Fil_t]=0,\quad \E\norm{z_1}^2<\infty,
+\label{eq:cobound}
+\end{equation}
+with $(m_t)$ stationary and square integrable and $\E[m_1m_1^{\!\top}]=S/b$ (\Cref{lem:gordin}). The
+martingale part converges almost surely because
+$\sum_t\gamma_t^2\opnorm{\Hb_{t-1}^{-1}}^2=\sum_tO(t^{2\qr-2})<\infty$ by \Cref{lem:ridge}, which is the
+square-summability half of the Robbins--Monro condition; the coboundary telescopes. \Cref{app:proofs}
+gives the details.

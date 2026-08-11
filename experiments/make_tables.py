@@ -25,6 +25,20 @@ ORDER = ["BGSN", "BGSN-BM", "BGSN-plugin", "SN-iid", "SN-iid+2scale",
          "Offline-HAC", "Oracle-var"]
 
 
+
+def fit(lines):
+    """Wrap a tabular so it can never be wider than the text block.
+
+    \\resizebox scales only when the natural width exceeds \\linewidth, so a table that already
+    fits is left at full size and untouched.  This is a safety net, not the primary fix: the
+    tables below are also built with few enough columns to fit unaided.  Without it a table that
+    grows by one column at the next re-run silently runs into the margin.
+    """
+    body = [l for l in lines]
+    return ([r"\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{%"]
+            + body + [r"}"])
+
+
 def w(name, s):
     with open(os.path.join(PAPER, name), "w") as fh:
         fh.write(s)
@@ -54,7 +68,7 @@ def fnum(x, k=3):
 def table_main():
     d = common.load("exp1_main.json")
     labels = list(d.keys())
-    hdr = " & ".join([r"\multicolumn{3}{c}{%s}" % L for L in labels])
+    hdr = " & ".join([r"\multicolumn{2}{c}{%s}" % L for L in labels])
     lines = [
         r"\begin{table}[tbp]", r"\centering", r"\small",
         r"\setlength{\tabcolsep}{3.4pt}",
@@ -62,13 +76,13 @@ def table_main():
         r" and estimation error on four dependent designs} ($d=20$, $N=200{,}000$, block"
         r" length $b=20$, $R=%d$ replications; $R=%d$ for the offline reference)."
         r" \emph{cov}: coverage, pooled over the $d$ coordinates (Monte Carlo standard"
-        r" error $\le 0.008$ throughout). \emph{w}: interval width divided by the width of"
-        r" the infeasible oracle interval. \emph{err}: $\sqrt{N}\,$RMSE divided by the"
+        r" error $\le 0.008$ throughout). \emph{err}: $\sqrt{N}\,$RMSE divided by the"
         r" asymptotic standard deviation, averaged over coordinates; $1.00$ is efficient."
         r" $\kappa$ is the variance inflation caused by dependence. Only methods that"
         r" estimate the \emph{long-run} score covariance reach nominal coverage; methods"
         r" using the instantaneous covariance that the independent-data theory prescribes"
         r" undercover by an amount predicted exactly by Proposition~\ref{prop:coverage}."
+        r" Interval widths are not repeated here; they are in Figure~\ref{fig:coverage}(b)."
         r" \textbf{Read the first-order rows with care}: these designs are ill-conditioned"
         r" (that is what streaming second-order methods are for), so those methods' \emph{point}"
         r" estimates have not converged --- their \emph{err} column is several times $1$ --- and"
@@ -84,14 +98,15 @@ def table_main():
         r"}"
         % (d[labels[0]]["R"], d[labels[0]].get("R_hac", d[labels[0]]["R"])),
         r"\label{tab:main}",
-        r"\begin{tabular}{l" + "ccc" * len(labels) + "}",
+        r"\begin{tabular}{l" + "cc" * len(labels) + "}",
         r"\toprule",
         " & " + hdr + r" \\",
-        r"\cmidrule(lr){2-4}\cmidrule(lr){5-7}\cmidrule(lr){8-10}\cmidrule(lr){11-13}",
-        "method & " + " & ".join(["cov & w & err"] * len(labels)) + r" \\",
+        " ".join(r"\cmidrule(lr){%d-%d}" % (2 + 2 * i, 3 + 2 * i)
+                 for i in range(len(labels))),
+        "method & " + " & ".join(["cov & err"] * len(labels)) + r" \\",
         r"\midrule",
     ]
-    kap = " & ".join([r"\multicolumn{3}{c}{$\kappa\in[%.2f,\,%.2f]$}"
+    kap = " & ".join([r"\multicolumn{2}{c}{$\kappa\in[%.2f,\,%.2f]$}"
                       % (min(d[L]["kappa"]), max(d[L]["kappa"])) for L in labels])
     lines.append(r"\emph{dependence} & " + kap + r" \\")
     lines.append(r"\midrule")
@@ -100,16 +115,23 @@ def table_main():
         for L in labels:
             r = {q["method"]: q for q in d[L]["rows"]}.get(m)
             if r is None:
-                cells += ["--", "--", "--"]
+                cells += ["--", "--"]
             else:
                 bold = (abs(r["coverage"] - 0.95) < 0.012)
                 c = fnum(r["coverage"])
-                cells += [(r"\textbf{%s}" % c) if bold else c,
-                          fnum(r["width_rel"], 2), fnum(r["rmse_rel"], 2)]
+                cells += [(r"\textbf{%s}" % c) if bold else c, fnum(r["rmse_rel"], 2)]
         lines.append(PRETTY[m] + " & " + " & ".join(cells) + r" \\")
         if m in ("BGSN-plugin", "SN-iid+2scale", "AdaGrad-2scale"):
             lines.append(r"\addlinespace[2pt]")
-    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}"]
+    lines += [r"\bottomrule", r"\end{tabular}"]
+
+    # never let a table run into the margin, whatever the next re-run produces
+
+    k = next(j for j, x in enumerate(lines) if x.startswith(r"\begin{tabular}"))
+
+    lines[k:] = fit(lines[k:])
+
+    lines += [r"\end{table}"]
     w("tab_main.tex", "\n".join(lines) + "\n")
 
     # numbers quoted in the abstract/intro
@@ -154,7 +176,10 @@ def table_ablation():
          r" variance respectively; \emph{eff} is the empirical variance of the point"
          r" estimate divided by its asymptotic value ($1.00$ is efficient); \emph{adeq} is"
          r" the free block-adequacy diagnostic $r_j$, an estimate of the relative"
-         r" block-length bias of plain batch means. Panel (c$'$) is on the regime-switching"
+         r" block-length bias of plain batch means. The three coverage columns use the two-scale,"
+         r" plain batch-means and i.i.d.\ plug-in variance respectively. In panel~(i) the designs"
+         r" are abbreviated AR (autoregressive), AR-s (strongly autoregressive) and Mkv"
+         r" (regime-switching); the number of times the safeguard acted is in the text. Panel (c$'$) is on the regime-switching"
          r" design and is the reason the default warm-up is $c_{\mathrm w}=200$ rather than"
          r" $50$: there, $50d$ consecutive observations span only about thirty regime visits,"
          r" the curvature estimate is still rank-starved, and the $1/t$ schedule diverges."
@@ -171,8 +196,9 @@ def table_ablation():
          r" the stream; $\varpi_{\mathrm w}=1$ means uncapped, which spends $2200$ of the"
          r" $4000$ observations on curvature and leaves $45$ blocked steps.}"
          % d["N"][0]["R"],
-         r"\label{tab:ablation}", r"\begin{tabular}{llrrrrr}", r"\toprule",
-         r"panel & setting & eff & cov (2-scale) & cov (BM) & cov (plug-in) & adeq \\",
+         r"\label{tab:ablation}", r"\small", r"\setlength{\tabcolsep}{4pt}",
+         r"\begin{tabular}{llrrrrr}", r"\toprule",
+         r"panel & setting & eff & 2-scale & BM & plug-in & $r_j$ \\",
          r"\midrule"]
 
     def block(title, rows, keyfmt):
@@ -189,15 +215,14 @@ def table_ablation():
     L.append(r"\midrule")
     L += block("(b) block $b$", d["b"], lambda q: f"$b={q['b']}$")
     L.append(r"\midrule")
-    L += block("(c) warm-up", d["warm"],
-               lambda q: r"$c_{\mathrm w}=%g$" % q["warm_mult"])
+    L += block("(c) warm-up", d["warm"], lambda q: r"$c_{\mathrm w}=%g$" % q["warm_mult"])
     if "warm_markov" in d:
         L.append(r"\midrule")
-        L += block(r"(c$'$) warm-up, Markov", d["warm_markov"],
+        L += block(r"(c$'$) warm-up, Mkv", d["warm_markov"],
                    lambda q: r"$c_{\mathrm w}=%g$" % q["warm_mult"])
     L.append(r"\midrule")
     L += block("(d) ridge", d["ridge"],
-               lambda q: r"$c_\iota=%g,\ \qr=%g$" % (q["ci_reg"], q["ci_pow"]))
+               lambda q: r"$c_\iota{=}%g,\ \qr{=}%g$" % (q["ci_reg"], q["ci_pow"]))
     L.append(r"\midrule")
     L += block("(e) $H_0$ scale", d["lam0"], lambda q: r"$\lambda_0=%g$" % q["lam0"])
     L.append(r"\midrule")
@@ -213,14 +238,22 @@ def table_ablation():
     if "shift" in d:
         L.append(r"\midrule")
         L += block(r"(i) safeguard", d["shift"],
-                   lambda q: r"%s, %s (%d clips)"
-                             % (q["design"], q.get("variant", "?"), round(q["n_clip"])))
+                   lambda q: r"%s, %s" % ({"AR-hom": "AR", "AR-strong": "AR-s",
+                                           "Markov": "Mkv"}.get(q["design"], q["design"]),
+                                          q.get("variant", "?")))
     if "warm_frac" in d:
         L.append(r"\midrule")
         L += block(r"(j) warm-up frac.", d["warm_frac"],
-                   lambda q: r"$\varpi_{\mathrm w}=%.2f$ (%d blocks)"
-                             % (q["warm_frac"], round(q["n_warm"])))
-    L += [r"\bottomrule", r"\end{tabular}", r"\end{table}"]
+                   lambda q: r"$\varpi_{\mathrm w}=%.2f$" % q["warm_frac"])
+    L += [r"\bottomrule", r"\end{tabular}"]
+
+    # never let a table run into the margin, whatever the next re-run produces
+
+    k = next(j for j, x in enumerate(L) if x.startswith(r"\begin{tabular}"))
+
+    L[k:] = fit(L[k:])
+
+    L += [r"\end{table}"]
     w("tab_ablation.tex", "\n".join(L) + "\n")
     return d
 
@@ -244,11 +277,10 @@ def table_real():
          r" $b=%d$, pooled over 12 monitoring sites.}"
          % (d["protoA_metro"]["n"], d["protoA_metro"]["b"],
             d["protoA_airq"]["n"], d["protoA_airq"]["b"]),
-         r"\label{tab:real}", r"\begin{tabular}{lcccc}", r"\toprule",
+         r"\label{tab:real}", r"\small", r"\begin{tabular}{lcccc}", r"\toprule",
          r"& \multicolumn{2}{c}{traffic (I-94)} & \multicolumn{2}{c}{air quality (PM2.5)} \\",
          r"\cmidrule(lr){2-3}\cmidrule(lr){4-5}",
-         r"method & A: exact truth & B: full-stream target"
-         r" & A: exact truth & B: full-stream target \\",
+         r"method & A & B & A & B \\",
          r"\midrule"]
     nomA = 0.95
     nomB = {}
@@ -282,7 +314,11 @@ def table_real():
           r"block-adequacy $r_j$ & %.3f & %.3f & %.3f & %.3f \\"
           % (d["protoA_metro"]["block_adequacy"], d["protoB_metro"]["block_adequacy"],
              d["protoA_airq"]["block_adequacy"], d["protoB_airq"]["block_adequacy"]),
-          r"\bottomrule", r"\end{tabular}", r"\end{table}"]
+          r"\bottomrule", r"\end{tabular}"]
+    # never let a table run into the margin, whatever the next re-run produces
+    k = next(j for j, x in enumerate(L) if x.startswith(r"\begin{tabular}"))
+    L[k:] = fit(L[k:])
+    L += [r"\end{table}"]
     w("tab_real.tex", "\n".join(L) + "\n")
     return d
 
@@ -313,7 +349,15 @@ def table_wellcond():
         c = fnum(q["coverage"])
         c = (r"\textbf{%s}" % c) if abs(q["coverage"] - 0.95) < 0.012 else c
         L.append(PRETTY[m] + f" & {c} & {q['width_rel']:.2f} & {q['rmse_rel']:.2f} \\\\")
-    L += [r"\bottomrule", r"\end{tabular}", r"\end{table}"]
+    L += [r"\bottomrule", r"\end{tabular}"]
+
+    # never let a table run into the margin, whatever the next re-run produces
+
+    k = next(j for j, x in enumerate(L) if x.startswith(r"\begin{tabular}"))
+
+    L[k:] = fit(L[k:])
+
+    L += [r"\end{table}"]
     w("tab_wellcond.tex", "\n".join(L) + "\n")
     return d
 
@@ -355,7 +399,15 @@ def table_hard():
                          f"{q['N']:,}".replace(",", "{,}"), c, fnum(q["cov_oracle"]),
                          fnum(q["cov_plugin"]), q["rmse_rel_median"],
                          round(q.get("n_clip", 0))))
-    L += [r"\bottomrule", r"\end{tabular}", r"\end{table}"]
+    L += [r"\bottomrule", r"\end{tabular}"]
+
+    # never let a table run into the margin, whatever the next re-run produces
+
+    k = next(j for j, x in enumerate(L) if x.startswith(r"\begin{tabular}"))
+
+    L[k:] = fit(L[k:])
+
+    L += [r"\end{table}"]
     w("tab_hard.tex", "\n".join(L) + "\n")
     return d
 
@@ -398,11 +450,10 @@ def table_cost():
          r" observations, single-threaded, minimum over %d interleaved repetitions"
          r" (interleaved so that a change in the load of this shared machine cannot be"
          r" mistaken for a difference between methods; the minimum because load can only make"
-         r" a measurement slower). $s_{\mathrm{time}}$ and $s_{\mathrm{flop}}$ are the"
-         r" exponents in $d$ fitted on the four largest $d$ to the times and to the exact"
-         r" operation counts at this $N$. Both are dominated by the one-off"
+         r" a measurement slower). $s_{\mathrm{time}}$ is the exponent in $d$ fitted to those"
+         r" times on the four largest $d$. It is dominated by the one-off"
          r" $O(c_{\mathrm w}d^{3})$ warm-up here and should \emph{not} be read as the streaming"
-         r" cost: $s_{\mathrm{str}}$ is the same exact count with the warm-up excluded and"
+         r" cost: $s_{\mathrm{str}}$ is the exact operation count with the warm-up excluded and"
          r" $s_{\infty}$ is it at $N=10^{8}$, where the warm-up is negligible and"
          r" \eqref{eq:cost} reduces to $O(dN)$. Those last two columns are the design claim:"
          r" the streaming pass is linear in $d$ for \bgsn{} and quadratic once the i.i.d.\ "
@@ -413,9 +464,10 @@ def table_cost():
          r" here.}"
          % (f"{d['N']:,}".replace(",", r"{,}"), d["rep"], min(ratios), max(ratios)),
          r"\label{tab:cost}",
-         r"\begin{tabular}{l" + "r" * (len(rows) + 4) + r"}", r"\toprule",
+         r"\small", r"\setlength{\tabcolsep}{4pt}",
+         r"\begin{tabular}{l" + "r" * (len(rows) + 3) + r"}", r"\toprule",
          r"method & " + " & ".join([r"$d{=}%d$" % q["d"] for q in rows])
-         + r" & $s_{\mathrm{time}}$ & $s_{\mathrm{flop}}$ & $s_{\mathrm{str}}$"
+         + r" & $s_{\mathrm{time}}$ & $s_{\mathrm{str}}$"
          + r" & $s_{\infty}$ \\", r"\midrule"]
     names = [("BGSN", r"\textbf{BGSN} (long-run interval)"),
              ("BGSN_plugin", r"\quad with the i.i.d.\ plug-in variance"),
@@ -429,10 +481,17 @@ def table_cost():
         strm = d.get("flop_exponents_streaming", {}).get(k)
         L.append(lab + " & " + " & ".join(cells) + " & "
                  + (f"{e[k]:.2f}" if k in e else "--") + " & "
-                 + (f"{fe[k]:.2f}" if k in fe else "--") + " & "
                  + (f"{strm:.2f}" if strm is not None else "--") + " & "
                  + (f"{asym:.2f}" if asym is not None else "--") + r" \\")
-    L += [r"\bottomrule", r"\end{tabular}", r"\end{table}"]
+    L += [r"\bottomrule", r"\end{tabular}"]
+
+    # never let a table run into the margin, whatever the next re-run produces
+
+    k = next(j for j, x in enumerate(L) if x.startswith(r"\begin{tabular}"))
+
+    L[k:] = fit(L[k:])
+
+    L += [r"\end{table}"]
     w("tab_cost.tex", "\n".join(L) + "\n")
     return d
 

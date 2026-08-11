@@ -16,8 +16,17 @@
 %% shared prose at them.
 \documentclass[preprint,11pt,authoryear]{elsarticle}
 
+% \overfullrule=8pt   % uncomment to mark overfull lines with a black bar while editing
+% Page measure.  elsarticle's "preprint" mode sets a deliberately narrow 5-inch text block, which
+% inflates the page count of a manuscript by roughly half.  Information Sciences imposes no formatting
+% requirements at submission, so we use an ordinary one-inch measure -- legible, single column, line
+% numbered -- with extra room on the left for the line numbers.
+\usepackage[left=1.25in,right=1in,top=1in,bottom=1.5in,footskip=0.75in]{geometry}
 \usepackage{lineno}
 \linenumbers
+
+% Let a page finish short rather than push a stretched line past the bottom margin.
+\raggedbottom
 
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage[T1]{fontenc}
@@ -114,6 +123,17 @@
 \newcommand{\RefGapFig}{Supplementary Fig.~S2}
 \newcommand{\RefCostFig}{Supplementary Fig.~S3}
 \newcommand{\RefAblFig}{Supplementary Fig.~S4}
+
+
+% A DOI that is allowed to break across lines.  \texttt{10.5281/...} inside \href cannot break and
+% ran 114pt into the margin; \url breaks after the slashes.
+\newcommand{\doi}[1]{\href{https://doi.org/#1}{\nolinkurl{#1}}}
+\newcommand{\file}[1]{\nolinkurl{#1}}   % a path that may break at its slashes
+% let long paths and DOIs break at more places than hyperref's default
+\Urlmuskip=0mu plus 1mu\relax
+\def\UrlBreaks{\do\/\do\-\do\_\do\.\do\:}
+
+
 
 \IfFileExists{numbers.tex}{\input{numbers}}{}
 

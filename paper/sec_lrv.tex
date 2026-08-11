@@ -9,50 +9,38 @@ for two $O(d^2)$ accumulations. Over a retained window $\mathcal{T}$ of $T'$ blo
 \Sbm=\frac{b}{T'}\sum_{t\in\mathcal{T}}\gb_t\gb_t^{\!\top},
 \qquad
 \hat\Lambda_1=\frac{1}{T'-1}\sum_{t,\,t+1\in\mathcal{T}}\gb_t\gb_{t+1}^{\!\top},
-\qquad
-\Sft=\Sbm+b\big(\hat\Lambda_1+\hat\Lambda_1^{\!\top}\big).
 \label{eq:Sft}
 \end{equation}
-$\Sbm$ is the non-overlapping batch-means estimator at block resolution. $\Sft$ is the
-two-scale (flat-top, or ``lugsail'') correction. It has the same expectation as
-$2\Sbm(2b)-\Sbm(b)$ --- Richardson extrapolation in $1/b$ --- and coincides with it exactly
-if $\hat\Lambda_1$ is formed from disjoint rather than all adjacent block pairs; we use all
-adjacent pairs because it has the same expectation and a smaller variance. Either way the
-expectation is that of a lag-window estimator with weights $1$ for $|k|\le b$ and
-$(2b-|k|)/b$ for $b<|k|<2b$. \textbf{This device is not new}: it is the flat-top window of
-\citet{politis1995bias}, refined by \citet{politis2011higher} and recast as ``lugsail'' by
-\citet{vats2022lugsail}, and \citet[Eqs.~(15) and (17)]{singh2025utility} apply exactly these
-two forms to stochastic gradient descent under independent data. Nor is the $O(\rho^b)$ bias
-order a new mechanism: for a stationary sequence whose autocovariances decay geometrically it
-is the classical tail-sum property of a flat-top window. What we contribute is that it is
-available \emph{at block-gradient resolution on a dependent stream}, where it is what makes
-$b\asymp\log N$ admissible and therefore what buys the rate, together with the streaming
-implementation below.
+and then
+\begin{equation}
+\Sft=\Sbm+b\big(\hat\Lambda_1+\hat\Lambda_1^{\!\top}\big).
+\label{eq:Sft2}
+\end{equation}
+$\Sbm$ is the non-overlapping batch-means estimator at block resolution and $\Sft$ the two-scale
+(flat-top, or ``lugsail'') correction, with the same expectation as the Richardson extrapolation
+$2\Sbm(2b)-\Sbm(b)$ (\Cref{app:flattop}). \textbf{This device is not new}: it is the flat-top window of
+\citet{politis1995bias}, recast as ``lugsail'' by \citet{vats2022lugsail}, and
+\citet[Eqs.~(15) and (17)]{singh2025utility} apply exactly these two forms to stochastic gradient descent
+under independent data; nor is the $O(\rho^b)$ bias order a new mechanism, being the classical tail-sum
+property of a flat-top window. What we contribute is that it is available \emph{at block-gradient
+resolution on a dependent stream}, where it is what makes $b\asymp\log N$ admissible and therefore what
+buys the rate, together with the streaming implementation below.
 
 \paragraph{Confidence intervals.} With $u_j=\Hb^{-1}e_j$ (one $O(d^2)$ product using the
 already-maintained inverse), report
 $\theta_{T,j}\pm z_{\alpha/2}\{u_j^{\!\top}\Sft u_j/N\}^{1/2}$. Only the requested
 coordinates cost anything; the full $d\times d$ sandwich is never needed.
 
-\paragraph{Retained window (a streaming detail that matters).} Early blocks have
-$\theta_{t-1}$ far from $\ts$ and inflate \eqref{eq:Sft}. Discarding a fixed fraction
-requires knowing $N$ in advance, which a streaming method does not. We instead keep two
-accumulators covering the current and previous dyadic windows
-$[2^{k},2^{k+1})$ and report from their union, so at any time at least half and at most
-three quarters of the blocks are retained and the discarded set is a prefix. This
-answers, in our setting, the open problem of an online implementation of equal-batch-size
-estimators raised by \citet[Remark~4]{singh2025utility}.
+\paragraph{Retained window.} Early blocks have $\theta_{t-1}$ far from $\ts$ and inflate \eqref{eq:Sft},
+and discarding a fixed fraction would require knowing $N$ in advance. We instead keep two accumulators
+covering the current and previous dyadic windows $[2^{k},2^{k+1})$ and report from their union, so at any
+time at least half and at most three quarters of the blocks are retained and the discarded set is a prefix.
+This answers, in our setting, the open problem of an online implementation of equal-batch-size estimators
+raised by \citet[Remark~4]{singh2025utility}.
 
-\begin{theorem}[$L^2$ rate]
-\label{thm:l2}
-Under the assumptions of \Cref{thm:as}, $\E\norm{\theta_t-\ts}^2=O(\log(N_t)/N_t)$,
-uniformly over $b\le C\log N$.
-\end{theorem}
-
-The $L^2$ statement is separate from the almost sure one because the drift analysis in
-\Cref{thm:lrv} needs a moment bound and an almost sure rate with an unspecified random
-constant does not supply one. All remainder bounds in \Cref{app:proofs} are uniform over
-$b\le C\log N$, which is the only regime in which we use them.
+An $L^2$ counterpart of \Cref{thm:rate} is needed before the next result, because the drift analysis
+requires a moment bound and an almost sure rate with an unspecified random constant does not supply one:
+$\E\norm{\theta_t-\ts}^2=O(\log(N_t)/N_t)$ uniformly over $b\le C\log N$ (\Cref{thm:l2}).
 
 \begin{theorem}[Long-run covariance estimation]
 \label{thm:lrv}
@@ -82,30 +70,24 @@ $\sqrt{N}\,(\theta_{T,j}-\ts_j)/\{u_j^{\!\top}\Sft u_j\}^{1/2}\rightsquigarrow
 
 \begin{remark}[Why blocking gradients beats blocking iterates]
 \label{rem:whyfast}
-Batch-means estimators for stochastic approximation are usually built from the
-\emph{iterate} path \citep{chen2020statistical,zhu2023online,roy2023online,singh2025utility,samsonov2025statistical}.
-Under dependent sampling this forces long blocks: the iterates $\theta_k$ move by
-$\gamma_k\asymp k^{-a}$, so a block must span $\sum_{k=t+1}^{t+b}\gamma_k$ of parameter
-movement before its average behaves like an independent draw, which requires
+Batch-means estimators for stochastic approximation are usually built from the \emph{iterate} path, and
+under dependent sampling that forces long blocks: the iterates move by $\gamma_k\asymp k^{-a}$, so a block
+must span enough parameter movement for its average to behave like an independent draw, which requires
 $b\asymp N^{a}$ and yields rates of order $N^{-1/8}$
-\citep[e.g.][Prop.~2 and Cor.~2]{samsonov2025statistical}. Block \emph{gradients} do not
-have this problem: their serial dependence is inherited from the data process, whose
-mixing time is a constant, and the iterate's own movement enters only through the
-$O(b/N)$ drift term in \Cref{thm:lrv}. This is the substantive reason for the rate
-difference, and it is available only to an algorithm that forms block gradients and keeps
-a curvature estimate. It is also why the minimax rate $\Theta(N^{-(1-a)/2})$ for
-\emph{Hessian-free} covariance estimation from an SGD trajectory
-\citep{ni2026online} does not apply: a quasi-Newton method is outside that class.
+\citep[Prop.~2, Cor.~2]{samsonov2025statistical}. Block \emph{gradients} do not have this problem: their
+serial dependence is inherited from the data process, whose mixing time is a constant, and the iterate's own
+movement enters only through the $O(b/N)$ drift term in \Cref{thm:lrv}. This is the substantive reason for
+the rate difference, it is available only to an algorithm that forms block gradients and keeps a curvature
+estimate, and it is why the minimax rate for \emph{Hessian-free} covariance estimation from an SGD
+trajectory \citep{ni2026online} does not apply.
 \end{remark}
 
 \begin{remark}[Positive semidefiniteness]
 \label{rem:psd}
-$\Sft$ is a difference of positive semidefinite matrices and need not be positive
-semidefinite; the same caveat attaches to all flat-top and lugsail estimators
-\citep[Remark~5]{singh2025utility}. For marginal intervals only the scalars
-$u_j^{\!\top}\Sft u_j$ must be positive, and we fall back to $u_j^{\!\top}\Sbm u_j$ if
-one is not. We report the frequency of that fallback in every experiment; it is
-$0.0\%$ throughout.
+$\Sft$ is a difference of positive semidefinite matrices and need not be positive semidefinite; the
+same caveat attaches to all flat-top and lugsail estimators \citep[Remark~5]{singh2025utility}. For
+marginal intervals only the scalars $u_j^{\!\top}\Sft u_j$ must be positive, and we fall back to
+$u_j^{\!\top}\Sbm u_j$ if one is not, reporting the frequency of that fallback in every experiment.
 \end{remark}
 
 \begin{proposition}[Gapping versus Bernoulli thinning at matched cost]

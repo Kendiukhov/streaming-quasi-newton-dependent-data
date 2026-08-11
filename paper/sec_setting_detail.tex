@@ -1,0 +1,117 @@
+%% Material moved out of \Cref{sec:setting} to keep the main text short.  Included from the
+%% appendix (\Cref{app:shift}); shared by ../paper/main.tex and ../submission/body.tex.
+
+\subsection{Where the contraction condition comes from, and why it fails}
+\label{app:contract}
+
+Linearising \eqref{eq:step} at $\ts$ and ignoring $\Pi_t$ gives the error recursion
+\begin{equation}
+\theta_t-\ts=\big(I-\gamma_t\Hb_{t-1}^{-1}\Hh_t\big)(\theta_{t-1}-\ts)
+             -\gamma_t\Hb_{t-1}^{-1}\eps_t+o(\norm{\theta_{t-1}-\ts}).
+\label{eq:err}
+\end{equation}
+Since $\Hb^{-1}\Hh_t$ is a product of two positive semidefinite matrices its eigenvalues are real and
+non-negative, so the spectral radius of the linear map in \eqref{eq:err} is below one exactly when the
+first inequality of \eqref{eq:contract} holds; the second is sufficient because
+$\lambda_{\max}\le\opnorm{\cdot}$. We work with the operator norm because it is what we can compute and
+because it is the conservative choice, and we say ``spectral radius'' rather than ``contraction''
+deliberately: for a non-symmetric map a spectral radius below one bounds the \emph{asymptotic} growth of
+powers, not the norm of a single step. What \eqref{eq:contract} rules out is the regime we actually
+observe, in which $\gamma_t\lambda_{\max}\gg2$ and a single step multiplies the error by a large factor.
+
+The per-block maxima of $\opnorm{H^{-1}\Hh_t}$ at $b=20$ are $55$ on the autoregressive design and $89$
+on the regime-switching design, so the autoregressive designs are lucky rather than safe. Taking a
+full-length step under those numbers makes the first iterates overshoot by orders of magnitude, and
+because $\gamma_t=1/t$ undoes an excursion only at rate $1/t$, at realistic $N$ an overshoot in the
+first few blocks can survive to the end of the stream. That is the mechanism behind the divergence
+reported in \Cref{tab:ablation}(i): without the safeguard, two of six replicates on the
+regime-switching design diverge outright, and none with it. This is not a defect of the base method ---
+it is created by \emph{blocking} the gradient, which is the one thing we add.
+
+\subsection{What \texorpdfstring{\Cref{prop:shift}}{the safeguard proposition} does not prove}
+\label{app:notproved}
+
+The obstruction is real and worth naming: the factor
+$\min\{1,c_D(1+\norm{\theta_{t-1}})/\norm{v}\}$ depends on the current block's gradient, so it is
+$\mathcal F_t$- rather than $\mathcal F_{t-1}$-measurable and correlates with the noise, which
+breaks the martingale structure the proofs use. A complete treatment is available in the
+stochastic-approximation literature on expanding truncations
+\citep{andrieu2005stability,kushner2003stochastic}, at the price of machinery we do not need here.
+\Cref{app:shift} gives the two concrete routes that would close the gap. A unit test asserts the
+measured activation counts.
+
+\subsection{The alternative we rejected, and why}
+\label{app:rejected}
+
+The contraction condition \eqref{eq:contract} suggests a different
+remedy: shift the schedule to $\gamma_t=(t+t_0)^{-1}$ with
+$t_0=\tfrac12\max_{t\le\Tw}\opnorm{\Hb_{\Tw}^{-1}\Hh_t}$ measured on the warm-up blocks, which
+makes \eqref{eq:contract} hold at $t=1$ by construction and has a cleaner proof (it is a finite
+deterministic reindexing; see \Cref{app:shift}). We implemented it and it is worse, for a reason
+worth stating: it slows \emph{every} step, whereas the overshoot needs correcting on only a
+handful. On the regime-switching design at $N=200{,}000$ the shift leaves the relative variance at
+$\ShiftEffMarkovShift$ against $\ShiftEffMarkovCap$ for the safeguard, and on a stream short enough
+that $t_0$ is comparable to the number of steps --- which is the case for our real-data segments --- it freezes the estimator
+altogether. Both variants are in the code and both are reported
+(\Cref{tab:ablation}(i)); the safeguard is the default.
+
+
+
+\subsection{Sizing the curvature warm-up}
+\label{app:warmup}
+
+It matters: on a $4000$-observation stream with $d=11$, spending $c_{\mathrm w}d=2200$
+observations on curvature leaves $\WarmFracStepsUncapped$ blocked steps and a relative variance of
+$\WarmFracEffUncapped$, whereas capping at $10\%$ leaves $\WarmFracStepsCapped$ steps and a
+relative variance of $\WarmFracEffCapped$ (\Cref{tab:ablation}(j)). Our real-data segments are of exactly that length.
+
+\subsection{Cost accounting for the one-off terms}
+\label{app:costdetail}
+
+The warm-up performs $c_{\mathrm w}d$ rank-one updates at $O(d^2)$ each, which is the unavoidable cost
+of producing a $d\times d$ curvature estimate at all and is of the same order as a single matrix
+factorisation. The step-size shift of \Cref{app:t0} adds a further one-off
+$O(c_{\mathrm w}(d^2+db)d/b)$, which is $4$--$5\%$ of the total operation count at the settings of
+\Cref{tab:cost} and vanishes relative to the streaming pass as $N$ grows. \Cref{tab:cost} reports the
+crossover $N\gtrsim c_{\mathrm w}d^2$ explicitly rather than hiding it in the constant.
+
+\subsection{Dependence in the covariates is not enough}
+\label{app:mds}
+
+\begin{remark}[Dependence in the covariates is not enough]
+\label{rem:mds}
+If the conditional law of $y$ given $x$ is correctly specified and its innovations are
+independent over time, then $(g_i)$ is a martingale difference sequence and $S=\Gamma_0$
+\emph{exactly}, however persistent $x$ is. A genuine long-run-variance problem needs the
+\emph{score} to be serially correlated: serially correlated errors, a latent dynamic
+factor, or omitted dynamics. All our designs therefore couple dependent covariates with a
+dependent error or latent process, and we report the resulting $\kappa_j$ explicitly.
+Covariate dependence still matters for the effective sample size of the curvature
+estimate, which is what \Cref{prop:gap} is about.
+\end{remark}
+
+\subsection{Misspecification and where dependence has to live}
+\label{app:misspec}
+
+In more detail, nothing in the analysis requires the model to be correctly specified: all that is used is that $\ts$ solves
+$\nabla F(\ts)=0$ for the \emph{working} loss, so under misspecification $\ts$ is the pseudo-true
+parameter and $H^{-1}SH^{-1}$ the corresponding long-run sandwich
+\citep{white1982mle,domowitz1982misspecified}. That matters here, because omitted dynamics are one
+of the commonest ways for a score to become serially correlated --- and correlated \emph{scores},
+not merely correlated covariates, are what the problem requires. If the conditional law of $y$ given
+$x$ is correctly specified with innovations independent over time, then $(g_i)$ is a martingale
+difference sequence and $S=\Gamma_0$ \emph{exactly}, however persistent $x$ is (\Cref{rem:mds}). All
+our designs therefore couple dependent covariates with a dependent error or latent process, and we
+report the resulting $\kappa_j$ explicitly.
+
+
+This matters in practice, because omitted dynamics are one of the commonest ways for a score to become
+serially correlated \citep{white1982mle,domowitz1982misspecified}.
+
+\subsection{Why the ridge scale is frozen}
+\label{app:freeze}
+
+With $\varsigma_\star$ fixed, positive and finite almost surely under \Cref{as:curv}, \Cref{lem:ridge}
+holds unconditionally --- for every $t$, with no assumption on the iterates. The scale exists only to make
+$c_\iota$ dimensionless; setting $\varsigma_\star=1$ recovers an unscaled ridge, and
+\Cref{tab:ablation}(d) shows the results are the same.

@@ -207,11 +207,18 @@ experiment goes through `DGP.sample(N, seed)`, which varies the realised path on
 
 Two versions are built from one set of sources, so they cannot disagree:
 
-* `paper/main.pdf` — the preprint: every figure and table in the body, single column.
+* `paper/main.pdf` — the preprint, single column.
 * `submission/manuscript.pdf` — the Information Sciences submission: `elsarticle`, line-numbered,
-  a 200-word abstract, ten figures + tables in the main text (the journal's guideline for a
-  theoretical article) with four further figures in `submission/supplementary.pdf`, and the
-  declarations the journal requires.
+  a 200-word abstract, ten figures + tables (the journal's guideline for a theoretical article)
+  with four further figures in `submission/supplementary.pdf`, and the declarations the journal
+  requires.
+
+Both have a **17-page main narrative** (the numbered Sections 1–8) and seven lettered appendices.
+Each long section is split into a core fragment, which the body includes, and a `_detail`
+fragment, which the appendix includes — so the derivation of the contraction condition, the full
+assumption statements, the secondary experiments, the complete literature survey and the long-form
+discussion of every limitation are all still there, one level down. No paragraph appears in both
+halves.
 
 `make paper` builds the first, `make submission` the second. The shared fragments are
 `paper/sec_*.tex`, `paper/fig_*.tex`, `paper/tab_*.tex`, `paper/abstract.tex` and

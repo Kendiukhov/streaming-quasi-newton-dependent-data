@@ -1,47 +1,32 @@
 %% Section body, shared verbatim by ../paper/main.tex (preprint) and
-%% ../submission/body.tex (Information Sciences submission).  The section heading and
-%% label live in the including file, because the two versions number sections the same
-%% way but the submission adds the journal's required unnumbered sections after them.
-On a dependent stream, a streaming quasi-Newton method can get the estimate right and the
-uncertainty wrong. The error is not small and does not go away: the reported variance omits the
-autocovariances of the score, so a nominal $95\%$ interval converges to a coverage below $95\%$
-and stays there. \Cref{prop:coverage} says exactly where: at
-$2\Phi(z_{\alpha/2}/\sqrt{\kappa})-1$, a number computable from one variance-inflation factor
-$\kappa$. At the inflation we measure on hourly air quality this is $\RealPredAirq$, so more than
-half of the intervals a practitioner would report on that stream miss the value they are meant to
-cover.
+%% ../submission/body.tex (Information Sciences submission).  Information Sciences requires a
+%% Conclusions section written to be intelligible outside the specialism; this is it.
+On a dependent stream, a streaming quasi-Newton method can get the estimate right and the uncertainty
+wrong. The error is not small and does not go away: the reported variance omits the autocovariances of the
+score, so a nominal $95\%$ interval converges to a coverage below $95\%$ and stays there.
+\Cref{prop:coverage} says exactly where --- at $2\Phi(z_{\alpha/2}/\sqrt{\kappa})-1$, computable from one
+variance-inflation factor $\kappa$. At the inflation we measure on hourly air quality that is
+$\RealPredAirq$, so more than half of the intervals a practitioner would report on that stream miss the
+value they are meant to cover.
 
-The remedy is a change of reading order rather than an extra estimation stage. Consume the stream
-in contiguous blocks and take one preconditioned step per block. The block-averaged gradients are
-then, up to a factor, the non-overlapping batch means of the score process, and batch means are a
-standard estimator of exactly the long-run variance the interval needs. So the object the
-statistics requires and the object the computation already produces are the same, and the
-resulting interval is \emph{cheaper} than the invalid one: an instantaneous plug-in covariance
-costs $O(d^2)$ per observation, while the blocked long-run covariance costs $O(d^2)$ per block.
-Gapping the rank-one curvature updates is the second change, and it is a cost knob rather than an
-inference device --- it dominates the randomised thinning the independent-data method uses, at the
-same number of updates, and makes the per-block cost deterministic.
+The remedy is a change of reading order rather than an extra estimation stage. Consume the stream in
+contiguous blocks and take one preconditioned step per block. The block-averaged gradients are then, up to
+a factor, the non-overlapping batch means of the score process, and batch means estimate exactly the
+long-run variance the interval needs. The object the statistics requires and the object the computation
+already produces are the same, so the resulting interval is \emph{cheaper} than the invalid one: an
+instantaneous plug-in covariance costs $O(d^2)$ per observation, the blocked long-run covariance $O(d^2)$
+per block. Gapping the rank-one curvature updates is the second change, and it is a cost knob rather than
+an inference device.
 
-Three practical consequences are worth stating in plain terms.
-First, block length is the one parameter that needs thought, and it needs less than one might
-fear: because the blocks carry gradients rather than parameter values, their length is set by how
-quickly the \emph{data} forget, not by how quickly the optimiser settles, so $b$ of order $\log N$
-suffices where iterate-based methods need a power of $N$. A diagnostic that costs nothing,
-$r_j$, indicates when $b$ is too short.
-Second, blocking has a price we pay and report: it makes a step-size condition non-trivial, and
-without the $O(d)$ safeguard of \eqref{eq:step} our own method diverges on a persistent
-regime-switching design. Anyone who blocks a preconditioned step on dependent data will meet this,
-and \Cref{sec:setting} explains why and what to do.
-Third, honest intervals are wider. On our designs they are $\WidthRatioLo$--$\WidthRatioHi$ times
-the dependence-blind width, which is $\sqrt{\kappa}$ and not a tuning choice. The narrower interval
-was never correct; it was the wrong length.
+Three practical consequences. Block length is the one parameter that needs thought, and needs less than
+one might fear: because the blocks carry gradients rather than parameter values, their length is set by
+how quickly the \emph{data} forget, not by how quickly the optimiser settles, so $b$ of order $\log N$
+suffices where iterate-based methods need a power of $N$. Blocking has a price we pay and report: it makes
+a step-size condition non-trivial, and without the $O(d)$ safeguard of \eqref{eq:step} our own method
+diverges on a persistent regime-switching design. And honest intervals are wider --- on our designs
+$\WidthRatioLo$--$\WidthRatioHi$ times the dependence-blind width, which is $\sqrt{\kappa}$ and not a
+tuning choice. The narrower interval was never correct; it was the wrong length.
 
-What we have not done bounds the claims. The central limit theorem is proved unconditionally for
-each fixed block length, while the estimator we recommend lets $b$ grow with $N$; the safeguard is
-shown to be asymptotically invisible on the event that it stops acting, not unconditionally; memory
-remains $O(d^2)$, so very high-dimensional streams need a sketched curvature representation whose
-interaction with block-gradient variance estimation is open; and geometric mixing excludes
-long-memory data. \Cref{sec:limits} states each of these precisely. The construction itself is
-general: any streaming method that forms block gradients and maintains a curvature estimate can
-report a long-run variance at no extra order of cost, and we would expect the same argument to
-carry to sketched and diagonal curvature approximations.
+What we have not done bounds the claims, and \Cref{sec:limits} states each boundary precisely. The
+construction itself is general: any streaming method that forms block gradients and maintains a curvature
+estimate can report a long-run variance at no extra order of cost.

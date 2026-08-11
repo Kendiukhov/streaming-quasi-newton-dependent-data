@@ -24,17 +24,10 @@
 
 \input{fig_coverage}
 \IfFileExists{tab_main.tex}{\input{tab_main}}{}
-\input{fig_lrv}
 \input{fig_real}
 
 \input{sec_experiments}
 
-\input{fig_hard}
-\IfFileExists{tab_hard.tex}{\input{tab_hard}}{}
-\IfFileExists{tab_wellcond.tex}{\input{tab_wellcond}}{}
-\IfFileExists{tab_real.tex}{\input{tab_real}}{}
-\IfFileExists{tab_ablation.tex}{\input{tab_ablation}}{}
-\IfFileExists{tab_cost.tex}{\input{tab_cost}}{}
 
 \section{Related work}
 \label{sec:related}
@@ -66,18 +59,16 @@ editing.
 \section*{Data availability}
 All code, saved results and derived data needed to reproduce every number, figure and table in this
 article are archived and citable \citep{kendiukhov2026bgsn}. The release used to produce the results
-reported here is
-\href{https://doi.org/10.5281/zenodo.21891313}{\texttt{https://doi.org/10.5281/zenodo.21891313}};
-the concept identifier \texttt{10.5281/zenodo.21891312} always resolves to the most recent release,
-and development continues at
-\url{https://github.com/Kendiukhov/streaming-quasi-newton-dependent-data}. The archive contains the
+reported here is \doi{10.5281/zenodo.21891313}; the concept identifier
+\doi{10.5281/zenodo.21891312} always resolves to the most recent release, and development continues
+at \url{https://github.com/Kendiukhov/streaming-quasi-newton-dependent-data}. The archive contains the
 estimator, the experiment scripts, the result files from which every reported number is generated,
 and the tests that validate every closed-form population quantity against long simulation.
 
 The two real data sets analysed are third-party and are not redistributed. They are downloaded from
-the UCI Machine Learning Repository by \texttt{experiments/fetch\_data.py} and are cited in the
-reference list: Metro Interstate Traffic Volume \citep{hogue2019metro}, \texttt{10.24432/C5X60B};
-and Beijing Multi-Site Air Quality \citep{chen2019beijingairuci}, \texttt{10.24432/C5RK5G}.
+the UCI Machine Learning Repository by the script \file{fetch_data.py} and are cited in the
+reference list: Metro Interstate Traffic Volume \citep{hogue2019metro}, \doi{10.24432/C5X60B}; and
+Beijing Multi-Site Air Quality \citep{chen2019beijingairuci}, \doi{10.24432/C5RK5G}.
 
 \section*{Declaration of generative AI and AI-assisted technologies in the manuscript preparation
 process}
@@ -96,4 +87,12 @@ streams publicly available.
 \bibliography{refs}
 
 \appendix
+% Number appendix floats within their appendix (Table D.1, D.2, ... rather than continuing the
+% main-text counter, which leaves a "Table D.2" with no "Table D.1").
+\setcounter{figure}{0}\setcounter{table}{0}
+\makeatletter
+\@addtoreset{figure}{section}\@addtoreset{table}{section}
+\makeatother
+\renewcommand{\thefigure}{\Alph{section}.\arabic{figure}}
+\renewcommand{\thetable}{\Alph{section}.\arabic{table}}
 \input{sec_appendix}

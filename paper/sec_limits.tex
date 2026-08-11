@@ -1,127 +1,43 @@
+%% Compact statement of each limitation; \Cref{app:limits} discusses every item at length, so the
+%% main text can stay short without dropping anything a reviewer would want to see.
+%% Shared by ../paper/main.tex and ../submission/body.tex.
 We list the boundaries of the result plainly, because several of them are load-bearing.
+\Cref{app:limits} discusses each at length.
 
-\paragraph{Memory is $O(d^2)$, not $O(d)$.}
-The $O(dN)$ claim is about \emph{time}. The method stores a $d\times d$ inverse curvature
-estimate and two $d\times d$ covariance accumulators, so memory is $O(d^2)$; this is
-inherited from the independent-data method we extend and is not something we improve. For
-$d$ in the thousands this is the binding constraint, and a sketched or diagonal-plus-low-rank
-curvature representation---as in \citet{kuang2026online,wang2026inference,godichonbaggioni2026complexity}---%
-would be the natural remedy. Whether the block-gradient long-run covariance estimator
-survives such a compression is open.
-
-\paragraph{Geometric mixing is a real restriction, and the block length has to respect it.}
-\Cref{thm:lrv} buys $b\asymp\log N$ from the geometric decay in
-\Cref{lem:davydov}. Under algebraic mixing the flat-top bias is polynomial rather than
-exponential and the admissible $b$ grows accordingly; long-memory streams are outside the
-theory altogether. This is not merely formal: our air-quality stream has a residual lag-one
-autocorrelation of $\RealAcfAirq$ and a median variance-inflation factor of $\RealKappaAirq$, and there the
-block length needed for calibrated intervals is an order of magnitude larger than for the
-traffic stream (\Cref{tab:real}). The free diagnostic
-$r_j=|u_j^{\!\top}(\Sft-\Sbm)u_j|/(u_j^{\!\top}\Sft u_j)$ detects the problem---it estimates
-the relative block-length bias of plain batch means---but it does not remove it. It could be
-turned into an automatic rule by maintaining covariance accumulators at several block scales
-$b,2b,4b,\dots$ at once (one extra $O(d^2)$ update per block per scale, all from the same
-block gradients) and reporting from the smallest scale at which $r_j$ falls below a
-tolerance; we did not implement this, and we do not claim an automatic rule for $b$.
-
-\paragraph{$\Sft$ need not be positive semidefinite.}
-This is intrinsic to flat-top and lugsail estimators \citep[Remark~5]{singh2025utility}.
-Marginal intervals need only positive scalars $u_j^{\!\top}\Sft u_j$. The documented fallback to
-$\Sbm$ never triggered in any simulation, but it does trigger on the real streams --- at a rate
-of $\RealPsdFallback$ of coordinate-replicate pairs --- which is what one should expect, since
-there the two designs are ill-conditioned and the lag-one correction is comparable to the
-batch-means term. We report the rate rather than claiming it away, and a user who needs the full
-matrix (for a joint test, say) must project it.
-
-\paragraph{The curvature form is required.}
-Everything rests on
-$\nabla^2F(\theta)=\E[\alpha\,\Psi\Psi^{\!\top}]$, which holds for generalised linear
-models, ridge and softmax regression, the geometric median and Gauss--Newton problems, but
-not for a general objective. Without it there is no rank-one recursion and no
-inversion-free update.
-
-\paragraph{Warm-up is a real requirement, not an implementation detail.}
-The $1/t$ schedule with a poor preconditioner leaves a slowly decaying component in the error.
-On the autoregressive design the effect is now mild --- with a negligible warm-up, coverage of
-nominal $95\%$ intervals is $\CovNoWarmup$ rather than $\CovBgsnArhom$ --- because the
-step-length safeguard absorbs most of what a bad preconditioner does. On the regime-switching
-design it is not mild: the relative variance is $\WarmMarkovFifty$ at $c_{\mathrm w}=50$ against
-$\WarmMarkovTwoHundred$ at $c_{\mathrm w}=200$ (\Cref{tab:ablation}(c$'$)). We give a scaling rule
-($c_{\mathrm w}d$ curvature updates, with $c_{\mathrm w}=200$ throughout) and show
-insensitivity above it, but this is a tuning constant, and the asymptotic theory is silent
-about it. What sets its size is not the number of observations but the number of effectively
-distinct design points they span: on a persistent regime-switching stream, $50d$ consecutive
-observations cover only about thirty regime visits, and the curvature estimate is still
-rank-starved (\Cref{tab:ablation}(c$'$)). The warm-up also has a cost consequence we state
-rather than bury: it performs $c_{\mathrm w}d$ rank-one updates at $O(d^2)$ each, so the total
-time is $O(dN+c_{\mathrm w}d^3)$ and the advertised $O(dN)$ only bites once
-$N\gtrsim c_{\mathrm w}d^2$. With $c_{\mathrm w}=200$ and $d=40$ that means
-$N\gtrsim3\times10^5$, so at the $N=2\times10^5$ of \Cref{tab:cost} the warm-up dominates the
-streaming pass for every $d\ge40$ we report, which is why that table separates the streaming
-count from the total.
-
-\paragraph{Blocking creates a stability condition, and our fix is not fully proved.}
-The contraction condition $\gamma_t\opnorm{\Hb^{-1}\Hh_t}<2$ is a consequence of blocking the
-gradient, so it is a cost of our construction and not of the method we build on. The step-length
-safeguard in \eqref{eq:step} removes the failure it causes, and \Cref{prop:shift} shows that on
-the event where the safeguard is eventually inactive it changes no asymptotic statement. What we
-do \emph{not} prove is that this event has probability one: the implication we establish runs
-from convergence to eventual inactivity, not back, because the safeguard factor depends on the
-current block's gradient and so is not predictable, which breaks the martingale structure the
-proofs use. \Cref{app:shift} says exactly what would close the gap --- an expanding-truncation
-construction \citep{kushner2003stochastic,andrieu2005stability}, or a predictable variant that
-caps using the previous block's amplification at an extra $O(d^2)$ per block --- and we did
-neither. Instead we report the activation counts, which are between $2$ and $7$ per run and flat
-in $N$ across every design and sample size in \Cref{tab:ablation,tab:hard}. Two further caveats.
-The condition itself comes from the linearised recursion \eqref{eq:err}, so it is a heuristic for
-non-quadratic objectives, exact only in the linear-model case. And $c_D$ is a tuning constant with a genuine failure mode:
-\Cref{tab:ablation}(i) shows it is irrelevant over a factor of sixteen on the designs that do not
-need the safeguard, but on the one that does, $c_D=4$ is too loose to prevent the blow-up. The
-asymptotic theory says nothing about it, and we have no rule for choosing it beyond the value that
-worked across our designs.
-
-\paragraph{The central limit theorem is proved for fixed $b$, and we recommend growing $b$.}
-\Cref{thm:clt} is unconditional at each fixed block length, but \Cref{thm:lrv} takes
-$b\asymp\log N$, so the interval we recommend sits in the triangular-array regime where our proof
-needs an extra hypothesis: that the finite random constants in \Cref{lem:series} are bounded in
-probability uniformly in $N$ along the sequence $b_N$. We state that hypothesis in
-\Cref{thm:clt} rather than hiding it, and we do not verify it. Closing the gap means redoing
-\Cref{lem:series} with constants explicit in $b$; the naive route --- bounding
-$\E\opnorm{H^{-1}-P_{t-1}}\norm{\eps_t}$ directly --- is the one the appendix shows loses a factor
-$T^{1/2}$, which is why Gordin's decomposition is there in the first place. Two things make us
-believe the composition is sound in practice rather than merely convenient: growing $b$ makes the
-block scores less dependent, not more, so the mechanism the constants come from is working in our
-favour; and coverage is flat in $b$ over $b\in[10,320]$ at $N=200{,}000$
-(\Cref{tab:ablation}(b)), which is the statement the two theorems need to compose.
-
-\paragraph{Rates and what we do not prove.}
-We give an almost sure rate and a central limit theorem, not a Berry--Esseen bound; the
-first-order Markovian literature has the latter for linear stochastic approximation
-\citep{samsonov2025statistical}, and we do not match it. We attain the semiparametric
-efficiency bound of \citet{li2023markovian} rather than establishing it. Our
-$\widetilde O(N^{-1/2})$ rate for $\Sft$ is not comparable to the minimax rate
-$\Theta(N^{-(1-a)/2})$ for Hessian-free covariance estimation from an iterate path
-\citep{ni2026online}, because we use more information (block gradients and a maintained
-curvature estimate) and because our step exponent is $a=1$, outside the range that bound is
-stated for. Within the Hessian-free class the bound is close to attained
-\citep{wei2026refining}, so the gap we report is about the information used, not about slack in
-their analysis. We make no claim of optimality within our own information set: we do not know
-the minimax rate for estimators that may use block gradients and a running curvature estimate.
-
-\paragraph{Scope of the empirical evidence.}
-All designs are convex $M$-estimation with $d\le160$ and $N\le4\times10^5$; there is no
-deep-learning experiment and the theory would not support one. The dependence in the
-simulated designs is stationary and geometrically decaying by construction. On the real
-streams we do not know the truth, which is why we run two protocols; the semi-synthetic
-protocol has an exact target but a synthetic (autoregressive) error process, and the fully
-real protocol has a real error process but a target that is itself estimated---we correct
-the nominal level for that exactly, but the correction assumes the segments are
-approximately exchangeable, which non-stationarity would violate. Neither protocol alone
-would be convincing; together they bracket the honest answer.
-
-\paragraph{One thing we deliberately do not claim.}
-Gapping improves the curvature estimate at matched cost (\Cref{prop:gap}, \RefGapFig{}),
-but the curvature estimate enters the limit distribution only through a rate, so the
-end-to-end effect on the point estimate and on coverage is second order and we could not
-measure it reliably. The case for gapping is that it is free, deterministic, and provably
-better than the randomised alternative---not that it changes the headline numbers.
+\begin{enumerate}[label=(L\arabic*),leftmargin=2.6em,itemsep=2pt,topsep=2pt]
+\item \textbf{Memory is $O(d^2)$, not $O(d)$.} The $O(dN)$ claim is about \emph{time}; for $d$ in the
+thousands memory is the binding constraint, and whether a block-gradient long-run covariance survives a
+sketched curvature representation is open.
+\item \textbf{Geometric mixing is a real restriction.} It is what buys $b\asymp\log N$; under algebraic
+mixing the admissible $b$ grows, and long-memory streams are outside the theory. The diagnostic $r_j$
+detects an inadequate $b$ but does not remove it, and we claim no automatic rule for choosing $b$.
+\item \textbf{$\Sft$ need not be positive semidefinite}, as for all flat-top and lugsail estimators
+\citep[Remark~5]{singh2025utility}; marginal intervals need only the scalars $u_j^{\!\top}\Sft u_j$, the
+documented fallback triggers on $\RealPsdFallback$ of coordinate-replicate pairs on the real streams and
+never in simulation, and a user who needs the full matrix must project it.
+\item \textbf{The curvature form is required.} It holds for generalised linear models, ridge and softmax
+regression, the geometric median and Gauss--Newton problems, but not for a general objective; without it
+there is no rank-one recursion.
+\item \textbf{The warm-up is a requirement, not an implementation detail}, and $c_{\mathrm w}$ is a
+tuning constant the asymptotic theory is silent about; what sets its size is the number of effectively
+distinct design points it spans, and it is why the honest time bound is $O(dN+c_{\mathrm w}d^3)$.
+\item \textbf{Blocking creates a stability condition, and our fix is not fully proved.}
+\Cref{prop:shift} holds on the event that the safeguard is eventually inactive, and we do not prove that
+event has probability one, because the safeguard is not predictable; we report activation counts instead
+($2$ to $7$ per run, flat in $N$). The condition itself comes from a linearisation, so it is exact only
+for linear models, and $c_D$ has a genuine failure mode on the one design that needs it.
+\item \textbf{The central limit theorem is proved for fixed $b$, and we recommend growing $b$.} At
+$b\asymp\log N$ the proof needs the constants of \Cref{lem:series} to be bounded in probability uniformly
+in $N$; we state that hypothesis in \Cref{thm:clt} rather than hide it, and we do not verify it.
+\item \textbf{Rates we do not prove.} We give an almost sure rate and a central limit theorem, not a
+Berry--Esseen bound \citep{samsonov2025statistical}; we attain the efficiency bound of
+\citet{li2023markovian} rather than establishing it; our rate is not comparable to the minimax rate for
+\emph{Hessian-free} covariance estimation from an iterate path \citep{ni2026online} because we use more
+information; and we claim no optimality within our own information set.
+\item \textbf{Scope of the evidence.} All designs are convex $M$-estimation with $d\le160$ and
+$N\le4\times10^5$; there is no deep-learning experiment and the theory would not support one. On the real
+streams we do not know the truth, which is why we run two protocols with complementary weaknesses.
+\item \textbf{One thing we deliberately do not claim.} Gapping improves the curvature estimate at matched
+cost, but curvature enters the limit law only through a rate, so the end-to-end effect on coverage is
+second order and we could not measure it reliably.
+\end{enumerate}

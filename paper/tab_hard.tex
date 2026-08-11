@@ -3,6 +3,7 @@
 \small
 \caption{\textbf{On the two designs whose point estimate has not converged, our interval tracks the infeasible oracle interval at every sample size} ($d=20$, $b=20$; $R$ decreases from 200 at the smallest $N$ to 150 at the largest, since what is being measured is the gap between the first two columns and a Monte Carlo standard error near $0.01$ is ample for it). \emph{ours} is \bgsn{}; \emph{oracle} uses the exact $H^{-1}SH^{-1}$ at the same iterate and is infeasible; \emph{blind} uses the i.i.d.\ plug-in. \emph{err} is the root-mean-square error divided by the efficient standard error, so $\mathrm{err}=1$ means the point estimate has reached the asymptotic regime, and \emph{clips} counts activations of the step-length safeguard out of $N/b$ blocks. At $N=200{,}000$ neither design is nominal because $\mathrm{err}>1$: the central limit theorem has not taken hold, which no variance estimator can repair. What our estimator is responsible for is the difference between the \emph{ours} and \emph{oracle} columns, and the largest such difference over both designs and all four sample sizes is $0.116$. The \emph{blind} column is the one that does not converge. Note that \emph{clips} does not grow with $N$, which is the empirical content of Proposition~\ref{prop:shift}.}
 \label{tab:hard}
+\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{%
 \begin{tabular}{lrccccr}
 \toprule
 design & $N$ & ours & oracle & blind & err & clips \\
@@ -16,4 +17,5 @@ Logistic & 100{,}000 & 0.736 & 0.852 & 0.537 & 1.33 & 2 \\
  & 500{,}000 & 0.857 & 0.893 & 0.669 & 1.19 & 2 \\
 \bottomrule
 \end{tabular}
+}
 \end{table}

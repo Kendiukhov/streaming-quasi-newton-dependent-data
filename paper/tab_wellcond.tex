@@ -3,6 +3,7 @@
 \small
 \caption{\textbf{A well-conditioned dependent design isolates the inference question} ($\Sigma_x=I$, so $\mathrm{cond}(H)=1.00$; otherwise identical to the AR-hom column of \Cref{tab:main}: $d=20$, $N=200{,}000$, $b=20$, $\kappa=2.92$, $R=300$). Here every point estimator is efficient (\emph{err} $\approx1$), so coverage is decided by the covariance estimate alone. Averaged SGD with our long-run variance is calibrated; the same estimator with the i.i.d.\ plug-in is not, by the factor $\sqrt{\kappa}=1.71$ in width that Proposition~\ref{prop:coverage} predicts. On the ill-conditioned designs of \Cref{tab:main} the first-order baselines cannot be read this way, because there their point estimates have not converged.}
 \label{tab:wellcond}
+\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{%
 \begin{tabular}{lccc}
 \toprule
 method & cov & w & err \\
@@ -18,4 +19,5 @@ AdaGrad + our long-run variance & \textbf{0.943} & 1.00 & 1.03 \\
 oracle variance \emph{(infeasible)} & \textbf{0.941} & 1.00 & 1.03 \\
 \bottomrule
 \end{tabular}
+}
 \end{table}

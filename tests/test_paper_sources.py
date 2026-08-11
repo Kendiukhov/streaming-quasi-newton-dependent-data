@@ -15,9 +15,15 @@ PAPER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "paper")
 # Every shared fragment: section bodies, the abstract and the figure blocks.  These are
 # \input by BOTH paper/main.tex (preprint) and submission/manuscript.tex (Information
 # Sciences), so a stray preamble or a macro used but never emitted breaks two documents.
+# Each long section is split into a core fragment, which the body includes, and a "_detail"
+# fragment, which the appendix includes; that is what keeps the main text inside its page
+# budget without dropping anything.  Both halves are checked here.
 SECTIONS = ["sec_intro.tex", "sec_setting.tex", "sec_theory.tex", "sec_lrv.tex",
             "sec_experiments.tex", "sec_related.tex", "sec_limits.tex",
             "sec_conclusions.tex", "sec_appendix.tex", "sec_appendix_exp.tex",
+            "sec_setting_detail.tex", "sec_theory_detail.tex",
+            "sec_experiments_detail.tex", "sec_related_detail.tex",
+            "sec_limits_detail.tex",
             "abstract.tex", "fig_coverage.tex", "fig_lrv.tex", "fig_lrvrate.tex",
             "fig_gap_cost.tex", "fig_ablation.tex", "fig_real.tex", "fig_hard.tex"]
 
@@ -41,7 +47,10 @@ def test_sections_are_nonempty():
     """
     FLOOR = {"abstract.tex": 900, "fig_coverage.tex": 600, "fig_lrv.tex": 600,
              "fig_lrvrate.tex": 600, "fig_gap_cost.tex": 900, "fig_ablation.tex": 500,
-             "fig_real.tex": 600, "fig_hard.tex": 600}
+             "fig_real.tex": 600, "fig_hard.tex": 600,
+             # the core fragments were cut to fit a 15-page main text; these floors are set
+             # just under their current sizes, so a truncating edit still trips the test
+             "sec_conclusions.tex": 2000, "sec_limits.tex": 3000, "sec_related.tex": 3500}
     for f in SECTIONS:
         n = len(open(os.path.join(PAPER, f)).read())
         floor = FLOOR.get(f, 1500)

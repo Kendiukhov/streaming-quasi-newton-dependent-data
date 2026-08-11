@@ -4,11 +4,13 @@
 \setlength{\tabcolsep}{4pt}
 \caption{\textbf{Real hourly streams.} Protocol A: real covariates, synthetic autoregressive errors whose coefficient equals the AR(1) coefficient of the real residuals, so the target and the long-run covariance are exact conditionally on the covariate path. Protocol B: fully real response, target the full-stream $M$-estimator; because that target is estimated from a superset of each segment, the correct nominal level for this comparison is $2\Phi(z_{0.025}/\sqrt{1-1/R})-1$, reported in the header. Traffic: $n=8000$ per segment, $b=40$. Air quality: $n=10000$ per segment, $b=50$, pooled over 12 monitoring sites.}
 \label{tab:real}
+\small
+\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{%
 \begin{tabular}{lcccc}
 \toprule
 & \multicolumn{2}{c}{traffic (I-94)} & \multicolumn{2}{c}{air quality (PM2.5)} \\
 \cmidrule(lr){2-3}\cmidrule(lr){4-5}
-method & A: exact truth & B: full-stream target & A: exact truth & B: full-stream target \\
+method & A & B & A & B \\
 \midrule
 \emph{nominal} & 0.950 & 0.976 & 0.950 & 0.994 \\
 \midrule
@@ -27,4 +29,5 @@ $R^2$ & \multicolumn{2}{c}{0.782} & \multicolumn{2}{c}{0.327} \\
 block-adequacy $r_j$ & 0.163 & 0.271 & 0.186 & 0.302 \\
 \bottomrule
 \end{tabular}
+}
 \end{table}

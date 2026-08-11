@@ -2,6 +2,9 @@
 
 \usepackage[margin=1.1in]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
+
+% Let a page finish short rather than push a stretched line past the bottom margin.
+\raggedbottom
 \usepackage[T1]{fontenc}
 \usepackage{newtxtext,newtxmath}
 \usepackage{microtype}
@@ -96,6 +99,17 @@
 \newcommand{\RefAblFig}{\Cref{fig:ablation}}
 
 % auto-generated numeric macros (experiments/make_tables.py)
+
+% A DOI that is allowed to break across lines.  \texttt{10.5281/...} inside \href cannot break and
+% ran 114pt into the margin; \url breaks after the slashes.
+\newcommand{\doi}[1]{\href{https://doi.org/#1}{\nolinkurl{#1}}}
+\newcommand{\file}[1]{\nolinkurl{#1}}   % a path that may break at its slashes
+% let long paths and DOIs break at more places than hyperref's default
+\Urlmuskip=0mu plus 1mu\relax
+\def\UrlBreaks{\do\/\do\-\do\_\do\.\do\:}
+
+
+
 \IfFileExists{numbers.tex}{\input{numbers}}{}
 
 \title{\bf Inference, Not Just Optimisation:\\
@@ -135,7 +149,6 @@ Streaming Inversion-Free Quasi-Newton Estimation\\ on Dependent Data Streams}
 
 \IfFileExists{tab_main.tex}{\input{tab_main}}{}
 
-\input{fig_lrv}
 
 \input{fig_lrvrate}
 
@@ -147,17 +160,11 @@ Streaming Inversion-Free Quasi-Newton Estimation\\ on Dependent Data Streams}
 
 \input{sec_experiments}
 
-\input{fig_hard}
 
-\IfFileExists{tab_hard.tex}{\input{tab_hard}}{}
 
-\IfFileExists{tab_wellcond.tex}{\input{tab_wellcond}}{}
 
-\IfFileExists{tab_real.tex}{\input{tab_real}}{}
 
-\IfFileExists{tab_ablation.tex}{\input{tab_ablation}}{}
 
-\IfFileExists{tab_cost.tex}{\input{tab_cost}}{}
 
 \section{Related work}
 \label{sec:related}
@@ -179,6 +186,14 @@ Streaming Inversion-Free Quasi-Newton Estimation\\ on Dependent Data Streams}
 \bibliography{refs}
 
 \appendix
+% Number appendix floats within their appendix (Table D.1, D.2, ... rather than continuing the
+% main-text counter, which leaves a "Table D.2" with no "Table D.1").
+\setcounter{figure}{0}\setcounter{table}{0}
+\makeatletter
+\@addtoreset{figure}{section}\@addtoreset{table}{section}
+\makeatother
+\renewcommand{\thefigure}{\Alph{section}.\arabic{figure}}
+\renewcommand{\thetable}{\Alph{section}.\arabic{table}}
 \input{sec_appendix}
 
 \end{document}
