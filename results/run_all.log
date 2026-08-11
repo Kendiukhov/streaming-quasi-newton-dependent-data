@@ -1,5 +1,16 @@
 [skip] exp0_critical_values.py (exp0_critical_values.json exists)
-[run ] exp3_lrv.py -> exp3_lrv.json
-[done] exp3_lrv.py rc=0 (202s, log: exp3_lrv.log)
+[skip] exp3_lrv.py (exp3_lrv.json exists)
 [skip] exp4_gapping.py (exp4_gapping.json exists)
-[run ] exp7_cost.py -> exp7_cost.json
+[skip] exp7_cost.py (exp7_cost.json exists)
+[skip] exp2_coverage_law.py (exp2_coverage_law.json exists)
+[skip] exp1_main.py (exp1_main.json exists)
+[skip] exp10_hard_design.py (exp10_hard_design.json exists)
+[run ] exp6_real.py -> exp6_real.json
+[done] exp6_real.py rc=0 (21s, log: exp6_real.log)
+[run ] exp5_ablations.py -> exp5_ablations.json
+[done] exp5_ablations.py rc=0 (583s, log: exp5_ablations.log)
+[run ] exp9_wellcond.py -> exp9_wellcond.json
+[done] exp9_wellcond.py rc=0 (28s, log: exp9_wellcond.log)
+[run ] exp8_lrv_rate.py -> exp8_lrv_rate.json
+[done] exp8_lrv_rate.py rc=0 (14s, log: exp8_lrv_rate.log)
+[all] finished

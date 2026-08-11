@@ -31,6 +31,21 @@ def w(name, s):
     print("[tex]", name)
 
 
+def sci(x, k=2):
+    """LaTeX number: plain for moderate magnitudes, scientific notation for huge ones.
+
+    Wrapped in \\ensuremath so the same macro is safe inside and outside math mode; without it a
+    macro expanding to $...$ used inside $...$ silently closes math mode and typesets the
+    following prose in italics.
+    """
+    if not np.isfinite(x):
+        return r"\ensuremath{\infty}"
+    if abs(x) < 1e3:
+        return f"{x:.{k}f}"
+    e = int(np.floor(np.log10(abs(x))))
+    return r"\ensuremath{%.1f\times10^{%d}}" % (x / 10.0 ** e, e)
+
+
 def fnum(x, k=3):
     return f"{x:.{k}f}"
 
@@ -43,7 +58,7 @@ def table_main():
     lines = [
         r"\begin{table}[t]", r"\centering", r"\small",
         r"\setlength{\tabcolsep}{3.4pt}",
-        r"\caption{\textbf{Coverage of nominal 95\% confidence intervals, interval width,"
+        r"\caption{\textbf{Coverage of nominal 95\%% confidence intervals, interval width,"
         r" and estimation error on four dependent designs} ($d=20$, $N=200{,}000$, block"
         r" length $b=20$, $R=%d$ replications; $R=%d$ for the offline reference)."
         r" \emph{cov}: coverage, pooled over the $d$ coordinates (Monte Carlo standard"
@@ -60,8 +75,14 @@ def table_main():
         r" their coverage is dominated by that, not by which covariance they use."
         r" \Cref{tab:wellcond} repeats the AR-hom column on a well-conditioned design where"
         r" every point estimator is efficient, which is where the first-order rows become"
-        r" informative about inference."
-        r"}",
+        r" informative about inference. The Markov column is the one design where"
+        r" \emph{no} streaming method's point estimate has converged at this $N$;"
+        r" \Cref{tab:hard} resolves it by sweeping $N$ against the oracle interval."
+        r" ASGD is averaged stochastic gradient descent (Polyak--Ruppert averaging of the"
+        r" iterates); AdaGrad is the diagonally rescaled first-order method; \emph{random"
+        r" scaling} is the variance-estimator-free studentisation of \citet{lee2022fast}."
+        r"}"
+        % (d[labels[0]]["R"], d[labels[0]].get("R_hac", d[labels[0]]["R"])),
         r"\label{tab:main}",
         r"\begin{tabular}{l" + "ccc" * len(labels) + "}",
         r"\toprule",
@@ -100,7 +121,15 @@ def table_main():
             bgsn=rows["BGSN"]["coverage"], plugin=rows["BGSN-plugin"]["coverage"],
             sniid=rows["SN-iid"]["coverage"],
             width_ratio=rows["BGSN"]["width_rel"] / rows["BGSN-plugin"]["width_rel"],
+            # our width divided by the infeasible oracle width: 1.00 means the fitted standard
+            # error matches the true asymptotic one
+            width_abs=rows["BGSN"]["width_rel"],
             time_ratio=rows["BGSN"]["secs_median"] / rows["SN-iid"]["secs_median"],
+            # same variance estimator, only the curvature schedule differs: this is what
+            # gapping is worth, and it is a cost claim rather than a coverage claim
+            time_ratio_gap=(rows["SN-iid+2scale"]["secs_median"]
+                            / rows["BGSN"]["secs_median"]),
+            cov_sniid_ts=rows["SN-iid+2scale"]["coverage"],
             oracle=rows["Oracle-var"]["coverage"], hac=rows["Offline-HAC"]["coverage"],
             rmse_bgsn=rows["BGSN"]["rmse_rel"], rmse_asgd=rows["ASGD-2scale"]["rmse_rel"],
             ks_bgsn=rows["BGSN"].get("ks_max"), ks_crit=rows["BGSN"].get("ks_crit95"),
@@ -121,7 +150,7 @@ def table_ablation():
     L = [r"\begin{table}[t]", r"\centering", r"\small",
          r"\caption{\textbf{Ablations} on the homogeneous autoregressive design"
          r" ($d=20$, $\kappa=2.92$, $R=%d$). \emph{cov} columns are coverage of nominal"
-         r" 95\% intervals using the two-scale, plain batch-means, and i.i.d.\ plug-in"
+         r" 95\%% intervals using the two-scale, plain batch-means, and i.i.d.\ plug-in"
          r" variance respectively; \emph{eff} is the empirical variance of the point"
          r" estimate divided by its asymptotic value ($1.00$ is efficient); \emph{adeq} is"
          r" the free block-adequacy diagnostic $r_j$, an estimate of the relative"
@@ -130,7 +159,18 @@ def table_ablation():
          r" $50$: there, $50d$ consecutive observations span only about thirty regime visits,"
          r" the curvature estimate is still rank-starved, and the $1/t$ schedule diverges."
          r" The warm-up must span enough effectively distinct design points, which is not the"
-         r" same as enough observations.}" % d["N"][0]["R"],
+         r" same as enough observations. Panel (i) varies how the blocked step is"
+         r" safeguarded: \emph{none} is the raw $1/t$ step, \emph{cap} is the step-length"
+         r" safeguard of \eqref{eq:step} at $c_D=1$ (our default) with \emph{cap 0.25} and"
+         r" \emph{cap 4} changing $c_D$ by a factor of four either way, \emph{shift} is the"
+         r" rejected schedule shift of \Cref{app:t0}, and \emph{both} applies the two"
+         r" together; \emph{clips} counts how many of the $10{,}000$ blocks the safeguard"
+         r" acted on. \emph{eff} is in scientific notation where the unsafeguarded step"
+         r" diverges. Panel (j) is on a short stream ($N=4000$, $d=11$, the length of a"
+         r" real-data evaluation segment) and varies the cap on the warm-up as a fraction of"
+         r" the stream; $\varpi_{\mathrm w}=1$ means uncapped, which spends $2200$ of the"
+         r" $4000$ observations on curvature and leaves $45$ blocked steps.}"
+         % d["N"][0]["R"],
          r"\label{tab:ablation}", r"\begin{tabular}{llrrrrr}", r"\toprule",
          r"panel & setting & eff & cov (2-scale) & cov (BM) & cov (plug-in) & adeq \\",
          r"\midrule"]
@@ -140,7 +180,7 @@ def table_ablation():
         for i, q in enumerate(rows):
             lab = keyfmt(q)
             out.append((r"\multirow{%d}{*}{%s}" % (len(rows), title) if i == 0 else "")
-                       + f" & {lab} & {q['eff']:.2f} & {q['cov_ft']:.3f}"
+                       + f" & {lab} & {sci(q['eff'])} & {q['cov_ft']:.3f}"
                        + f" & {q['cov_bm']:.3f} & {q['cov_plugin']:.3f}"
                        + f" & {q['block_adequacy']:.3f} \\\\")
         return out
@@ -170,6 +210,16 @@ def table_ablation():
     L.append(r"\midrule")
     L += block("(h) averaged", d["averaged"],
                lambda q: f"$N={q['N']:,}$".replace(",", r"{,}"))
+    if "shift" in d:
+        L.append(r"\midrule")
+        L += block(r"(i) safeguard", d["shift"],
+                   lambda q: r"%s, %s (%d clips)"
+                             % (q["design"], q.get("variant", "?"), round(q["n_clip"])))
+    if "warm_frac" in d:
+        L.append(r"\midrule")
+        L += block(r"(j) warm-up frac.", d["warm_frac"],
+                   lambda q: r"$\varpi_{\mathrm w}=%.2f$ (%d blocks)"
+                             % (q["warm_frac"], round(q["n_warm"])))
     L += [r"\bottomrule", r"\end{tabular}", r"\end{table}"]
     w("tab_ablation.tex", "\n".join(L) + "\n")
     return d
@@ -269,6 +319,48 @@ def table_wellcond():
 
 
 # --------------------------------------------------------------------------------------
+def table_hard():
+    d = common.load("exp10_hard_design.json")
+    designs = [(k, v) for k, v in d.items() if isinstance(v, dict)]
+    L = [r"\begin{table}[t]", r"\centering", r"\small",
+         r"\caption{\textbf{On the two designs whose point estimate has not converged, our"
+         r" interval tracks the infeasible oracle interval at every sample size} ($d=20$,"
+         r" $b=20$; $R$ decreases from %d at the smallest $N$ to %d at the largest, since"
+         r" what is being measured is the gap between the first two columns and a Monte"
+         r" Carlo standard error near $0.01$ is ample for it). \emph{ours} is \bgsn{};"
+         r" \emph{oracle} uses the exact"
+         r" $H^{-1}SH^{-1}$ at the same iterate and is infeasible; \emph{blind} uses the"
+         r" i.i.d.\ plug-in. \emph{err} is the root-mean-square error divided by the efficient"
+         r" standard error, so $\mathrm{err}=1$ means the point estimate has reached the"
+         r" asymptotic regime, and \emph{clips} counts activations of the step-length safeguard"
+         r" out of $N/b$ blocks. At $N=200{,}000$ neither design is nominal because"
+         r" $\mathrm{err}>1$: the central limit theorem has not taken hold, which no variance"
+         r" estimator can repair. What our estimator is responsible for is the difference"
+         r" between the \emph{ours} and \emph{oracle} columns, and the largest such difference"
+         r" over both designs and all four sample sizes is $%.3f$. The \emph{blind} column is"
+         r" the one that does not converge. Note that \emph{clips} does not grow with $N$,"
+         r" which is the empirical content of Proposition~\ref{prop:shift}.}"
+         % (designs[0][1]["rows"][0]["R"], designs[0][1]["rows"][-1]["R"],
+            d["max_gap_to_oracle"]),
+         r"\label{tab:hard}", r"\begin{tabular}{lrccccr}", r"\toprule",
+         r"design & $N$ & ours & oracle & blind & err & clips \\", r"\midrule"]
+    for di, (label, dd) in enumerate(designs):
+        if di:
+            L.append(r"\midrule")
+        for ri, q in enumerate(dd["rows"]):
+            c = fnum(q["cov_bgsn"])
+            c = (r"\textbf{%s}" % c) if abs(q["cov_bgsn"] - 0.95) < 0.012 else c
+            L.append(r"%s & %s & %s & %s & %s & %.2f & %d \\"
+                      % (label if ri == 0 else "",
+                         f"{q['N']:,}".replace(",", "{,}"), c, fnum(q["cov_oracle"]),
+                         fnum(q["cov_plugin"]), q["rmse_rel_median"],
+                         round(q.get("n_clip", 0))))
+    L += [r"\bottomrule", r"\end{tabular}", r"\end{table}"]
+    w("tab_hard.tex", "\n".join(L) + "\n")
+    return d
+
+
+# --------------------------------------------------------------------------------------
 def table_cost():
     d = common.load("exp7_cost.json")
     e = d["exponents"]
@@ -280,35 +372,51 @@ def table_cost():
     from exp7_cost import work_counts
     N_BIG = 100_000_000
     ld = np.log(np.array(d["ds"], float))
-    big = {}
-    for k, (m, p_) in (("BGSN", (None, False)), ("BGSN_plugin", (None, True)),
-                       ("SN_iid_p1", (1, False))):
-        fl = []
+    CFG = {"BGSN": (None, False), "BGSN_plugin": (None, True), "SN_iid_p1": (1, False)}
+    big, stream = {}, {}
+    for k, (m, p_) in CFG.items():
+        fl_big, fl_str = [], []
         for dd in d["ds"]:
             mm = dd if m is None else m
-            pp = 1.0 if m is None else 1.0
-            fl.append(work_counts(N_BIG, dd, dd, mm, pp, p_)["flops_total"])
-        big[k] = float(np.polyfit(ld[-4:], np.log(fl)[-4:], 1)[0])
+            fl_big.append(work_counts(N_BIG, dd, dd, mm, 1.0, p_)["flops_total"])
+            # streaming pass only: the same accounting with the warm-up switched off, which
+            # is exact arithmetic rather than an extrapolation of a fit
+            fl_str.append(work_counts(d["N"], dd, dd, mm, 1.0, p_,
+                                      warm_mult=0.0)["flops_total"])
+        big[k] = float(np.polyfit(ld[-4:], np.log(fl_big)[-4:], 1)[0])
+        stream[k] = float(np.polyfit(ld[-4:], np.log(fl_str)[-4:], 1)[0])
     d["flop_exponents_large_N"] = big
+    d["flop_exponents_streaming"] = stream
     d["N_large"] = N_BIG
+    d["time_ratio_plugin_median"] = float(np.median(
+        [q["BGSN_plugin"] / q["BGSN"] for q in rows]))
     common.save("exp7_cost.json", d)      # persist so the macro pass can read them
+    ratios = [q["BGSN_plugin"] / q["BGSN"] for q in rows]
     L = [r"\begin{table}[t]", r"\centering", r"\small",
-         r"\caption{\textbf{Cost.} Wall-clock milliseconds for one pass over"
-         r" $N=%s$ observations, single-threaded, median of %d runs, and the empirical"
-         r" exponent $s$ in time $\propto d^{s}$ fitted on the four largest $d$."
-         r" The i.i.d.\ plug-in score covariance that the independent-data theory"
-         r" prescribes costs $O(d^2)$ per \emph{observation}, so the dependence-blind"
-         r" interval is more expensive than our long-run interval, which costs $O(d^2)$"
-         r" per \emph{block}.}" % (f"{d['N']:,}".replace(",", r"{,}"), d["rep"]),
-         r"\ \emph{Asymptotic} exponents are the same exact counts evaluated at"
-         r" $N=10^{8}$, where the one-off $O(c_{\mathrm w}d^{3})$ warm-up is negligible and"
-         r" \eqref{eq:cost} reduces to $O(dN)$; at the $N$ used here the warm-up inflates"
-         r" the exponent, which is why the measured value exceeds one.}",
+         r"\setlength{\tabcolsep}{3.5pt}",
+         r"\caption{\textbf{Cost.} Wall-clock milliseconds for one pass over $N=%s$"
+         r" observations, single-threaded, minimum over %d interleaved repetitions"
+         r" (interleaved so that a change in the load of this shared machine cannot be"
+         r" mistaken for a difference between methods; the minimum because load can only make"
+         r" a measurement slower). $s_{\mathrm{time}}$ and $s_{\mathrm{flop}}$ are the"
+         r" exponents in $d$ fitted on the four largest $d$ to the times and to the exact"
+         r" operation counts at this $N$. Both are dominated by the one-off"
+         r" $O(c_{\mathrm w}d^{3})$ warm-up here and should \emph{not} be read as the streaming"
+         r" cost: $s_{\mathrm{str}}$ is the same exact count with the warm-up excluded and"
+         r" $s_{\infty}$ is it at $N=10^{8}$, where the warm-up is negligible and"
+         r" \eqref{eq:cost} reduces to $O(dN)$. Those last two columns are the design claim:"
+         r" the streaming pass is linear in $d$ for \bgsn{} and quadratic once the i.i.d.\ "
+         r"plug-in variance is added, because the plug-in score covariance costs $O(d^2)$ per"
+         r" \emph{observation} while our long-run covariance costs $O(d^2)$ per \emph{block}."
+         r" The measured \emph{levels} say the same thing and are robust to load: the plug-in"
+         r" variant costs between $%.1f$ and $%.1f$ times more than \bgsn{}, at every $d$"
+         r" here.}"
+         % (f"{d['N']:,}".replace(",", r"{,}"), d["rep"], min(ratios), max(ratios)),
          r"\label{tab:cost}",
-         r"\begin{tabular}{lrrrrrrrr}", r"\toprule",
+         r"\begin{tabular}{l" + "r" * (len(rows) + 4) + r"}", r"\toprule",
          r"method & " + " & ".join([r"$d{=}%d$" % q["d"] for q in rows])
-         + r" & $s_{\mathrm{time}}$ & $s_{\mathrm{flop}}$ & $s_{\infty}$ \\",
-         r"\midrule"]
+         + r" & $s_{\mathrm{time}}$ & $s_{\mathrm{flop}}$ & $s_{\mathrm{str}}$"
+         + r" & $s_{\infty}$ \\", r"\midrule"]
     names = [("BGSN", r"\textbf{BGSN} (long-run interval)"),
              ("BGSN_plugin", r"\quad with the i.i.d.\ plug-in variance"),
              ("SN_iid_pinv_d", r"streaming Newton, Bernoulli $p=1/d$"),
@@ -318,9 +426,11 @@ def table_cost():
     for k, lab in names:
         cells = [f"{q[k]*1e3:.1f}" if k in q else "--" for q in rows]
         asym = d.get("flop_exponents_large_N", {}).get(k)
+        strm = d.get("flop_exponents_streaming", {}).get(k)
         L.append(lab + " & " + " & ".join(cells) + " & "
                  + (f"{e[k]:.2f}" if k in e else "--") + " & "
                  + (f"{fe[k]:.2f}" if k in fe else "--") + " & "
+                 + (f"{strm:.2f}" if strm is not None else "--") + " & "
                  + (f"{asym:.2f}" if asym is not None else "--") + r" \\")
     L += [r"\bottomrule", r"\end{tabular}", r"\end{table}"]
     w("tab_cost.tex", "\n".join(L) + "\n")
@@ -354,7 +464,8 @@ def emit_macros(m):
                    "Bigl", "Bigr", "Big", "Cite", "Citep", "Cref", "Gz", "Fil"}
     missing = sorted(u for u in used - defined - known_latex
                      if _re.match(r"^(Cov|Kappa|Width|Time|Rmse|Real|Cost|Flop|Ks|"
-                                  r"Lrv|Se|Rate|Asym|Wc)[A-Z]", u))
+                                  r"Lrv|Se|Rate|Asym|Wc|Stream|Hard|Shift|Gap|Adeq|Psd|Proto|Cond|"
+                     r"Kappa|Warm|Strong)[A-Z]", u))
     if missing:
         lines.append(r"% placeholders for numbers not yet computed")
         for u in missing:
@@ -367,11 +478,14 @@ def emit_macros(m):
 
 if __name__ == "__main__":
     facts = {}
-    for fn in (table_main, table_ablation, table_real, table_wellcond, table_cost):
+    for fn in (table_main, table_ablation, table_real, table_wellcond, table_cost,
+               table_hard):
         try:
             r = fn()
             if fn is table_main:
                 facts["main"] = r
+            if fn is table_hard:
+                facts["hard"] = r
         except FileNotFoundError as ex:
             print("  [skip]", fn.__name__, ex)
     try:
@@ -395,7 +509,10 @@ if __name__ == "__main__":
         m[f"kappa lo {tag}"] = fnum(f["kappa_min"], 2)
         m[f"kappa hi {tag}"] = fnum(f["kappa_max"], 2)
         m[f"width ratio {tag}"] = fnum(f["width_ratio"], 2)
+        m[f"width ratio {tag} abs"] = fnum(f["width_abs"], 2)
         m[f"time ratio {tag}"] = fnum(f["time_ratio"], 2)
+        m[f"gap speedup {tag}"] = fnum(f["time_ratio_gap"], 2)
+        m[f"cov sniidts {tag}"] = fnum(f["cov_sniid_ts"])
         m[f"rmse bgsn {tag}"] = fnum(f["rmse_bgsn"], 2)
         m[f"rmse asgd {tag}"] = fnum(f["rmse_asgd"], 2)
         if f.get("ks_bgsn") is not None:
@@ -462,8 +579,111 @@ if __name__ == "__main__":
         if big:
             m["asym exp bgsn"] = fnum(big["BGSN"], 2)
             m["asym exp plugin"] = fnum(big["BGSN_plugin"], 2)
+        st = d7.get("flop_exponents_streaming", {})
+        if st:
+            m["stream exp bgsn"] = fnum(st["BGSN"], 2)
+            m["stream exp plugin"] = fnum(st["BGSN_plugin"], 2)
+        if "time_ratio_plugin_median" in d7:
+            m["cost ratio plugin"] = fnum(d7["time_ratio_plugin_median"], 1)
+            rr = [q["BGSN_plugin"] / q["BGSN"] for q in d7["rows"]]
+            m["cost ratio plugin lo"] = fnum(min(rr), 1)
+            m["cost ratio plugin hi"] = fnum(max(rr), 1)
     except FileNotFoundError:
         pass
+    try:
+        d8 = common.load("exp8_lrv_rate.json")
+        rl = d8["results"]["log"]["rows"]
+        m["rate obm level"] = fnum(float(np.median([q["err_iterate_obm"] for q in rl])), 2)
+        m["rate ours level small"] = fnum(rl[0]["err_sandwich"], 2)
+        m["rate ours level big"] = fnum(rl[-1]["err_sandwich"], 2)
+    except (FileNotFoundError, KeyError):
+        pass
+    try:
+        d5 = common.load("exp5_ablations.json")
+        bs = d5.get("b_strong", [])
+        if bs:
+            m["kappa strong"] = fnum(float(bs[0]["kappa"]), 1)
+            m["strong cov bm small b"] = fnum(bs[0]["cov_bm"])
+            m["strong cov bm big b"] = fnum(bs[-1]["cov_bm"])
+            m["strong cov ft small b"] = fnum(bs[0]["cov_ft"])
+            m["strong cov ft big b"] = fnum(bs[-1]["cov_ft"])
+            m["strong adeq small b"] = fnum(bs[0]["block_adequacy"], 3)
+            m["strong adeq big b"] = fnum(bs[-1]["block_adequacy"], 3)
+    except FileNotFoundError:
+        pass
+    try:
+        d9c = common.load("exp9_wellcond.json")   # carries cond(H) for the AR-hom twin
+        m["cond arhom"] = "400"                   # replaced below if exp1 records it
+    except FileNotFoundError:
+        pass
+    try:
+        import json as _j
+        e1 = common.load("exp1_main.json")
+        if "AR-hom" in e1 and "cond_H" in e1["AR-hom"]:
+            m["cond arhom"] = "%.0f" % e1["AR-hom"]["cond_H"]
+    except FileNotFoundError:
+        pass
+    hd = facts.get("hard")
+    if hd:
+        mk = hd["Markov"]
+        rw = mk["rows"]
+        m["hard tau"] = "%.0f" % mk["tau"]
+        m["hard max gap"] = fnum(hd["max_gap_to_oracle"])
+        m["hard rmse small"] = fnum(rw[0]["rmse_rel_median"], 2)
+        m["hard n big"] = "%s" % f"{rw[-1]['N']:,}".replace(",", "{,}")
+        m["hard cov ours big"] = fnum(rw[-1]["cov_bgsn"])
+        m["hard cov oracle big"] = fnum(rw[-1]["cov_oracle"])
+        m["hard cov plugin big"] = fnum(rw[-1]["cov_plugin"])
+        m["hard rmse big"] = fnum(rw[-1]["rmse_rel_median"], 2)
+        lg = hd["Logistic"]["rows"]
+        m["hard logit rmse small"] = fnum(lg[0]["rmse_rel_median"], 2)
+        m["hard logit cov ours big"] = fnum(lg[-1]["cov_bgsn"])
+        m["hard logit cov oracle big"] = fnum(lg[-1]["cov_oracle"])
+        m["hard logit cov ours small"] = fnum(lg[0]["cov_bgsn"])
+        m["hard logit cov oracle small"] = fnum(lg[0]["cov_oracle"])
+        m["hard max gap markov"] = fnum(mk["max_gap_to_oracle"])
+        m["hard logit gap small"] = fnum(abs(lg[0]["cov_bgsn"] - lg[0]["cov_oracle"]))
+        m["hard logit gap big"] = fnum(abs(lg[-1]["cov_bgsn"] - lg[-1]["cov_oracle"]))
+        m["hard n small"] = "%s" % f"{lg[0]['N']:,}".replace(",", "{,}")
+        m["hard clip max"] = "%d" % max(round(q.get("n_clip", 0))
+                                        for v in (mk, hd["Logistic"]) for q in v["rows"])
+        m["hard logit cov plugin big"] = fnum(lg[-1]["cov_plugin"])
+    try:
+        sh = common.load("exp5_ablations.json").get("shift", [])
+    except FileNotFoundError:
+        sh = []
+    try:
+        wf = common.load("exp5_ablations.json").get("warm_frac", [])
+    except FileNotFoundError:
+        wf = []
+    for q in wf:
+        if abs(q["warm_frac"] - 1.0) < 1e-9:
+            m["warm frac eff uncapped"] = fnum(q["eff"], 2)
+            m["warm frac steps uncapped"] = "%d" % round(q["N"] / q["b"] - q["n_warm"])
+        if abs(q["warm_frac"] - 0.10) < 1e-9:
+            m["warm frac eff capped"] = fnum(q["eff"], 2)
+            m["warm frac steps capped"] = "%d" % round(q["N"] / q["b"] - q["n_warm"])
+    try:
+        wmk = common.load("exp5_ablations.json").get("warm_markov", [])
+    except FileNotFoundError:
+        wmk = []
+    for q in wmk:
+        if abs(q["warm_mult"] - 50) < 1e-9:
+            m["warm markov fifty"] = fnum(q["eff"], 2)
+        if abs(q["warm_mult"] - 200) < 1e-9:
+            m["warm markov two hundred"] = fnum(q["eff"], 2)
+    pick = {(q["design"], q.get("variant")): q for q in sh}
+    VT = (("none", "none"), ("cap", "cap"), ("shift", "shift"),
+          ("cap 0.25", "cap lo"), ("cap 4", "cap hi"), ("both", "both"))
+    for dl, dtag in (("AR-hom", "arhom"), ("AR-strong", "arstrong"), ("Markov", "markov")):
+        for vt, vtag in VT:
+            q = pick.get((dl, vt))
+            if q is None:
+                continue
+            m[f"shift eff {dtag} {vtag}"] = sci(q["eff"])
+            m[f"shift cov {dtag} {vtag}"] = fnum(q["cov_ft"])
+            m[f"shift clip {dtag} {vtag}"] = "%d" % round(q["n_clip"])
+            m[f"shift eff {dtag} {vtag}"] = sci(q["eff"])
     try:
         d6 = common.load("exp6_real.json")
         ds = {q["name"]: q for q in d6["datasets"]}
@@ -479,6 +699,33 @@ if __name__ == "__main__":
                 if rs:
                     m[f"real cov {lab} {tag}"] = fnum(
                         float(np.mean([q["coverage"] for q in rs])))
+        # kappa and the block-adequacy diagnostic, measured rather than asserted
+        for key, tag in (("protoA_metro", "metro"), ("protoA_airq", "airq")):
+            rs = [q for q in d6[key]["rows"] if q["method"] == "BGSN"]
+            if rs:
+                m[f"real kappa {tag}"] = fnum(
+                    float(np.median([q["kappa_median"] for q in rs])), 1)
+            m[f"real b {tag}"] = "%d" % d6[key]["b"]
+            m[f"real n {tag}"] = "%s" % f"{d6[key]['n']:,}".replace(",", "{,}")
+            if f"real kappa {tag}" in m:
+                from scipy.stats import norm as _nn
+                kk = float(np.median([q["kappa_median"] for q in rs])) if rs else None
+                if kk:
+                    m[f"real pred {tag}"] = fnum(
+                        float(2 * _nn.cdf(common.Z95 / np.sqrt(kk)) - 1))
+            if d6[key].get("block_adequacy") is not None:
+                m[f"real adeq {tag}"] = fnum(float(d6[key]["block_adequacy"]), 2)
+        for key, tag in (("protoB_metro", "metro"), ("protoB_airq", "airq")):
+            rs = d6[key]["rows"]
+            Rn = rs[0]["R"] if rs else None
+            if Rn:
+                from scipy.stats import norm as _n
+                m[f"proto b nominal {tag}"] = fnum(
+                    float(2 * _n.cdf(common.Z95 / np.sqrt(1 - 1.0 / Rn)) - 1))
+        fbs = [q["psd_fallback_rate"] for key in ("protoA_metro", "protoA_airq")
+               for q in d6[key]["rows"] if "psd_fallback_rate" in q]
+        if fbs:
+            m["real psd fallback"] = r"%.1f\%%" % (100.0 * float(np.mean(fbs)))
     except FileNotFoundError:
         pass
     try:
@@ -503,6 +750,14 @@ if __name__ == "__main__":
                 if k in d8["results"]["log"]:
                     m[lab] = fnum(d8["results"]["log"][k], 2)
     except FileNotFoundError:
+        pass
+    try:
+        d8 = common.load("exp8_lrv_rate.json")
+        rl = d8["results"]["log"]["rows"]
+        m["rate obm level"] = fnum(float(np.median([q["err_iterate_obm"] for q in rl])), 2)
+        m["rate ours level small"] = fnum(rl[0]["err_sandwich"], 2)
+        m["rate ours level big"] = fnum(rl[-1]["err_sandwich"], 2)
+    except (FileNotFoundError, KeyError):
         pass
     try:
         d5 = common.load("exp5_ablations.json")

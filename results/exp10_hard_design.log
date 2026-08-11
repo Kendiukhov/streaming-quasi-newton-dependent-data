@@ -1,0 +1,28 @@
+
+== markov_cov(K=21,stay=0.97,psi=0.8): kappa=7.55 cond(H)=400  integrated autocorrelation time=66
+  N=   100000  ours=0.884+-0.010  oracle-variance=0.867  dependence-blind=0.466  rmse/efficient=1.33  clips=8  (5s)
+  N=   200000  ours=0.881+-0.012  oracle-variance=0.880  dependence-blind=0.472  rmse/efficient=1.28  clips=8  (5s)
+ /Users/ihorkendiukhov/anaconda3/lib/python3.11/site-packages/joblib/externals/loky/backend/resource_tracker.py:359: UserWarning: resource_tracker: There appear to be 8 leaked semlock objects to clean up at shutdown
+  warnings.warn(
+/Users/ihorkendiukhov/anaconda3/lib/python3.11/site-packages/joblib/externals/loky/backend/resource_tracker.py:359: UserWarning: resource_tracker: There appear to be 4 leaked folder objects to clean up at shutdown
+  warnings.warn(
+/Users/ihorkendiukhov/anaconda3/lib/python3.11/site-packages/joblib/externals/loky/backend/resource_tracker.py:375: UserWarning: resource_tracker: /var/folders/fs/3bpxyfvs39l7nx7mvk4s1vlh0000gn/T/joblib_memmapping_folder_53440_feba43059f87493892e688fc46da958e_d52abe7061dc4c848ce30879e0d52c82: FileNotFoundError(2, 'No such file or directory')
+  warnings.warn(f"resource_tracker: {name}: {e!r}")
+/Users/ihorkendiukhov/anaconda3/lib/python3.11/site-packages/joblib/externals/loky/backend/resource_tracker.py:375: UserWarning: resource_tracker: /var/folders/fs/3bpxyfvs39l7nx7mvk4s1vlh0000gn/T/joblib_memmapping_folder_53440_feba43059f87493892e688fc46da958e_42f1b442f42b452f82373f69bb2db82c: FileNotFoundError(2, 'No such file or directory')
+  warnings.warn(f"resource_tracker: {name}: {e!r}")
+/Users/ihorkendiukhov/anaconda3/lib/python3.11/site-packages/joblib/externals/loky/backend/resource_tracker.py:375: UserWarning: resource_tracker: /var/folders/fs/3bpxyfvs39l7nx7mvk4s1vlh0000gn/T/joblib_memmapping_folder_53440_145de0be94654671a413ce1258a2cc7a_7d625e782f3f489493561120cbe15517: FileNotFoundError(2, 'No such file or directory')
+  warnings.warn(f"resource_tracker: {name}: {e!r}")
+/Users/ihorkendiukhov/anaconda3/lib/python3.11/site-packages/joblib/externals/loky/backend/resource_tracker.py:375: UserWarning: resource_tracker: /var/folders/fs/3bpxyfvs39l7nx7mvk4s1vlh0000gn/T/joblib_memmapping_folder_53440_145de0be94654671a413ce1258a2cc7a_44b859949ddb4c4c9db142a8772b88b5: FileNotFoundError(2, 'No such file or directory')
+  warnings.warn(f"resource_tracker: {name}: {e!r}")
+le or directory')
+  warnings.warn(f"resource_tracker: {name}: {e!r}")
+/Users/ihorkendiukhov/anaconda3/lib/python3.11/site-packages/joblib/externals/loky/backend/resource_tracker.py:375: UserWarning: resource_tracker: /var/folders/fs/3bpxyfvs39l7nx7mvk4s1vlh0000gn/T/joblib_memmapping_folder_50923_d6725ddc62194700a41ad7d1443ddf0b_67b6fa88dbf4438ca2f1ae9eb0aa8406: FileNotFoundError(2, 'No such file or directory')
+  warnings.warn(f"resource_tracker: {name}: {e!r}")
+/Users/ihorkendiukhov/anaconda3/lib/python3.11/site-packages/joblib/externals/loky/backend/resource_tracker.py:375: UserWarning: resource_tracker: /var/folders/fs/3bpxyfvs39l7nx7mvk4s1vlh0000gn/T/joblib_memmapping_folder_50923_92f6f7a780fb4a3d9036dcb8a0a145b7_ad7e0bb113a94cb2bf277c5c9f693629: FileNotFoundError(2, 'No such file or directory')
+  warnings.warn(f"resource_tracker: {name}: {e!r}")
+/Users/ihorkendiukhov/anaconda3/lib/python3.11/site-packages/joblib/externals/loky/backend/resource_tracker.py:375: UserWarning: resource_tracker: /var/folders/fs/3bpxyfvs39l7nx7mvk4s1vlh0000gn/T/joblib_memmapping_folder_50923_92f6f7a780fb4a3d9036dcb8a0a145b7_2264edf7136f42e1aa6abd2a3c05eea2: FileNotFoundError(2, 'No such file or directory')
+  warnings.warn(f"resource_tracker: {name}: {e!r}")
+/Users/ihorkendiukhov/anaconda3/lib/python3.11/site-packages/joblib/externals/loky/backend/resource_tracker.py:375: UserWarning: resource_tracker: /var/folders/fs/3bpxyfvs39l7nx7mvk4s1vlh0000gn/T/joblib_memmapping_folder_50923_325dff4cfd9b43b4a6b95e1aa81566ef_eb7ff31ea6904c7381e88e14528b12ac: FileNotFoundError(2, 'No such file or directory')
+  warnings.warn(f"resource_tracker: {name}: {e!r}")
+/Users/ihorkendiukhov/anaconda3/lib/python3.11/site-packages/joblib/externals/loky/backend/resource_tracker.py:375: UserWarning: resource_tracker: /var/folders/fs/3bpxyfvs39l7nx7mvk4s1vlh0000gn/T/joblib_memmapping_folder_50923_325dff4cfd9b43b4a6b95e1aa81566ef_9aa0a299711f44298e3a3f9948e46ba1: FileNotFoundError(2, 'No such file or directory')
+  warnings.warn(f"resource_tracker: {name}: {e!r}")

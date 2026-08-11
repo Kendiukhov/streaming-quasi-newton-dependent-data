@@ -1,0 +1,8 @@
+  q_0.80(|T|) = q_0.900(T): simulated 3.876 | KVB(2000)/LLSS Table 2: 3.890
+  q_0.90(|T|) = q_0.950(T): simulated 5.323 | KVB(2000)/LLSS Table 2: 5.374
+  q_0.95(|T|) = q_0.975(T): simulated 6.746 | KVB(2000)/LLSS Table 2: 6.811
+  q_0.98(|T|) = q_0.990(T): simulated 8.608 | KVB(2000)/LLSS Table 2: 8.544
+
+  two-sided 95% critical value = q_0.95(|T|) = q_0.975(T): simulated 6.746, published 6.811; we use the published value (6.811), which is the more conservative of the two.
+  (5.374 is q_0.95 of the SIGNED statistic = q_0.90(|T|), simulated 5.323: using it as a two-sided 95% value gives ~90% intervals.)
+[saved] /Volumes/Crucial X6/MacBook/Code/ml_papers/streaming_qn_dependent/experiments/../results/exp0_critical_values.json

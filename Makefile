@@ -27,7 +27,8 @@ test:
 
 exp: $(RES)/exp0_critical_values.json $(RES)/exp1_main.json $(RES)/exp2_coverage_law.json \
      $(RES)/exp3_lrv.json $(RES)/exp4_gapping.json $(RES)/exp5_ablations.json \
-     $(RES)/exp6_real.json $(RES)/exp7_cost.json $(RES)/exp8_lrv_rate.json $(RES)/exp9_wellcond.json
+     $(RES)/exp6_real.json $(RES)/exp7_cost.json $(RES)/exp8_lrv_rate.json \
+     $(RES)/exp9_wellcond.json $(RES)/exp10_hard_design.json
 
 $(RES)/exp%.json:
 	$(PY) -u $(EXP)/$(notdir $(basename $@))*.py 2>&1 | tee $(RES)/$(notdir $(basename $@)).log

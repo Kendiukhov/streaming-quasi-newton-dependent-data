@@ -22,6 +22,9 @@ DS = [5, 10, 20, 40, 80, 160]
 REP = int(os.environ.get("REP", 7))
 
 
+N_POW_ITER = 4          # power iterations per warm-up block in eq. (t0)
+
+
 def work_counts(N, d, b, m, p, plugin, warm_mult=200.0):
     """Exact, machine-independent operation counts for one pass.
 
@@ -32,19 +35,23 @@ def work_counts(N, d, b, m, p, plugin, warm_mult=200.0):
       preconditioned step: d^2 per block
       covariance         : 2 d^2 per block (batch-means and lag-one accumulators)
       i.i.d. plug-in     : d^2 per observation   <-- the term that is O(d^2 N)
+      stability shift    : n_pow * (2 d^2 + 4 d b) per warm-up block, once
     """
     T = N // b
     n_warm = int(np.ceil(warm_mult * d / b))
     n_curv = n_warm * b + max(T - n_warm, 0) * (b // m) * p
+    # eq. (t0): four power iterations per warm-up block, Hhat applied in factored form
+    flops_shift = N_POW_ITER * n_warm * (2.0 * d ** 2 + 4.0 * d * b)
     return dict(
         n_blocks=T, n_curv=float(n_curv),
         flops_grad=2.0 * N * d,
         flops_curv=3.0 * n_curv * d ** 2,
         flops_step=1.0 * T * d ** 2,
         flops_cov=2.0 * T * d ** 2,
+        flops_shift=flops_shift,
         flops_plugin=(1.0 * N * d ** 2 if plugin else 0.0),
         flops_total=(2.0 * N * d + 3.0 * n_curv * d ** 2 + 3.0 * T * d ** 2
-                     + (1.0 * N * d ** 2 if plugin else 0.0)))
+                     + flops_shift + (1.0 * N * d ** 2 if plugin else 0.0)))
 
 
 def time_interleaved(fns, rep=REP):

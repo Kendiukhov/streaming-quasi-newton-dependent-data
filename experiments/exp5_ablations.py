@@ -27,16 +27,19 @@ def mc(g, N, b, R=R, **kw):
                 np.sqrt(q(f.extras["S_bm"]) / Nu),
                 np.sqrt(q(f.extras["Gamma0_hat"]) / Nu),
                 f.extras["n_psd_fallback"] / max(len(f.theta), 1),
-                np.abs(np.diag(f.extras["S_ft"] - f.extras["S_bm"]))
-                / np.maximum(np.diag(f.extras["S_ft"]), 1e-30))
+                common.adequacy(f),
+                f.extras["t0"], f.extras["n_clip"], f.extras["n_warm"])
     out = Parallel(n_jobs=common.NJOBS, batch_size=3)(delayed(one)(s) for s in range(R))
     Em = np.array([o[0] for o in out])
     Nu = (N // b) * b
     V = np.diag(g.oracle.sandwich_true)
     res = dict(N=Nu, b=b, R=R,
+               t0=float(np.median([o[6] for o in out])),
+               n_clip=float(np.median([o[7] for o in out])),
+               n_warm=float(np.median([o[8] for o in out])),
                eff=float(np.mean(np.diag(Em.T @ Em / R * Nu) / V)),
                nonpsd=float(np.mean([o[4] for o in out])),
-               block_adequacy=float(np.mean([np.mean(o[5]) for o in out])))
+               block_adequacy=float(np.nanmean([o[5] for o in out])))
     for j, lab in ((1, "ft"), (2, "bm"), (3, "plugin")):
         Se = np.array([o[j] for o in out])
         res[f"cov_{lab}"] = float(np.mean(np.abs(Em) <= common.Z95 * Se))
@@ -82,8 +85,8 @@ if __name__ == "__main__":
 
     print("== (d) ridge constant and exponent (N = 200k) ==")
     out["ridge"] = []
-    for cr, cp in [(0.0, 0.4), (0.001, 0.4), (0.01, 0.4), (0.1, 0.4), (1.0, 0.4),
-                   (0.01, 0.1), (0.01, 0.25), (0.01, 0.49)]:
+    for cr, cp in [(0.0, 0.2), (0.001, 0.2), (0.01, 0.2), (0.1, 0.2), (1.0, 0.2),
+                   (0.01, 0.05), (0.01, 0.1), (0.01, 0.24), (0.01, 0.4), (0.01, 0.49)]:
         r = mc(g, 200_000, 20, ci_reg=cr, ci_pow=cp)
         r["ci_reg"], r["ci_pow"] = cr, cp; out["ridge"].append(r)
         print(f"  c_iota={cr:<6g} varrho={cp:<5g} eff={r['eff']:.3f} "
@@ -118,6 +121,29 @@ if __name__ == "__main__":
         print(f"  phi=psi=0.85 (kappa={r['kappa']:.2f}) b={b:4d} cov(2scale)={r['cov_ft']:.3f}"
               f" cov(BM)={r['cov_bm']:.3f} adequacy={r['block_adequacy']:.3f}"
               f" eff={r['eff']:.2f}")
+
+    print("== (i) safeguarding the blocked step: which device, and is it needed? ==")
+    out["shift"] = []
+    gm2 = DG.make_markov_cov(d=D, stay=0.97, psi=0.8, noise_scale=0.05)
+    VARIANTS = [("none", 0.0, 0.0), ("shift", 0.5, 0.0), ("cap", 0.0, 1.0),
+                ("cap 0.25", 0.0, 0.25), ("cap 4", 0.0, 4.0), ("both", 0.5, 1.0)]
+    for lab, gg, R_ in (("AR-hom", g, R), ("AR-strong", g2, R), ("Markov", gm2, 120)):
+        for vtag, t0m, cap in VARIANTS:
+            r = mc(gg, 200_000, 20, R=R_, t0_mult=t0m, step_cap=cap)
+            r["t0_mult"], r["step_cap"] = t0m, cap
+            r["variant"], r["design"] = vtag, lab
+            out["shift"].append(r)
+            print(f"  {lab:9s} {vtag:9s} t0={r['t0']:7.1f} clip={r['n_clip']:5.1f} "
+                  f"eff={r['eff']:.4g} cov(2scale)={r['cov_ft']:.3f}", flush=True)
+
+    print("== (j) warm-up as a fraction of a SHORT stream (N = 4000, d = 11) ==")
+    out["warm_frac"] = []
+    g11 = DG.make_lin_hom(d=11, phi=0.75, psi=0.75)
+    for wf in [0.02, 0.05, 0.10, 0.25, 1.0]:
+        r = mc(g11, 4_000, 40, R=R, warm_frac=wf)
+        r["warm_frac"] = wf; out["warm_frac"].append(r)
+        print(f"  warm_frac={wf:.2f} warm_blocks={r['n_warm']:4.0f} eff={r['eff']:.4g} "
+              f"cov(2scale)={r['cov_ft']:.3f}", flush=True)
 
     print("== (g) averaged variant (N sweep) ==")
     out["averaged"] = []

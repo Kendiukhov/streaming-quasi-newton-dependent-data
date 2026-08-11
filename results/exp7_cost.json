@@ -1,0 +1,379 @@
+{
+ "N": 200000,
+ "ds": [
+  5,
+  10,
+  20,
+  40,
+  80,
+  160
+ ],
+ "rep": 7,
+ "rows": [
+  {
+   "d": 5,
+   "N": 200000,
+   "b": 5,
+   "BGSN": 0.0074437090079300106,
+   "BGSN_plugin": 0.010213250003289431,
+   "SN_iid_p1": 0.020571541012031958,
+   "SN_iid_pinv_d": 0.009416124987183139,
+   "ASGD": 0.004224125004839152,
+   "OfflineHAC_L100": 0.1510675839963369,
+   "work": {
+    "BGSN": {
+     "n_blocks": 40000,
+     "n_curv": 40800.0,
+     "flops_grad": 2000000.0,
+     "flops_curv": 3060000.0,
+     "flops_step": 1000000.0,
+     "flops_cov": 2000000.0,
+     "flops_shift": 120000.0,
+     "flops_plugin": 0.0,
+     "flops_total": 8180000.0
+    },
+    "BGSN_plugin": {
+     "n_blocks": 40000,
+     "n_curv": 40800.0,
+     "flops_grad": 2000000.0,
+     "flops_curv": 3060000.0,
+     "flops_step": 1000000.0,
+     "flops_cov": 2000000.0,
+     "flops_shift": 120000.0,
+     "flops_plugin": 5000000.0,
+     "flops_total": 13180000.0
+    },
+    "SN_iid_p1": {
+     "n_blocks": 40000,
+     "n_curv": 200000.0,
+     "flops_grad": 2000000.0,
+     "flops_curv": 15000000.0,
+     "flops_step": 1000000.0,
+     "flops_cov": 2000000.0,
+     "flops_shift": 120000.0,
+     "flops_plugin": 0.0,
+     "flops_total": 20120000.0
+    },
+    "SN_iid_pinv_d": {
+     "n_blocks": 40000,
+     "n_curv": 40800.0,
+     "flops_grad": 2000000.0,
+     "flops_curv": 3060000.0,
+     "flops_step": 1000000.0,
+     "flops_cov": 2000000.0,
+     "flops_shift": 120000.0,
+     "flops_plugin": 0.0,
+     "flops_total": 8180000.0
+    }
+   }
+  },
+  {
+   "d": 10,
+   "N": 200000,
+   "b": 10,
+   "BGSN": 0.006236666988115758,
+   "BGSN_plugin": 0.010887540993280709,
+   "SN_iid_p1": 0.028774915990652516,
+   "SN_iid_pinv_d": 0.00771883298875764,
+   "ASGD": 0.0034824169997591525,
+   "OfflineHAC_L100": 0.2631606670038309,
+   "work": {
+    "BGSN": {
+     "n_blocks": 20000,
+     "n_curv": 21800.0,
+     "flops_grad": 4000000.0,
+     "flops_curv": 6540000.0,
+     "flops_step": 2000000.0,
+     "flops_cov": 4000000.0,
+     "flops_shift": 480000.0,
+     "flops_plugin": 0.0,
+     "flops_total": 17020000.0
+    },
+    "BGSN_plugin": {
+     "n_blocks": 20000,
+     "n_curv": 21800.0,
+     "flops_grad": 4000000.0,
+     "flops_curv": 6540000.0,
+     "flops_step": 2000000.0,
+     "flops_cov": 4000000.0,
+     "flops_shift": 480000.0,
+     "flops_plugin": 20000000.0,
+     "flops_total": 37020000.0
+    },
+    "SN_iid_p1": {
+     "n_blocks": 20000,
+     "n_curv": 200000.0,
+     "flops_grad": 4000000.0,
+     "flops_curv": 60000000.0,
+     "flops_step": 2000000.0,
+     "flops_cov": 4000000.0,
+     "flops_shift": 480000.0,
+     "flops_plugin": 0.0,
+     "flops_total": 70480000.0
+    },
+    "SN_iid_pinv_d": {
+     "n_blocks": 20000,
+     "n_curv": 21800.0,
+     "flops_grad": 4000000.0,
+     "flops_curv": 6540000.0,
+     "flops_step": 2000000.0,
+     "flops_cov": 4000000.0,
+     "flops_shift": 480000.0,
+     "flops_plugin": 0.0,
+     "flops_total": 17020000.0
+    }
+   }
+  },
+  {
+   "d": 20,
+   "N": 200000,
+   "b": 20,
+   "BGSN": 0.010316750005586073,
+   "BGSN_plugin": 0.03178129199659452,
+   "SN_iid_p1": 0.07839383400278166,
+   "SN_iid_pinv_d": 0.011216958024306223,
+   "ASGD": 0.005538249999517575,
+   "OfflineHAC_L100": 0.6040733749978244,
+   "work": {
+    "BGSN": {
+     "n_blocks": 10000,
+     "n_curv": 13800.0,
+     "flops_grad": 8000000.0,
+     "flops_curv": 16560000.0,
+     "flops_step": 4000000.0,
+     "flops_cov": 8000000.0,
+     "flops_shift": 1920000.0,
+     "flops_plugin": 0.0,
+     "flops_total": 38480000.0
+    },
+    "BGSN_plugin": {
+     "n_blocks": 10000,
+     "n_curv": 13800.0,
+     "flops_grad": 8000000.0,
+     "flops_curv": 16560000.0,
+     "flops_step": 4000000.0,
+     "flops_cov": 8000000.0,
+     "flops_shift": 1920000.0,
+     "flops_plugin": 80000000.0,
+     "flops_total": 118480000.0
+    },
+    "SN_iid_p1": {
+     "n_blocks": 10000,
+     "n_curv": 200000.0,
+     "flops_grad": 8000000.0,
+     "flops_curv": 240000000.0,
+     "flops_step": 4000000.0,
+     "flops_cov": 8000000.0,
+     "flops_shift": 1920000.0,
+     "flops_plugin": 0.0,
+     "flops_total": 261920000.0
+    },
+    "SN_iid_pinv_d": {
+     "n_blocks": 10000,
+     "n_curv": 13800.0,
+     "flops_grad": 8000000.0,
+     "flops_curv": 16560000.0,
+     "flops_step": 4000000.0,
+     "flops_cov": 8000000.0,
+     "flops_shift": 1920000.0,
+     "flops_plugin": 0.0,
+     "flops_total": 38480000.0
+    }
+   }
+  },
+  {
+   "d": 40,
+   "N": 200000,
+   "b": 40,
+   "BGSN": 0.021416040981421247,
+   "BGSN_plugin": 0.07351745798951015,
+   "SN_iid_p1": 0.26069516700226814,
+   "SN_iid_pinv_d": 0.02698824999970384,
+   "ASGD": 0.008316584018757567,
+   "OfflineHAC_L100": 2.3030313330236822,
+   "work": {
+    "BGSN": {
+     "n_blocks": 5000,
+     "n_curv": 12800.0,
+     "flops_grad": 16000000.0,
+     "flops_curv": 61440000.0,
+     "flops_step": 8000000.0,
+     "flops_cov": 16000000.0,
+     "flops_shift": 7680000.0,
+     "flops_plugin": 0.0,
+     "flops_total": 109120000.0
+    },
+    "BGSN_plugin": {
+     "n_blocks": 5000,
+     "n_curv": 12800.0,
+     "flops_grad": 16000000.0,
+     "flops_curv": 61440000.0,
+     "flops_step": 8000000.0,
+     "flops_cov": 16000000.0,
+     "flops_shift": 7680000.0,
+     "flops_plugin": 320000000.0,
+     "flops_total": 429120000.0
+    },
+    "SN_iid_p1": {
+     "n_blocks": 5000,
+     "n_curv": 200000.0,
+     "flops_grad": 16000000.0,
+     "flops_curv": 960000000.0,
+     "flops_step": 8000000.0,
+     "flops_cov": 16000000.0,
+     "flops_shift": 7680000.0,
+     "flops_plugin": 0.0,
+     "flops_total": 1007680000.0
+    },
+    "SN_iid_pinv_d": {
+     "n_blocks": 5000,
+     "n_curv": 12800.0,
+     "flops_grad": 16000000.0,
+     "flops_curv": 61440000.0,
+     "flops_step": 8000000.0,
+     "flops_cov": 16000000.0,
+     "flops_shift": 7680000.0,
+     "flops_plugin": 0.0,
+     "flops_total": 109120000.0
+    }
+   }
+  },
+  {
+   "d": 80,
+   "N": 200000,
+   "b": 80,
+   "BGSN": 0.11539391698897816,
+   "BGSN_plugin": 0.31391570798587054,
+   "SN_iid_p1": 1.135127083020052,
+   "SN_iid_pinv_d": 0.11116137498174794,
+   "ASGD": 0.02020604198332876,
+   "work": {
+    "BGSN": {
+     "n_blocks": 2500,
+     "n_curv": 18300.0,
+     "flops_grad": 32000000.0,
+     "flops_curv": 351360000.0,
+     "flops_step": 16000000.0,
+     "flops_cov": 32000000.0,
+     "flops_shift": 30720000.0,
+     "flops_plugin": 0.0,
+     "flops_total": 462080000.0
+    },
+    "BGSN_plugin": {
+     "n_blocks": 2500,
+     "n_curv": 18300.0,
+     "flops_grad": 32000000.0,
+     "flops_curv": 351360000.0,
+     "flops_step": 16000000.0,
+     "flops_cov": 32000000.0,
+     "flops_shift": 30720000.0,
+     "flops_plugin": 1280000000.0,
+     "flops_total": 1742080000.0
+    },
+    "SN_iid_p1": {
+     "n_blocks": 2500,
+     "n_curv": 200000.0,
+     "flops_grad": 32000000.0,
+     "flops_curv": 3840000000.0,
+     "flops_step": 16000000.0,
+     "flops_cov": 32000000.0,
+     "flops_shift": 30720000.0,
+     "flops_plugin": 0.0,
+     "flops_total": 3950720000.0
+    },
+    "SN_iid_pinv_d": {
+     "n_blocks": 2500,
+     "n_curv": 18300.0,
+     "flops_grad": 32000000.0,
+     "flops_curv": 351360000.0,
+     "flops_step": 16000000.0,
+     "flops_cov": 32000000.0,
+     "flops_shift": 30720000.0,
+     "flops_plugin": 0.0,
+     "flops_total": 462080000.0
+    }
+   }
+  },
+  {
+   "d": 160,
+   "N": 200000,
+   "b": 160,
+   "BGSN": 0.5348850829759613,
+   "BGSN_plugin": 1.3923416670004372,
+   "SN_iid_p1": 4.608534749975661,
+   "SN_iid_pinv_d": 0.5338613749772776,
+   "ASGD": 0.05150954201235436,
+   "work": {
+    "BGSN": {
+     "n_blocks": 1250,
+     "n_curv": 33050.0,
+     "flops_grad": 64000000.0,
+     "flops_curv": 2538240000.0,
+     "flops_step": 32000000.0,
+     "flops_cov": 64000000.0,
+     "flops_shift": 122880000.0,
+     "flops_plugin": 0.0,
+     "flops_total": 2821120000.0
+    },
+    "BGSN_plugin": {
+     "n_blocks": 1250,
+     "n_curv": 33050.0,
+     "flops_grad": 64000000.0,
+     "flops_curv": 2538240000.0,
+     "flops_step": 32000000.0,
+     "flops_cov": 64000000.0,
+     "flops_shift": 122880000.0,
+     "flops_plugin": 5120000000.0,
+     "flops_total": 7941120000.0
+    },
+    "SN_iid_p1": {
+     "n_blocks": 1250,
+     "n_curv": 200000.0,
+     "flops_grad": 64000000.0,
+     "flops_curv": 15360000000.0,
+     "flops_step": 32000000.0,
+     "flops_cov": 64000000.0,
+     "flops_shift": 122880000.0,
+     "flops_plugin": 0.0,
+     "flops_total": 15642880000.0
+    },
+    "SN_iid_pinv_d": {
+     "n_blocks": 1250,
+     "n_curv": 33050.0,
+     "flops_grad": 64000000.0,
+     "flops_curv": 2538240000.0,
+     "flops_step": 32000000.0,
+     "flops_cov": 64000000.0,
+     "flops_shift": 122880000.0,
+     "flops_plugin": 0.0,
+     "flops_total": 2821120000.0
+    }
+   }
+  }
+ ],
+ "flop_exponents": {
+  "BGSN": 2.0670273372266337,
+  "BGSN_plugin": 2.022123896684124,
+  "SN_iid_p1": 1.9671786374544284,
+  "SN_iid_pinv_d": 2.0670273372266337
+ },
+ "exponents": {
+  "BGSN": 1.9518308970031266,
+  "BGSN_plugin": 1.8453793509698415,
+  "SN_iid_p1": 1.975469048319939,
+  "SN_iid_pinv_d": 1.8760387618678562,
+  "ASGD": 1.0932736657475914
+ },
+ "flop_exponents_large_N": {
+  "BGSN": 1.0089603175916386,
+  "BGSN_plugin": 1.8633329556599165,
+  "SN_iid_p1": 1.9669278091604792
+ },
+ "flop_exponents_streaming": {
+  "BGSN": 0.9999999999999977,
+  "BGSN_plugin": 1.862935662007964,
+  "SN_iid_p1": 1.9669273026478589
+ },
+ "N_large": 100000000,
+ "time_ratio_plugin_median": 2.6617252123103774
+}

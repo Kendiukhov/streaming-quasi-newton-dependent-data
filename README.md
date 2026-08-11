@@ -39,8 +39,33 @@ with two structural changes that make its *uncertainty* correct too.
   whereas the Bernoulli thinning used as the cost knob in the independent-data method only
   does so linearly.
 
-Both are needed: gapping alone leaves the variance wrong; blocking alone leaves the
-curvature recursion aggregating dependent terms.
+The two changes do different jobs, and we are explicit about which one earns the coverage.
+**Blocking is what fixes the inference**: it is what produces a consistent estimate of `S`,
+and removing it (using the i.i.d. plug-in covariance instead) is what makes coverage collapse.
+**Gapping is a curvature-side cost knob**: it buys a better curvature estimate per rank-one
+update, and in our experiments it does *not* move coverage measurably — which is exactly what
+the theory predicts, because the preconditioner enters the limit distribution only through a
+rate. We report it because it strictly dominates the Bernoulli thinning the independent-data
+method uses for the same purpose, not because the intervals need it.
+
+**A stability condition that blocking creates.** Blocking the gradient makes the step's
+contraction condition non-trivial. The linearised error recursion has spectral radius below one
+only while `gamma_t * lambda_max(Hbar^-1 Hhat_t) < 2`, where `Hhat_t` is the *block* Hessian. On
+independent data a block of `b >= d` observations gives a full-rank `Hhat_t` and the condition
+holds at `gamma_1 = 1`; on a dependent stream the same block can span far fewer than `b` distinct
+covariate directions, `Hhat_t` is near-singular, and a full-length first step overshoots by orders
+of magnitude. We measured `||H^-1 Hhat_t||` at `b=20`: median 20 on the AR design and 33 on the
+regime-switching design, so the condition is violated on *both* — the AR designs are lucky, not
+safe. Without a safeguard, individual runs on the regime-switching design diverge outright; the
+paper reports the relative variance with and without, from the ablation table.
+
+The fix is an `O(d)` step-length safeguard: each step is capped at `c_D (1 + ||theta||)`, which
+binds 2–7 times per run and provably changes nothing once it stops binding. We also implemented
+the step-size shift `gamma_t = 1/(t + t0)` that the condition suggests more directly, measured it
+against the safeguard, and rejected it — it slows all `10^4` steps to correct a handful, and on a
+short stream `t0` can exceed the number of steps and freeze the estimator. Both are in the code
+(`step_cap`, `t0_mult`); the comparison is reported. This is a cost of *our* construction, not of
+the method we build on.
 
 **The correct interval is also the cheaper one.** The i.i.d. plug-in score covariance costs
 `O(d²)` per *observation*; the blocked long-run covariance costs `O(d²)` per *block*.

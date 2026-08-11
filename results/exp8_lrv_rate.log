@@ -1,0 +1,21 @@
+  schedule=log   N=   25000 b=    31  S_ft 0.3558  S_bm 0.2274  sandwich(ours) 0.1664  sandwich(iterate OBM) 0.8698
+  schedule=log   N=   50000 b=    33  S_ft 0.2644  S_bm 0.1631  sandwich(ours) 0.1216  sandwich(iterate OBM) 0.8522
+  schedule=log   N=  100000 b=    35  S_ft 0.1902  S_bm 0.1234  sandwich(ours) 0.0840  sandwich(iterate OBM) 0.8432
+  schedule=log   N=  200000 b=    37  S_ft 0.1337  S_bm 0.0945  sandwich(ours) 0.0670  sandwich(iterate OBM) 0.8567
+/Users/ihorkendiukhov/anaconda3/lib/python3.11/site-packages/joblib/externals/loky/process_executor.py:782: UserWarning: A worker stopped while some jobs were given to the executor. This can be caused by a too short worker timeout or by a memory leak.
+  warnings.warn(
+  schedule=log   N=  400000 b=    39  S_ft 0.0982  S_bm 0.0758  sandwich(ours) 0.0503  sandwich(iterate OBM) 0.8707
+  -> schedule=log: exponents  S_ft -0.470  S_bm -0.396  sandwich(ours) -0.431  sandwich(iterate OBM) 0.001
+  schedule=cbrt  N=   25000 b=    30  S_ft 0.3448  S_bm 0.2130  sandwich(ours) 0.1575  sandwich(iterate OBM) 0.8773
+  schedule=cbrt  N=   50000 b=    37  S_ft 0.2918  S_bm 0.1816  sandwich(ours) 0.1306  sandwich(iterate OBM) 0.8488
+  schedule=cbrt  N=  100000 b=    47  S_ft 0.1921  S_bm 0.1229  sandwich(ours) 0.1012  sandwich(iterate OBM) 0.8391
+  schedule=cbrt  N=  200000 b=    59  S_ft 0.1483  S_bm 0.0985  sandwich(ours) 0.0825  sandwich(iterate OBM) 0.8504
+  schedule=cbrt  N=  400000 b=    74  S_ft 0.1276  S_bm 0.0827  sandwich(ours) 0.0659  sandwich(iterate OBM) 0.8636
+  -> schedule=cbrt: exponents  S_ft -0.384  S_bm -0.361  sandwich(ours) -0.318  sandwich(iterate OBM) -0.004
+  schedule=n34   N=   25000 b=  1989  S_ft 74.4584  S_bm 21.0374  sandwich(ours) 1.5464  sandwich(iterate OBM) 0.8697
+  schedule=n34   N=   50000 b=  3344  S_ft 93.8055  S_bm 26.2642  sandwich(ours) 2.1803  sandwich(iterate OBM) 0.9252
+  schedule=n34   N=  100000 b=  5624  S_ft 44.9486  S_bm 14.1739  sandwich(ours) 1.3431  sandwich(iterate OBM) 1.2125
+  schedule=n34   N=  200000 b=  9458  S_ft 53.8200  S_bm 16.8520  sandwich(ours) 1.3021  sandwich(iterate OBM) 1.9505
+  schedule=n34   N=  400000 b= 15906  S_ft 72.9644  S_bm 22.7797  sandwich(ours) 1.2798  sandwich(iterate OBM) 2.9957
+  -> schedule=n34: exponents  S_ft -0.086  S_bm -0.041  sandwich(ours) -0.129  sandwich(iterate OBM) 0.464
+[saved] /Volumes/Crucial X6/MacBook/Code/ml_papers/streaming_qn_dependent/experiments/../results/exp8_lrv_rate.json

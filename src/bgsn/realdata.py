@@ -91,7 +91,14 @@ def load_metro(data_dir: str = DATA_DIR) -> RealStream:
     cols = [np.ones(len(df))] + cols + [holiday, (dow >= 5).astype(float)]
     names = ["intercept"] + names + ["holiday", "weekend"]
     X = np.column_stack(cols)
-    y = np.log(df["traffic_volume"].to_numpy(float))
+    # The response is standardised for the same reason the covariates are.  Without it the
+    # mean of log(volume) -- about 7.9 -- sits entirely in the intercept, which is then some
+    # 400 standard errors away from the theta_0 = 0 that any streaming method starts from; a
+    # 1/t schedule needs of order that many steps just to travel the distance, so a short
+    # segment would be measuring the distance to the initialisation rather than anything about
+    # inference.  Standardising is an affine reparametrisation of a linear model, so it changes
+    # no coverage statement.
+    y = _standardise([np.log(df["traffic_volume"].to_numpy(float))], ["y"])[0][0]
     return RealStream("metro", np.ascontiguousarray(X), np.ascontiguousarray(y), names,
                       note="hourly I-94 westbound volume; response = log(volume)")
 
@@ -119,7 +126,7 @@ def load_airq(site: str = "Aotizhongxin", data_dir: str = DATA_DIR) -> RealStrea
     cols = [np.ones(len(df))] + cols
     names = ["intercept"] + names
     X = np.column_stack(cols)
-    y = np.log1p(df["PM2.5"].to_numpy(float))
+    y = _standardise([np.log1p(df["PM2.5"].to_numpy(float))], ["y"])[0][0]
     return RealStream(f"airq[{site}]", np.ascontiguousarray(X),
                       np.ascontiguousarray(y), names,
                       note="hourly PM2.5 at one Beijing site; response = log(1 + PM2.5)")

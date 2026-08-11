@@ -1,0 +1,31 @@
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{3.4pt}
+\caption{\textbf{Coverage of nominal 95\% confidence intervals, interval width, and estimation error on four dependent designs} ($d=20$, $N=200{,}000$, block length $b=20$, $R=300$ replications; $R=60$ for the offline reference). \emph{cov}: coverage, pooled over the $d$ coordinates (Monte Carlo standard error $\le 0.008$ throughout). \emph{w}: interval width divided by the width of the infeasible oracle interval. \emph{err}: $\sqrt{N}\,$RMSE divided by the asymptotic standard deviation, averaged over coordinates; $1.00$ is efficient. $\kappa$ is the variance inflation caused by dependence. Only methods that estimate the \emph{long-run} score covariance reach nominal coverage; methods using the instantaneous covariance that the independent-data theory prescribes undercover by an amount predicted exactly by Proposition~\ref{prop:coverage}. \textbf{Read the first-order rows with care}: these designs are ill-conditioned (that is what streaming second-order methods are for), so those methods' \emph{point} estimates have not converged --- their \emph{err} column is several times $1$ --- and their coverage is dominated by that, not by which covariance they use. \Cref{tab:wellcond} repeats the AR-hom column on a well-conditioned design where every point estimator is efficient, which is where the first-order rows become informative about inference. The Markov column is the one design where \emph{no} streaming method's point estimate has converged at this $N$; \Cref{tab:hard} resolves it by sweeping $N$ against the oracle interval. ASGD is averaged stochastic gradient descent (Polyak--Ruppert averaging of the iterates); AdaGrad is the diagonally rescaled first-order method; \emph{random scaling} is the variance-estimator-free studentisation of \citet{lee2022fast}.}
+\label{tab:main}
+\begin{tabular}{lcccccccccccc}
+\toprule
+ & \multicolumn{3}{c}{AR-hom} & \multicolumn{3}{c}{AR-het} & \multicolumn{3}{c}{Markov} & \multicolumn{3}{c}{Logistic} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}\cmidrule(lr){8-10}\cmidrule(lr){11-13}
+method & cov & w & err & cov & w & err & cov & w & err & cov & w & err \\
+\midrule
+\emph{dependence} & \multicolumn{3}{c}{$\kappa\in[2.92,\,2.92]$} & \multicolumn{3}{c}{$\kappa\in[1.00,\,4.41]$} & \multicolumn{3}{c}{$\kappa\in[7.55,\,7.55]$} & \multicolumn{3}{c}{$\kappa\in[2.27,\,2.32]$} \\
+\midrule
+\textbf{BGSN} (this paper) & \textbf{0.949} & 1.00 & 1.01 & \textbf{0.950} & 1.00 & 1.01 & 0.890 & 1.02 & 1.27 & 0.783 & 0.84 & 1.33 \\
+\quad with plain batch means & \textbf{0.939} & 0.96 & 1.01 & \textbf{0.944} & 0.98 & 1.01 & 0.856 & 0.92 & 1.27 & 0.768 & 0.81 & 1.33 \\
+\quad with the i.i.d.\ plug-in variance & 0.742 & 0.58 & 1.01 & 0.832 & 0.73 & 1.01 & 0.460 & 0.38 & 1.27 & 0.581 & 0.55 & 1.33 \\
+\addlinespace[2pt]
+streaming Newton, i.i.d.\ theory & 0.743 & 0.58 & 1.01 & 0.834 & 0.73 & 1.01 & 0.460 & 0.38 & 1.27 & 0.584 & 0.55 & 1.33 \\
+\quad with our long-run variance & \textbf{0.949} & 1.00 & 1.01 & \textbf{0.951} & 1.00 & 1.01 & 0.890 & 1.02 & 1.27 & 0.781 & 0.84 & 1.33 \\
+\addlinespace[2pt]
+ASGD + our long-run variance & 0.051 & 1.02 & 9.77 & 0.271 & 1.06 & 50.34 & 0.239 & 1.09 & 7.95 & 0.714 & 1.01 & 1.91 \\
+ASGD, i.i.d.\ plug-in & 0.028 & 0.59 & 9.77 & 0.195 & 1.03 & 50.34 & 0.073 & 0.38 & 7.95 & 0.520 & 0.66 & 1.91 \\
+ASGD + random scaling & 0.083 & 1.26 & 9.77 & 0.679 & 8.51 & 50.34 & 0.230 & 1.73 & 7.95 & 0.925 & 2.16 & 1.91 \\
+AdaGrad + our long-run variance & 0.547 & 1.03 & 2.99 & \textbf{0.947} & 1.01 & 1.03 & 0.533 & 1.00 & 2.76 & 0.911 & 1.01 & 1.15 \\
+\addlinespace[2pt]
+offline HAC \emph{(not streaming)} & \textbf{0.961} & 0.99 & 0.95 & \textbf{0.955} & 0.99 & 0.98 & 0.968 & 0.98 & 0.85 & \textbf{0.945} & 1.00 & 1.03 \\
+oracle variance \emph{(infeasible)} & \textbf{0.950} & 1.00 & 1.01 & \textbf{0.949} & 1.00 & 1.01 & 0.886 & 1.00 & 1.27 & 0.858 & 1.00 & 1.33 \\
+\bottomrule
+\end{tabular}
+\end{table}

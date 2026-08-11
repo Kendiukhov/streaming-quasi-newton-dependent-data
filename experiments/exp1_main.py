@@ -22,24 +22,8 @@ ORACLE_CACHE = os.path.join(common.RESULTS, "logit_oracle_d%d.npz" % D)
 
 
 def logit_dgp():
-    """Build the logistic DGP, caching its simulated long-run covariance oracle."""
-    th = np.linspace(-1.0, 1.0, D)
-    Sig = streams.illconditioned_cov(D, np.random.default_rng(30_000), 1.0)
-    if os.path.exists(ORACLE_CACHE):
-        z = np.load(ORACLE_CACHE)
-        orc = streams.Oracle(theta_star=th, H=z["H"], Gamma0=z["G0"], S=z["S"],
-                             exact=False, oracle_error=float(z["err"]),
-                             meta=dict(dgp="logit_copula", cached=True))
-    else:
-        print("  [building logistic oracle by long simulation ...]")
-        t0 = time.time()
-        orc = streams.logit_copula_oracle(D, 0.7, 0.8, 1.0, th, Sig,
-                                          n_sim=1_000_000, n_rep=8, lag=100)
-        np.savez(ORACLE_CACHE, H=orc.H, G0=orc.Gamma0, S=orc.S,
-                 err=orc.oracle_error)
-        print(f"  [done in {time.time()-t0:.0f}s, relative MC error of the sandwich "
-              f"diagonal = {orc.oracle_error:.2e}]")
-    return DG.make_logit_copula(d=D, phi=0.7, psi=0.8, cond_exponent=1.0, oracle=orc)
+    """Shared with exp10 so both compare against the same cached oracle."""
+    return common.logit_dgp(d=D, phi=0.7, psi=0.8, cond_exponent=1.0)
 
 
 def build():

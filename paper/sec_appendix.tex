@@ -2,8 +2,13 @@
 \label{app:proofs}
 
 Throughout, $C$ denotes a finite constant that may change from line to line,
-$\delta_t=\theta_t-\ts$, $\eps_t=\gb_t(\ts)$, $\gamma_t=1/t$, $P_t=\Hb_t^{-1}$, and
-$\Lambda_k=\E[\eps_0\eps_k^{\!\top}]$. We write $n_t$ for the number of rank-one curvature
+$\delta_t=\theta_t-\ts$, $\eps_t=\gb_t(\ts)$, $P_t=\Hb_t^{-1}$, and
+$\Lambda_k=\E[\eps_0\eps_k^{\!\top}]$. We take $\gamma_t=1/t$ throughout and ignore the
+step-length safeguard $\Pi_t$ of \eqref{eq:step}; \Cref{prop:shift}, proved in
+\Cref{app:shift}, shows that on the event where $\Pi_t$ is eventually inactive the safeguarded
+iterates coincide with these from a finite time on, and \Cref{app:t0} treats the rejected
+step-size-shift variant $\gamma_t=(t+t_0)^{-1}$ separately.
+We write $n_t$ for the number of rank-one curvature
 updates completed by the end of block $t$; with gap $m$ and no Bernoulli thinning,
 $n_t=\lfloor tb/m\rfloor$, so $n_t\asymp t$.
 
@@ -165,36 +170,195 @@ update changes the preconditioner by only $O(1/t)$:
 
 \begin{lemma}[Increments of the preconditioner]
 \label{lem:incr}
-Under the assumptions of \Cref{thm:curv},
-$\opnorm{\Hb_{t}^{-1}-\Hb_{t-1}^{-1}}=O(1/t)$ a.s., hence with $\gamma_t=1/t$ and
-$A_t=\Hb_{t-1}^{-1}$ we have $\opnorm{\gamma_{t+1}A_{t+1}-\gamma_tA_t}=O(t^{-2})$ a.s.\ and
-the second half of \eqref{eq:weightcond} holds for every $\delta<1/2$.
+\emph{(a) From the ridge alone.} Under \Cref{as:curv} and the ridge of \eqref{eq:curv} --- so
+using only \Cref{lem:ridge}, with no assumption on the iterates ---
+$\opnorm{\Hb_t^{-1}-\Hb_{t-1}^{-1}}=O(t^{2\qr-1})$ a.s.; hence with $\gamma_t=1/t$ and
+$A_t=\Hb_{t-1}^{-1}$, $\opnorm{\gamma_{t+1}A_{t+1}-\gamma_tA_t}=O(t^{2\qr-2})$ a.s., which is
+summable for $\qr<1/2$, so the second half of \eqref{eq:weightcond} holds with
+$U_\infty<\infty$.
+
+\emph{(b) Sharper, once the curvature has converged.} Under the assumptions of
+\Cref{thm:curv}, $\opnorm{\Hb_t^{-1}-\Hb_{t-1}^{-1}}=O(1/t)$ a.s., so with $\gamma_t\equiv1$
+and $A_t=\Hb_{t-1}^{-1}$ the increments are $u_t=O(1/t)$ and $U_T=O(\log T)$.
 \end{lemma}
 
 \begin{proof}
-$\Hb_t^{-1}=W_{n_t}A_{n_t}^{-1}$ and, from block $t-1$ to block $t$, $W$ increases by
-$O(1)$ and $A^{-1}$ changes by $O(1)$ rank-one Sherman--Morrison steps
-$A^{-1}\mapsto A^{-1}-cA^{-1}uu^{\!\top}A^{-1}/(1+cu^{\!\top}A^{-1}u)$, each of operator norm
-at most $\opnorm{A^{-1}}$ times $c\opnorm{A^{-1}}\norm{u}^2/(1+c u^{\!\top}A^{-1}u)\le 1$,
-and in fact at most $\opnorm{A^{-1}}^2c\norm{u}^2=O(t^{-2})$ once
-$\lambda_{\min}(A_{n_t})\ge c't$ (which holds a.s.\ for large $t$ because
-$A_{n_t}/n_t\to H\succ0$). Multiplying by $W_{n_t}=O(t)$ gives $O(1/t)$; the extra factor
-$\gamma_t=1/t$ and $\gamma_{t+1}-\gamma_t=O(t^{-2})$ give the second claim.
+$\Hb_t^{-1}=W_{n_t}A_{n_t}^{-1}$, and from block $t-1$ to block $t$ the weight $W$ increases by
+$O(1)$ while $A^{-1}$ changes by $O(1)$ rank-one Sherman--Morrison steps
+$A^{-1}\mapsto A^{-1}-cA^{-1}uu^{\!\top}A^{-1}/(1+cu^{\!\top}A^{-1}u)$. Writing $v=A^{-1}u$, the
+operator norm of one such step is $c\norm{v}^2/(1+cu^{\!\top}v)$, and since
+$u^{\!\top}v=v^{\!\top}Av\ge\lambda_{\min}(A)\norm{v}^2$ we get the two bounds
+\begin{equation}
+\opnorm{\Delta A^{-1}}\ \le\ \min\Big\{\frac{1}{\lambda_{\min}(A)},\
+\frac{c\norm{u}^2}{\lambda_{\min}(A)^2}\Big\} .
+\label{eq:smbound}
+\end{equation}
+For (a), \Cref{lem:ridge} gives $\lambda_{\min}(A_{n})\ge c'n^{1-\qr}$, so the second bound in
+\eqref{eq:smbound} is $O(n^{2\qr-2})$; multiplying by $W_{n_t}=O(t)$ and using $n_t\asymp t$
+gives $\opnorm{\Hb_t^{-1}-\Hb_{t-1}^{-1}}=O(t^{2\qr-1})$, and the change in $W$ contributes
+$O(1)\cdot\opnorm{A^{-1}}=O(t^{\qr-1})$, which is smaller. The stated bound on
+$\gamma_{t+1}A_{t+1}-\gamma_tA_t$ then follows from $\gamma_t=1/t$ together with
+$\gamma_{t+1}-\gamma_t=O(t^{-2})$ and $\opnorm{A_t}=O(t^{\qr})$.
+For (b), \Cref{thm:curv} gives $A_{n_t}/n_t\to H\succ0$, so $\lambda_{\min}(A_{n_t})\ge c't$
+a.s.\ for large $t$, the second bound in \eqref{eq:smbound} is $O(t^{-2})$, and multiplying by
+$W_{n_t}=O(t)$ gives $O(1/t)$.
 \end{proof}
 
 \subsection{The ridge bound (\texorpdfstring{\Cref{lem:ridge}}{Lemma})}
 
 Each curvature update adds $\iota_n e_{k_n}e_{k_n}^{\!\top}\succeq0$ along a cycling basis
-direction, so after $n$ updates every basis direction has received at least
-$\lfloor n/d\rfloor$ of them and
-$A_n\succeq\lambda_0\varsigma_0I+\big(d^{-1}\sum_{k\le n}\iota_k\big)I$. With
-$\iota_k=c_\iota\varsigma_k k^{-\qr}$ and $\varsigma_k\ge\varsigma_\ast>0$ almost surely
-(finite because $\varsigma_k=d/\tr(\Hb_k^{-1})$ and $\Hb_k$ is bounded above, being an
-average of terms with $\eta'>2$ moments), $\sum_{k\le n}\iota_k\ge c\,n^{1-\qr}$, hence
-$\lambda_{\min}(A_n)\ge c'n^{1-\qr}$ and
-$\opnorm{\Hb_t^{-1}}=W_{n_t}\opnorm{A_{n_t}^{-1}}\le (1+n_t)/(c'n_t^{1-\qr})=O(n_t^{\qr})$.
-The random constant is $c_1=c'\varsigma_\ast$; nothing about the iterates is used.
-\hfill$\square$
+direction, and the data term $\alpha_{i_n}\Psi_{i_n}\Psi_{i_n}^{\!\top}$ is positive
+semidefinite, so it can only help. After $n$ updates every basis direction has received at least
+$\lfloor n/d\rfloor$ ridge increments, and dropping the data terms,
+\begin{equation}
+A_n\ \succeq\ \lambda_0 I+\Big(\tfrac1d\textstyle\sum_{k\le n}\iota_k\Big)I .
+\label{eq:ridgelb}
+\end{equation}
+Now the point of freezing the ridge scale. Because $\iota_k=c_\iota\varsigma_\star k^{-\qr}$ with
+$\varsigma_\star$ a \emph{constant} --- measurable with respect to the first curvature-bearing
+block and, by \Cref{as:curv}, almost surely finite and strictly positive whenever that block's
+curvature is not identically zero --- we may sum:
+\[
+\sum_{k\le n}\iota_k=c_\iota\varsigma_\star\sum_{k\le n}k^{-\qr}
+\ \ge\ \frac{c_\iota\varsigma_\star}{1-\qr}\,\big(n^{1-\qr}-1\big),
+\]
+using $\sum_{k\le n}k^{-\qr}\ge\int_1^{n+1}x^{-\qr}dx$ and $\qr<1$. Hence
+$\lambda_{\min}(A_n)\ge c'n^{1-\qr}$ for all $n\ge2$ with
+$c'=c_\iota\varsigma_\star/\{2d(1-\qr)\}$, and since $W_{n_t}=1+n_t$,
+\[
+\opnorm{\Hb_t^{-1}}=W_{n_t}\opnorm{A_{n_t}^{-1}}\le\frac{1+n_t}{c'n_t^{1-\qr}}=O(n_t^{\qr}),
+\qquad
+\lambda_{\min}(\Hb_t)\ge\frac{c'n_t^{1-\qr}}{1+n_t}\ \ge\ c_1n_t^{-\qr}
+\]
+with $c_1=c'/2$ for $n_t\ge1$. Nothing about the iterates is used, and no lower bound on the
+accumulated data terms is needed --- which is exactly why the lemma may sit at the bottom of the
+ladder in \Cref{rem:ladder}.
+
+\begin{remark}[Why the scale must be frozen]
+\label{rem:freeze}
+Had we scaled the ridge by the \emph{running} harmonic mean $d/\tr(\Hb_k^{-1})$ --- the natural
+choice, since it is available for free from the maintained inverse --- this proof would fail, and
+not for a technical reason. That scale is bounded above by $d\lambda_{\min}(\Hb_k)$, so a path
+along which the accumulated data terms contribute negligibly in some direction would have its
+ridge shrink in step with the very eigenvalue the ridge is supposed to hold up. Concretely, the
+only unconditional bound then available is $\varsigma_k\ge\lambda_0/W_k=\Theta(1/k)$, giving
+$\sum_{k\le n}\iota_k=O(1)$ instead of $\Omega(n^{1-\qr})$, and a Gronwall argument in the
+opposite direction shows this is tight: $\lambda_{\min}(A_n)$ can stay $O(1)$, i.e.\
+$\opnorm{\Hb_n^{-1}}=\Omega(n)$, which would break the square-summability
+$\sum_t\gamma_t^2\opnorm{P_{t-1}}^2<\infty$ that \Cref{thm:as} needs. The bound does hold once
+$\Hb_t\to H\succ0$, but that is \Cref{thm:curv}, three rungs higher, so the argument would be
+circular. Freezing the scale removes the problem at no cost: $\varsigma_\star$ serves only to
+make $c_\iota$ dimensionless, and \Cref{tab:ablation}(d) shows the results are unchanged if the
+scale is dropped altogether.
+\end{remark}
+
+\subsection{Consistency (\texorpdfstring{\Cref{thm:as}}{Theorem})}
+
+Substituting $\gb_t(\theta_{t-1})=\nabla F(\theta_{t-1})+\zeta_t$ into \eqref{eq:step},
+where $\zeta_t=\gb_t(\theta_{t-1})-\nabla F(\theta_{t-1})$, and expanding
+$F(\theta_t)-F(\ts)$ to second order using \Cref{as:reg},
+\begin{align}
+F(\theta_t)-F(\ts)&\le F(\theta_{t-1})-F(\ts)
+-\gamma_t\nabla F(\theta_{t-1})^{\!\top}P_{t-1}\nabla F(\theta_{t-1})\nonumber\\
+&\quad-\gamma_t\nabla F(\theta_{t-1})^{\!\top}P_{t-1}\zeta_t
++\tfrac{L}{2}\gamma_t^2\opnorm{P_{t-1}}^2\norm{\gb_t(\theta_{t-1})}^2 .
+\label{eq:desc}
+\end{align}
+The last term is summable: $\gamma_t^2\opnorm{P_{t-1}}^2=O(t^{2q_{\mathrm r}-2})$ by
+\Cref{lem:ridge} with $q_{\mathrm r}<1/2$, and $\E\norm{\gb_t(\theta_{t-1})}^2\le
+C+C'(F(\theta_{t-1})-F(\ts))$ by \Cref{as:mom} and Jensen. The cross term is the one that
+would be handled by a martingale argument under independence. Instead, decompose
+$\zeta_t=\eps_t+r_t$ with $r_t=\gb_t(\theta_{t-1})-\nabla F(\theta_{t-1})-\eps_t$, so that
+\begin{equation}
+\norm{r_t}\le\opnorm{\Hh_t-H}\norm{\delta_{t-1}}+L_\delta\norm{\delta_{t-1}}^2
+\label{eq:rt}
+\end{equation}
+where $\widehat H_t$ is the block curvature; $r_t$ is dominated by
+$\norm{\delta_{t-1}}$ times an $L^2$-bounded factor, and its contribution to
+\eqref{eq:desc} is absorbed by the Robbins--Siegmund argument
+\citep{robbins1971convergence}. The remaining term
+$-\sum_t\gamma_t\nabla F(\theta_{t-1})^{\!\top}P_{t-1}\eps_t$ is handled by
+\Cref{lem:series} with $A_t=\nabla F(\theta_{t-1})^{\!\top}P_{t-1}$, which is
+$\Fil_{t-1}$-measurable as required. Its first condition holds because
+$\opnorm{P_{t-1}}=O(t^{q_{\mathrm r}})$ with $q_{\mathrm r}<1/2$ (\Cref{lem:ridge}) and
+$\E\norm{\nabla F(\theta_{t-1})}^2$ is bounded on the events
+$\{\sup_{s\le t}\norm{\theta_s}\le K\}$, over which we localise and then let $K\to\infty$;
+its second condition holds by \Cref{lem:incr}(a) --- which, being a consequence of
+\Cref{lem:ridge} alone, keeps this rung free of \Cref{thm:curv} --- together with
+$\opnorm{\nabla F(\theta_t)-\nabla F(\theta_{t-1})}\le L\norm{\theta_t-\theta_{t-1}}
+=O(\gamma_t t^{q_{\mathrm r}})$. Robbins--Siegmund then gives $F(\theta_t)\to F(\ts)$ a.s.\ and
+$\sum_t\gamma_t\nabla F(\theta_{t-1})^{\!\top}P_{t-1}\nabla F(\theta_{t-1})<\infty$ a.s.;
+and since $\gamma_t\lambda_{\min}(P_{t-1})\ge \gamma_t/\opnorm{\Hb_{t-1}}\ge c\,t^{-1}$
+(because $\opnorm{\Hb_t}$ is bounded above a.s., $\Hb_t$ being an average of terms with
+$\eta'>2$ moments) we have $\sum_t\gamma_t\lambda_{\min}(P_{t-1})=\infty$; \Cref{as:ident}
+then forces $\theta_t\to\ts$ a.s. \hfill$\square$
+
+\subsection{The preliminary rate (rung (iii) of \texorpdfstring{\Cref{rem:ladder}}{the ladder})}
+\label{app:prelim}
+
+This rung is what \Cref{thm:curv} needs and \Cref{thm:as} does not give: a rate, not just
+convergence. We prove it using only \Cref{lem:ridge} and \Cref{thm:as}.
+
+\begin{lemma}[Preliminary rate]
+\label{lem:prelim}
+Under \Cref{as:reg,as:mom,as:curv,as:ident,as:mix}, with $\qr\in(0,1/4)$,
+$\norm{\theta_T-\ts}=O(T^{-1/2}\log^{1+\varpi}T)$ almost surely, for every $\varpi>0$.
+\end{lemma}
+
+\begin{proof}
+Abel summation of \eqref{eq:step} exactly as in \eqref{eq:abel} --- an algebraic identity that
+uses only $\gamma_t=1/t$ --- gives \eqref{eq:decomp}:
+$\delta_T=-T^{-1}H^{-1}\sum_{t\le T}\eps_t+(\mathrm A)+(\mathrm B)-(\mathrm C)$. We bound the
+three remainders using only what rungs (i) and (ii) provide, namely
+$\opnorm{P_{t-1}}=O(t^{\qr})$ a.s.\ (\Cref{lem:ridge}), $\theta_t\to\ts$ a.s.\
+(\Cref{thm:as}), and hence, by the local Lipschitz property in \Cref{as:curv} and the
+continuity in \Cref{as:mom}, $\opnorm{P_{t-1}-H^{-1}}=o(1)$ and
+$\opnorm{I-P_{t-1}H}=o(1)$ a.s. Write $\rho_t=\opnorm{I-P_{t-1}H}$, so $\rho_t\to0$ a.s.
+
+\emph{Leading term.} $T^{-1}\sum_{t\le T}\eps_t=O(T^{-1/2}\log^{1/2+\varpi}T)$ a.s.\ by the
+martingale law of the iterated logarithm applied to \eqref{eq:gordin} (the coboundary
+telescopes to $O(T^{-1})$ after division by $T$, using $\E\norm{z_1}^2<\infty$ and
+Borel--Cantelli along $\norm{z_t}=o(t^{1/2})$ a.s.).
+
+\emph{Term (A).} Apply \eqref{eq:lemrate} with $\gamma_t\equiv1$ and
+$A_t=H^{-1}-P_{t-1}$: the envelope may be taken $c_t\equiv1$ (a finite random constant, since
+$\opnorm{P_{t-1}}=O(t^{\qr})$ makes $\sup_t\opnorm{A_t}/c_t$ finite only after we note
+$A_t\to0$; formally take $c_t=1$ and $\Lambda=\sup_t\opnorm{A_t}<\infty$ a.s., which holds
+because $A_t\to0$ and each $A_t$ is finite). By \Cref{lem:incr}(a) the increments are
+$u_t=O(t^{2\qr-1})$, so $V_T=O(T)$ and $U_T=O(T^{2\qr})$, and \eqref{eq:lemrate} gives
+$\lVert\sum_{t\le T}A_t\eps_t\rVert
+=O(T^{1/2}\log^{1/2+\varpi}T)+O(T^{2\qr}\log^{1+\varpi}T)+O(T^{1/2+\varpi})$.
+Dividing by $T$ and using $\qr<1/4$, which is exactly where that restriction is needed,
+$(\mathrm A)=O(T^{-1/2}\log^{1/2+\varpi}T)+O(T^{2\qr-1}\log^{1+\varpi}T)
+=O(T^{-1/2}\log^{1/2+\varpi}T)$ a.s.
+
+\emph{Terms (B) and (C): the bootstrap.} $(\mathrm B)=T^{-1}\sum_{t\le T}(I-P_{t-1}H)\delta_{t-1}$
+so $\norm{(\mathrm B)}\le\big(\sup_{t\le T}\rho_t\big)\,\bar\delta_T$ with
+$\bar\delta_T=T^{-1}\sum_{t\le T}\norm{\delta_{t-1}}$, and by \eqref{eq:rt}
+$\norm{(\mathrm C)}\le CT^{-1}\sum_{t\le T}\opnorm{P_{t-1}}
+(\opnorm{\Hh_t-H}\norm{\delta_{t-1}}+\norm{\delta_{t-1}}^2)$, which is
+$o(1)\,\bar\delta_T$ a.s.\ because $\opnorm{P_{t-1}}\opnorm{\Hh_t-H}$ and
+$\opnorm{P_{t-1}}\norm{\delta_{t-1}}$ are both $o(1)$ a.s.\ ($\delta_t\to0$ by \Cref{thm:as},
+and $\opnorm{P_{t-1}}\opnorm{\Hh_t-H}\to0$ because $\opnorm{P_{t-1}}\to\opnorm{H^{-1}}$ and
+$\Hh_t\to H$ in the Cesàro sense along the block index). Hence there is a random
+$T_1<\infty$ and a sequence $\epsilon_T\downarrow0$ with
+\begin{equation}
+D_T:=\max_{t\le T}\norm{\delta_t}\ \le\ \epsilon_T D_T + R_T,
+\qquad R_T=O(T^{-1/2}\log^{1/2+\varpi}T)\ \text{a.s.},
+\label{eq:boot}
+\end{equation}
+for $T\ge T_1$, where we used $\bar\delta_T\le D_T$ and that the same bound applies to every
+$t\le T$ (the right-hand side is non-decreasing in $T$). For $T$ large enough that
+$\epsilon_T\le1/2$, \eqref{eq:boot} rearranges to $D_T\le2R_T$, which is the claim with
+$\log^{1+\varpi}$ absorbing $\log^{1/2+\varpi}$.
+\end{proof}
+
+\noindent
+Two things are worth flagging about this rung. It is the only place the restriction
+$\qr<1/4$ (rather than $\qr<1/2$) is used, and it is used because at this rung the sharper
+increment bound \Cref{lem:incr}(b) is not yet available. And the bootstrap in \eqref{eq:boot} is
+why the rate carries a $\log$ factor rather than being clean $T^{-1/2}$; \Cref{thm:rate}
+recovers the sharper statement once \Cref{thm:curv} is in hand.
 
 \subsection{The curvature rate (\texorpdfstring{\Cref{thm:curv}}{Theorem})}
 
@@ -219,8 +383,8 @@ is used, and it is what bounds $\opnorm{\Hb_t^{-1}}$ for \emph{every} $t$ rather
 eventually). Term (iv) is bounded, by the local Lipschitz property in \Cref{as:curv} and
 Cauchy--Schwarz, by
 $Cn_t^{-1}\sum_{n\le n_t}\norm{\theta_{t(n)-1}-\ts}\cdot\opnorm{\Psi\Psi^{\!\top}}$, which
-under the assumed preliminary rate is $O(n_t^{-1}\sum_{n\le n_t}n^{-1/2}\log^{c}n)
-=O(n_t^{-1/2}\log^{c}n_t)$ a.s.
+by \Cref{lem:prelim} is $O(n_t^{-1}\sum_{n\le n_t}n^{-1/2}\log^{1+\varpi}n)
+=O(n_t^{-1/2}\log^{1+\varpi}n_t)$ a.s.
 
 The new content is term (iii). The array $(Y_n)_{n\ge1}$ is the subsequence of a stationary
 geometrically mixing sequence at spacing $m$, hence itself stationary with mixing
@@ -234,43 +398,6 @@ which is $O(t^{-\nu_H})$ for every $\nu_H<\min\{q_{\mathrm r},1/2\}$. Finally, o
 $\opnorm{\Hb_t-H}\le\lambda_{\min}(H)/2$ (which holds for all large $t$ a.s.),
 $\opnorm{\Hb_t^{-1}-H^{-1}}\le\opnorm{\Hb_t^{-1}}\opnorm{\Hb_t-H}\opnorm{H^{-1}}
 \le 2\lambda_{\min}(H)^{-2}\opnorm{\Hb_t-H}$. \hfill$\square$
-
-\subsection{Consistency (\texorpdfstring{\Cref{thm:as}}{Theorem})}
-
-Substituting $\gb_t(\theta_{t-1})=\nabla F(\theta_{t-1})+\zeta_t$ into \eqref{eq:step},
-where $\zeta_t=\gb_t(\theta_{t-1})-\nabla F(\theta_{t-1})$, and expanding
-$F(\theta_t)-F(\ts)$ to second order using \Cref{as:reg},
-\begin{align}
-F(\theta_t)-F(\ts)&\le F(\theta_{t-1})-F(\ts)
--\gamma_t\nabla F(\theta_{t-1})^{\!\top}P_{t-1}\nabla F(\theta_{t-1})\nonumber\\
-&\quad-\gamma_t\nabla F(\theta_{t-1})^{\!\top}P_{t-1}\zeta_t
-+\tfrac{L}{2}\gamma_t^2\opnorm{P_{t-1}}^2\norm{\gb_t(\theta_{t-1})}^2 .
-\label{eq:desc}
-\end{align}
-The last term is summable: $\gamma_t^2\opnorm{P_{t-1}}^2=O(t^{2q_{\mathrm r}-2})$ by
-\Cref{thm:curv} with $q_{\mathrm r}<1/2$, and $\E\norm{\gb_t(\theta_{t-1})}^2\le
-C+C'(F(\theta_{t-1})-F(\ts))$ by \Cref{as:mom} and Jensen. The cross term is the one that
-would be handled by a martingale argument under independence. Instead, decompose
-$\zeta_t=\eps_t+r_t$ with $r_t=\gb_t(\theta_{t-1})-\nabla F(\theta_{t-1})-\eps_t$, so that
-$\norm{r_t}\le\opnorm{\widehat H_t-H}\norm{\delta_{t-1}}+L_\delta\norm{\delta_{t-1}}^2$
-where $\widehat H_t$ is the block curvature; $r_t$ is dominated by
-$\norm{\delta_{t-1}}$ times an $L^2$-bounded factor, and its contribution to
-\eqref{eq:desc} is absorbed by the Robbins--Siegmund argument
-\citep{robbins1971convergence}. The remaining term
-$-\sum_t\gamma_t\nabla F(\theta_{t-1})^{\!\top}P_{t-1}\eps_t$ is handled by
-\Cref{lem:series} with $A_t=\nabla F(\theta_{t-1})^{\!\top}P_{t-1}$, which is
-$\Fil_{t-1}$-measurable as required. Its first condition holds because
-$\opnorm{P_{t-1}}=O(t^{q_{\mathrm r}})$ with $q_{\mathrm r}<1/2$ (\Cref{thm:curv}) and
-$\E\norm{\nabla F(\theta_{t-1})}^2$ is bounded on the events
-$\{\sup_{s\le t}\norm{\theta_s}\le K\}$, over which we localise and then let $K\to\infty$;
-its second condition holds by \Cref{lem:incr} together with
-$\opnorm{\nabla F(\theta_t)-\nabla F(\theta_{t-1})}\le L\norm{\theta_t-\theta_{t-1}}
-=O(\gamma_t t^{q_{\mathrm r}})$. Robbins--Siegmund then gives $F(\theta_t)\to F(\ts)$ a.s.\ and
-$\sum_t\gamma_t\nabla F(\theta_{t-1})^{\!\top}P_{t-1}\nabla F(\theta_{t-1})<\infty$ a.s.;
-and since $\gamma_t\lambda_{\min}(P_{t-1})\ge \gamma_t/\opnorm{\Hb_{t-1}}\ge c\,t^{-1}$
-(because $\opnorm{\Hb_t}$ is bounded above a.s., $\Hb_t$ being an average of terms with
-$\eta'>2$ moments) we have $\sum_t\gamma_t\lambda_{\min}(P_{t-1})=\infty$; \Cref{as:ident}
-then forces $\theta_t\to\ts$ a.s. \hfill$\square$
 
 \subsection{Proof of \texorpdfstring{\Cref{thm:rate}}{the result} (rate) and
 \texorpdfstring{\Cref{prop:blockfree,thm:clt}}{Proposition 1 and Theorem 4} (CLT)}
@@ -297,7 +424,7 @@ $b$.
 
 \emph{Term (A).} Apply \eqref{eq:lemrate} with $\gamma_t\equiv1$, $\zeta_t=\eps_t$ and the
 $\Fil_{t-1}$-measurable weights $A_t=H^{-1}-P_{t-1}$: by \Cref{thm:curv} the envelope is
-$c_t=t^{-\nu_H}$, and by \Cref{lem:incr} the increments are $u_t=O(t^{-1})$. Hence
+$c_t=t^{-\nu_H}$, and by \Cref{lem:incr}(b) the increments are $u_t=O(t^{-1})$. Hence
 $V_T=O(T^{1-2\nu_H})$ (as $\nu_H<1/2$), $U_T=O(\log T)$, and
 $\gamma_Tc_TT^{1/2+\varpi}=O(T^{1/2-\nu_H+\varpi})$, so
 \[
@@ -417,10 +544,16 @@ $b$, whereas the batch-means bias in (i) is only $O(1/b)$. The algebraic identit
 $\Sft=2\Sbm(2b)-\Sbm(b)$ (using disjoint pairs) is immediate from
 $\Sbm(2b)=\Sbm(b)+ (b/T)\sum(\gb_{2k-1}\gb_{2k}^{\!\top}+\text{transpose})$.
 
-\emph{(iii) Variance.} $\Sbm$ is an average of $T'\asymp N/b$ terms that are themselves
-weakly dependent with geometrically decaying block-level autocovariances
-(\Cref{lem:davydov}); \Cref{as:mix} plus fourth moments give
-$\Var[\Sbm_{jk}]=O(1/T')=O(b/N)$, and the same for the lag-one term, hence for $\Sft$.
+\emph{(iii) Variance.} $\Sbm_{jk}$ is an average of $T'\asymp N/b$ terms
+$q_t=b\,\gb_{tj}\gb_{tk}$. These are quadratic in the scores, so bounding their autocovariances
+by \Cref{lem:davydov} needs $2+\delta$ moments of $q_t$, i.e.\ $4+2\delta$ moments of the
+scores; this is exactly why \Cref{as:mix} asks for $\E\norm{g_1}^{4+\nu'}<\infty$ with a margin
+$\nu'>0$ rather than plain fourth moments. Given that, $(q_t)$ is a measurable function of a
+geometrically mixing sequence at block resolution, hence itself geometrically mixing with
+$\alpha_{\mathrm{mix}}(k)\le K\rho^{kb}$, and Davydov gives
+$|\Cov(q_t,q_{t+k})|\le C\rho^{\delta kb/(2+\delta)}$. Summing the geometric series,
+$\Var[\Sbm_{jk}]=T'^{-2}\sum_{t,t'}\Cov(q_t,q_{t'})=O(1/T')=O(b/N)$, and the same argument
+applies to the lag-one term $b\,T'^{-1}\sum\gb_{2k-1,j}\gb_{2k,k}$, hence to $\Sft$.
 
 \emph{Drift.} Write $\gb_t(\theta_{t-1})=\eps_t+\Xi_t$ with
 $\Xi_t=\widehat H_t\delta_{t-1}+O(\norm{\delta_{t-1}}^2)$. Then
@@ -502,3 +635,123 @@ $\kappa_H=(1+\phi^2)/(1-\phi^2)$.
 \label{app:details}
 
 \input{sec_appendix_exp}
+
+\section{Safeguarding the blocked step}
+\label{app:shift}
+
+\begin{proof}[Proof of \Cref{prop:shift}]
+On $\mathcal A$ there are finitely many $t$ at which $\Pi_t$ is active, so
+$T_0=\max\{t:\Pi_t\text{ active}\}$ is finite and for $t>T_0$ the recursion is
+$\theta_t=\theta_{t-1}-\gamma_t\Hb_{t-1}^{-1}\gb_t(\theta_{t-1})$ verbatim. Two sequences that
+agree from a finite index on have the same limit points, the same almost sure rate and the same
+limit law, since all three are tail properties; the initial condition at $T_0$ is a finite random
+vector, and \Cref{thm:as,thm:rate,thm:clt} hold for the recursion started from any initial
+condition (\Cref{as:ident} is global). For the last claim, if $\theta_t\to\ts$ and
+$\norm{\gamma_t\Hb_{t-1}^{-1}\gb_t(\theta_{t-1})}\to0$ almost surely then for almost every
+$\omega$ there is $T_1(\omega)$ beyond which
+$\norm{\gamma_t\Hb_{t-1}^{-1}\gb_t}<c_D(1+\norm{\ts})/2\le c_D(1+\norm{\theta_{t-1}})$, so
+$\Pi_t$ is inactive for $t>T_1$ and $\omega\in\mathcal A$.
+\end{proof}
+
+\noindent
+We repeat here what \Cref{sec:setting} says, because it is the kind of gap a reader is entitled
+to be told about twice. \Cref{prop:shift} is conditional on $\mathcal A$ and does not establish
+$\Prob(\mathcal A)=1$ unconditionally: the implication runs from convergence to eventual
+inactivity, not the other way. The reason we do not close the loop is that the safeguard factor
+$\min\{1,c_D(1+\norm{\theta_{t-1}})/\norm{v}\}$ depends on $\gb_t$, hence is $\mathcal F_t$- and
+not $\mathcal F_{t-1}$-measurable, and multiplying the noise term $\gamma_t\Hb^{-1}\eps_t$ by an
+$\mathcal F_t$-measurable factor destroys the martingale-difference property that
+\Cref{thm:as,thm:clt} rest on. Two routes would close it and both are outside our scope: the
+expanding-truncation construction of \citet{kushner2003stochastic} and
+\citet{andrieu2005stability}, which replaces the cap by a projection onto a ball of radius
+increasing with the number of activations and proves the activation count finite; or an
+$\mathcal F_{t-1}$-measurable variant that caps using the \emph{previous} block's amplification,
+$\gamma_t\wedge\tau/\opnorm{\Hb_{t-2}^{-1}\Hh_{t-1}}$, which is predictable and so leaves the
+martingale structure intact, at the cost of an extra $O(d^2)$ per block. What we do instead is
+report the activation counts, which are between $2$ and $7$ per run and do not grow with $N$.
+
+\subsection{The step-size shift: the alternative we implemented and rejected}
+\label{app:t0}
+
+The variant replaces the step sequence $\gamma_t=c\,t^{-a}$ of \eqref{eq:step} by
+$\gamma_t=c\,(t+t_0)^{-a}$ with
+\begin{equation}
+t_0=\max\Big\{0,\ \tfrac{c}{2}\max_{t\le \Tw}\opnorm{\Hb_{\Tw}^{-1}\Hh_t}-1\Big\},
+\label{eq:t0}
+\end{equation}
+$\Tw=\lceil c_{\mathrm w}d/b\rceil$ being the last warm-up block, and switches the step-length
+safeguard $\Pi_t$ off. By construction \eqref{eq:contract} then holds at $t=1$ for every block
+whose amplification does not exceed the warm-up maximum. The spectral norms are obtained by four
+power iterations per warm-up block with $\Hh_t$ applied in factored form, so no $d\times d$
+product is formed and the whole computation costs
+$O(c_{\mathrm w}(d^2+db)\,d/b)$ flops once, $O(1)$ in $N$; with $b=m=d$ that is
+$O(c_{\mathrm w}d^2)$, some $4$--$5\%$ of the total at the settings of \Cref{tab:cost}. Setting
+\texttt{t0\_mult}$\,=0.5$ and \texttt{step\_cap}$\,=0$ in the code selects this variant.
+
+\begin{proof}[Correctness of the rejected shift variant]
+Write $\Tw$ for the last warm-up block. For every $t\le\Tw$,
+$\opnorm{\Hb_{\Tw}^{-1}\Hh_t}\le\opnorm{\Hb_{\Tw}^{-1}}\opnorm{\Hh_t}$. The first factor is
+finite almost surely by \Cref{lem:ridge}, which bounds it by $c_1^{-1}n_{\Tw}^{\qr}$ using only
+the ridge in \eqref{eq:curv} and no property of the iterates. The second is finite almost
+surely because $\opnorm{\Hh_t}\le b^{-1}\sum_{i\in B_t}\alpha_i\norm{\Psi_i}^2$ and
+\Cref{as:curv} gives $\E\opnorm{\alpha\Psi\Psi^{\!\top}}^{\eta'}\le C_{\eta'}$ with
+$\eta'>2$, so each summand is finite a.s.\ and the maximum is over the finitely many blocks
+$t\le\Tw$. Hence $t_0<\infty$ a.s. Measurability with respect to
+$\mathcal{F}_{\Tw}=\sigma(\xi_1,\dots,\xi_{b\Tw})$ is immediate: \eqref{eq:t0} is a function of
+$\Hb_{\Tw}$ and of $\{\Hh_t\}_{t\le\Tw}$, all of which are built from the warm-up window and
+from $\theta_0$, and the warm-up takes no parameter step.
+
+For the second claim, fix $\omega$ in the almost sure event $\{t_0<\infty\}$ and let
+$K=\lceil t_0\rceil$. Then $c(t+t_0)^{-a}\ge c(t+K)^{-a}$, and
+$\sum_{t\ge1}(t+K)^{-a}=\sum_{t>K}t^{-a}=\infty$ for $a\le1$, so $\sum_t\gamma_t=\infty$.
+Likewise $c(t+t_0)^{-a}\le ct^{-a}$, so $\sum_t\gamma_t^{1+\delta}\le
+c^{1+\delta}\sum_t t^{-a(1+\delta)}<\infty$ whenever $a(1+\delta)>1$, which is the same
+condition as for the unshifted sequence. Finally $(t+t_0)^{-a}/t^{-a}=(1+t_0/t)^{-a}\to1$.
+Conditioning on $\mathcal{F}_{\Tw}$ is harmless because $\mathcal{F}_{\Tw}$ is generated by
+finitely many observations, so it changes no tail statement and, by \Cref{as:mix}, leaves the
+stream after the warm-up geometrically mixing with the same constants up to a factor.
+
+\Cref{thm:as} and the preliminary rate use the step sequence only through
+$\sum_t\gamma_t=\infty$ and $\sum_t\gamma_t^2\opnorm{P_{t-1}}^2<\infty$, both just verified, so
+they transfer immediately. \Cref{thm:rate,thm:clt} and \Cref{prop:blockfree} deserve one extra
+line, because their proof uses the identity $\gamma_t=1/t$ explicitly in the Abel summation
+\eqref{eq:abel}, and we would rather write the shifted identity out than assert that nothing
+changes. With $\gamma_t=(t+t_0)^{-1}$, multiplying
+$\delta_t=\delta_{t-1}-\gamma_tP_{t-1}\{H\delta_{t-1}+\eps_t+r_t\}$ by $t+t_0$ gives
+\begin{equation}
+(t+t_0)\,\delta_t=(t-1+t_0)\delta_{t-1}+(I-P_{t-1}H)\delta_{t-1}-P_{t-1}\eps_t-P_{t-1}r_t ,
+\label{eq:abelshift}
+\end{equation}
+which is \eqref{eq:abel} with $t$ replaced by $t+t_0$ throughout. Summing from $t=1$ to $T$ now
+telescopes to $(T+t_0)\delta_T=t_0\delta_0+\sum_{t\le T}\{\cdot\}$ instead of
+$T\delta_T=\sum_{t\le T}\{\cdot\}$, so dividing by $T+t_0$,
+\[
+\delta_T=\frac{t_0\,\delta_0}{T+t_0}
+\;-\;\frac{1}{T+t_0}H^{-1}\sum_{t\le T}\eps_t
+\;+\;\frac{T}{T+t_0}\big\{(\mathrm A)+(\mathrm B)-(\mathrm C)\big\},
+\]
+with $(\mathrm A)$, $(\mathrm B)$, $(\mathrm C)$ exactly as in the unshifted proof. Two
+differences from \eqref{eq:abel}, and both are negligible. The new first term is
+$O(t_0/T)=O(1/T)=o(T^{-1/2})$ because $t_0$ is a finite constant, so it does not enter the
+limit. And $T/(T+t_0)=1+O(1/T)$ and $(T+t_0)^{-1}=T^{-1}(1+O(1/T))$, so every term of the
+unshifted decomposition is multiplied by $1+O(1/T)$; since each of them is $O_p(T^{-1/2})$ or
+smaller, the perturbation is $O_p(T^{-3/2})$. The remaining estimates --- the bounds on
+$(\mathrm A)$, $(\mathrm B)$ and $(\mathrm C)$, the martingale central limit theorem applied to
+$T^{-1/2}\sum_{t\le T}\eps_t$, and the Gordin decomposition --- do not involve $\gamma_t$ at
+all. Hence the rate, the block-freeness statement and the limit law are unchanged. So the shift
+variant has the cleaner theory of the two; it is the empirical comparison, not the theory, that
+made us prefer the safeguard.
+\end{proof}
+
+\noindent
+Two remarks on what this variant does and does not do. First, \eqref{eq:t0} does not make
+\eqref{eq:contract} hold for \emph{every} $t$: the maximum in \eqref{eq:t0}
+is over warm-up blocks, so a later block with an unusually badly conditioned $\Hh_t$ can still
+violate \eqref{eq:contract} at that single $t$. What the shift buys is that the violation
+happens with $\gamma_t\le(1+t_0)^{-1}$ rather than $\gamma_1=1$, so a single bad block moves
+$\theta$ by a bounded multiple of its distance to $\ts$ instead of by a large one, and the
+recursion recovers. Second, the proposition is about asymptotics; the finite-sample effect of
+the shift is a trade, because a larger $t_0$ also slows the decay of the initial condition,
+which decays like $t_0/(T+t_0)$ rather than $1/T$. This is why we set $t_0$ from
+\eqref{eq:contract} --- the smallest value that restores contraction --- rather than by taking a
+comfortable margin, and why \Cref{tab:ablation} reports the sensitivity.

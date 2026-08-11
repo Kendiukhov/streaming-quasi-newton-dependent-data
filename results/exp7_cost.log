@@ -1,5 +1,24 @@
-d=   5  BGSN     19.3ms  BGSN+plugin      55.0ms  SN-iid(p=1)     148.4ms  SN-iid(p=1/d)      9.6ms  ASGD    13.0ms  offlineHAC       723ms
-d=  10  BGSN      7.3ms  BGSN+plugin      42.3ms  SN-iid(p=1)     157.9ms  SN-iid(p=1/d)      8.5ms  ASGD     4.1ms  offlineHAC      1416ms
-d=  20  BGSN     24.3ms  BGSN+plugin     103.4ms  SN-iid(p=1)     520.4ms  SN-iid(p=1/d)     71.4ms  ASGD    46.3ms  offlineHAC      4199ms
-d=  40  BGSN    145.9ms  BGSN+plugin     375.2ms  SN-iid(p=1)    1295.9ms  SN-iid(p=1/d)    163.8ms  ASGD    23.4ms  offlineHAC     13487ms
-d=  80  BGSN    531.6ms  BGSN+plugin    1948.5ms  SN-iid(p=1)    6300.6ms  SN-iid(p=1/d)    618.0ms  ASGD   104.3ms
+d=   5  BGSN      7.4ms  BGSN+plugin      10.2ms  SN-iid(p=1)      20.6ms  SN-iid(p=1/d)      9.4ms  ASGD     4.2ms  offlineHAC       151ms
+d=  10  BGSN      6.2ms  BGSN+plugin      10.9ms  SN-iid(p=1)      28.8ms  SN-iid(p=1/d)      7.7ms  ASGD     3.5ms  offlineHAC       263ms
+d=  20  BGSN     10.3ms  BGSN+plugin      31.8ms  SN-iid(p=1)      78.4ms  SN-iid(p=1/d)     11.2ms  ASGD     5.5ms  offlineHAC       604ms
+d=  40  BGSN     21.4ms  BGSN+plugin      73.5ms  SN-iid(p=1)     260.7ms  SN-iid(p=1/d)     27.0ms  ASGD     8.3ms  offlineHAC      2303ms
+d=  80  BGSN    115.4ms  BGSN+plugin     313.9ms  SN-iid(p=1)    1135.1ms  SN-iid(p=1/d)    111.2ms  ASGD    20.2ms
+d= 160  BGSN    534.9ms  BGSN+plugin    1392.3ms  SN-iid(p=1)    4608.5ms  SN-iid(p=1/d)    533.9ms  ASGD    51.5ms
+
+-- deterministic operation counts (flops, leading order) --
+  d=   5  BGSN 8.180e+06  +plugin 1.318e+07  SN-iid(p=1) 2.012e+07  SN-iid(p=1/d) 8.180e+06
+  d=  10  BGSN 1.702e+07  +plugin 3.702e+07  SN-iid(p=1) 7.048e+07  SN-iid(p=1/d) 1.702e+07
+  d=  20  BGSN 3.848e+07  +plugin 1.185e+08  SN-iid(p=1) 2.619e+08  SN-iid(p=1/d) 3.848e+07
+  d=  40  BGSN 1.091e+08  +plugin 4.291e+08  SN-iid(p=1) 1.008e+09  SN-iid(p=1/d) 1.091e+08
+  d=  80  BGSN 4.621e+08  +plugin 1.742e+09  SN-iid(p=1) 3.951e+09  SN-iid(p=1/d) 4.621e+08
+  d= 160  BGSN 2.821e+09  +plugin 7.941e+09  SN-iid(p=1) 1.564e+10  SN-iid(p=1/d) 2.821e+09
+  flop exponent in d, BGSN           : 2.067
+  flop exponent in d, BGSN_plugin    : 2.022
+  flop exponent in d, SN_iid_p1      : 1.967
+  flop exponent in d, SN_iid_pinv_d  : 2.067
+  empirical exponent in d (last four points), BGSN           : 1.95
+  empirical exponent in d (last four points), BGSN_plugin    : 1.85
+  empirical exponent in d (last four points), SN_iid_p1      : 1.98
+  empirical exponent in d (last four points), SN_iid_pinv_d  : 1.88
+  empirical exponent in d (last four points), ASGD           : 1.09
+[saved] /Volumes/Crucial X6/MacBook/Code/ml_papers/streaming_qn_dependent/experiments/../results/exp7_cost.json

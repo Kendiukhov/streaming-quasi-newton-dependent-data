@@ -36,12 +36,6 @@
   "notes": "Confirmed on the official JMLR paper page: authors Yixin Fang, Jinfeng Xu, Lei Yang; JMLR volume 19, number 78, 2018, pages 1-21. JMLR articles carry no DOI, so none is given; the canonical JMLR URL is included instead."
  },
  {
-  "bibtex": "@misc{liu2023statistical,\n  author        = {Ruiqi Liu and Xi Chen and Zuofeng Shang},\n  title         = {Statistical Inference with Stochastic Gradient Methods under $\\phi$-mixing Data},\n  year          = {2023},\n  eprint        = {2302.12717},\n  archivePrefix = {arXiv},\n  primaryClass  = {stat.ME},\n  note          = {arXiv:2302.12717; v1 24 February 2023, last revised 3 March 2026}\n}",
-  "status": "corrected",
-  "evidence_url": "https://arxiv.org/abs/2302.12717",
-  "notes": "Title, all three authors (Ruiqi Liu, Xi Chen, Zuofeng Shang), arXiv id 2302.12717, primary class stat.ME (also stat.ML; MSC 62F12, 62F40, 62M10) and version history (v1 24 Feb 2023, v2 28 Mar 2023, v3 3 Mar 2026) confirmed on the arXiv abstract page; arXiv lists NO journal reference, and a web search indicates it is still an unpublished preprint (reported as under revision at JASA), so @misc is correct. CHANGED: year 2026 -> 2023, matching the identifier (2302 = Feb 2023) and arXiv's own citation export, with the March 2026 revision recorded in `note` instead. CHANGED: key liu2026phimixing -> liu2023statistical to follow the lastname+year+first-content-word rule; update any \\cite{liu2026phimixing} in the draft. The title uses $\\phi$ in math mode as arXiv renders it."
- },
- {
   "bibtex": "@article{rosenblatt1956central,\n  author  = {Murray Rosenblatt},\n  title   = {A Central Limit Theorem and a Strong Mixing Condition},\n  journal = {Proceedings of the National Academy of Sciences of the United States of America},\n  year    = {1956},\n  volume  = {42},\n  number  = {1},\n  pages   = {43--47},\n  doi     = {10.1073/pnas.42.1.43}\n}",
   "status": "verified",
   "evidence_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC534230/",
@@ -640,5 +634,71 @@
   "status": "verified",
   "evidence_url": "https://api.crossref.org/works/10.1098/rspa.2015.0257",
   "notes": "All eight authors in order (Xuan Liang, Tao Zou, Bin Guo, Shuo Li, Haozhe Zhang, Shuyi Zhang, Hui Huang, Song Xi Chen), title, journal, vol. 471, no. 2182, article 20150257, 2015, DOI 10.1098/rspa.2015.0257 confirmed from the Royal Society's Crossref deposit; royalsocietypublishing.org itself serves a bot-verification wall to automated fetches (I did not attempt to bypass it). Corroborated on the UCI page for the dataset (https://archive.ics.uci.edu/dataset/381/beijing+pm2+5+data), which lists this paper as the introductory paper. Nothing changed; braced {B}eijing's, {PM2.5}, {APEC} (PM2.5 left as plain text rather than PM$_{2.5}$ so the entry compiles in any bibliography style). Heads-up for the parent: UCI additionally asks that the dataset itself be cited as 'Chen, S. (2015). Beijing PM2.5 [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5JS49' - that is a separate @misc entry not present in this candidate list."
+ },
+ {
+  "bibtex": "@article{godichonbaggioni2019online,\n  author  = {Antoine Godichon-Baggioni},\n  title   = {Online estimation of the asymptotic variance for averaged stochastic gradient algorithms},\n  journal = {Journal of Statistical Planning and Inference},\n  volume  = {203},\n  pages   = {1--19},\n  year    = {2019},\n  doi     = {10.1016/j.jspi.2019.01.001},\n  note    = {arXiv:1702.00931}\n}",
+  "status": "verified",
+  "evidence_url": "https://www.sciencedirect.com/science/article/abs/pii/S0378375819300011",
+  "notes": "JSPI vol. 203 pp. 1-19 (2019) confirmed on the publisher page; arXiv:1702.00931 is the preprint."
+ },
+ {
+  "bibtex": "@book{hall1980martingale,\n  author    = {P. Hall and C. C. Heyde},\n  title     = {Martingale Limit Theory and Its Application},\n  publisher = {Academic Press},\n  address   = {New York},\n  year      = {1980},\n  isbn      = {978-0-12-319350-6}\n}",
+  "status": "verified",
+  "evidence_url": "https://www.abebooks.com/9780123193506/Martingale-Limit-Theory-Application-Probability-0123193508/plp",
+  "notes": "Academic Press, New York, 1980, Probability and Mathematical Statistics series, ISBN 978-0-12-319350-6."
+ },
+ {
+  "bibtex": "@article{kuang2026online,\n  author  = {Wei Kuang and Mihai Anitescu and Sen Na},\n  title   = {Online covariance matrix estimation in sketched {N}ewton methods},\n  journal = {Information and Inference: A Journal of the IMA},\n  volume  = {15},\n  number  = {2},\n  pages   = {iaag012},\n  year    = {2026},\n  doi     = {10.1093/imaiai/iaag012}\n}",
+  "status": "verified",
+  "evidence_url": "https://academic.oup.com/imaiai/article-abstract/15/2/iaag012/8698130",
+  "notes": "Information and Inference 15(2), article iaag012 (2026); arXiv:2502.07114 is the preprint."
+ },
+ {
+  "bibtex": "@article{leung2026principles,\n  author  = {Man Fung Leung and Kin Wai Chan},\n  title   = {Principles of statistical inference in online problems},\n  journal = {Bernoulli},\n  volume  = {32},\n  number  = {2},\n  pages   = {1122--1141},\n  year    = {2026},\n  doi     = {10.3150/25-BEJ1894},\n  note    = {arXiv:2209.05399}\n}",
+  "status": "verified",
+  "evidence_url": "https://projecteuclid.org/journals/bernoulli/volume-32/issue-2/Principles-of-statistical-inference-in-online-problems/10.3150/25-BEJ1894.full",
+  "notes": "Bernoulli 32(2) 1122-1141 (2026), doi 10.3150/25-BEJ1894; arXiv:2209.05399. Bib key renamed from leung2022principles so the key matches the year of record."
+ },
+ {
+  "bibtex": "@misc{liu2023mixing,\n  author        = {Ruiqi Liu and Xi Chen and Zuofeng Shang},\n  title         = {Statistical Inference with Stochastic Gradient Methods under $\\phi$-mixing Data},\n  year          = {2023},\n  eprint        = {2302.12717},\n  archivePrefix = {arXiv},\n  primaryClass  = {stat.ME},\n  note          = {arXiv:2302.12717}\n}",
+  "status": "corrected",
+  "evidence_url": "https://arxiv.org/abs/2302.12717",
+  "notes": "Title, all three authors (Ruiqi Liu, Xi Chen, Zuofeng Shang), arXiv id 2302.12717, primary class stat.ME (also stat.ML; MSC 62F12, 62F40, 62M10) and version history (v1 24 Feb 2023, v2 28 Mar 2023, v3 3 Mar 2026) confirmed on the arXiv abstract page; arXiv lists NO journal reference, and a web search indicates it is still an unpublished preprint (reported as under revision at JASA), so @misc is correct. CHANGED: year 2026 -> 2023, matching the identifier (2302 = Feb 2023) and arXiv's own citation export, with the March 2026 revision recorded in `note` instead. CHANGED: key liu2026phimixing -> liu2023statistical to follow the lastname+year+first-content-word rule; update any \\cite{liu2026phimixing} in the draft. The title uses $\\phi$ in math mode as arXiv renders it. Re-checked on the arXiv abstract page; the bib key was liu2026statistical at one point with year 2026 (the date of the latest revision) -- both corrected to the year of first posting, 2023."
+ },
+ {
+  "bibtex": "@misc{ni2026online,\n  author        = {Yijin Ni and Xiaoming Huo},\n  title         = {Online Covariance Estimation in Averaged {SGD}: Improved Batch-Mean Rates and Minimax Optimality via Trajectory Regression},\n  year          = {2026},\n  eprint        = {2604.10814},\n  archivePrefix = {arXiv},\n  primaryClass  = {cs.LG},\n  note          = {arXiv:2604.10814}\n}",
+  "status": "verified",
+  "evidence_url": "https://arxiv.org/abs/2604.10814",
+  "notes": "arXiv:2604.10814, submitted 12 April 2026; title and both authors read off the abstract page. Technical claims we make about this paper were checked against the abstract: O(n^{-(1-alpha)/3}) for the modified batch-means estimator (n^{-1/6} at the optimal learning-rate exponent) and a minimax rate Theta(n^{-(1-alpha)/2}) for Hessian-free covariance estimation from the SGD trajectory, attained by their trajectory-regression estimator."
+ },
+ {
+  "bibtex": "@article{politis1995bias,\n  author  = {Dimitris N. Politis and Joseph P. Romano},\n  title   = {Bias-corrected nonparametric spectral estimation},\n  journal = {Journal of Time Series Analysis},\n  volume  = {16},\n  number  = {1},\n  pages   = {67--103},\n  year    = {1995},\n  doi     = {10.1111/j.1467-9892.1995.tb00223.x}\n}",
+  "status": "verified",
+  "evidence_url": "https://onlinelibrary.wiley.com/doi/10.1111/j.1467-9892.1995.tb00223.x",
+  "notes": "J. Time Series Analysis 16(1) 67-103 (1995) confirmed on the publisher page and on Romano's publication list."
+ },
+ {
+  "bibtex": "@article{politis2011higher,\n  author  = {Dimitris N. Politis},\n  title   = {Higher-order accurate, positive semidefinite estimation of large-sample covariance and spectral density matrices},\n  journal = {Econometric Theory},\n  volume  = {27},\n  number  = {4},\n  pages   = {703--744},\n  year    = {2011},\n  doi     = {10.1017/S0266466610000484}\n}",
+  "status": "verified",
+  "evidence_url": "https://www.cambridge.org/core/journals/econometric-theory/article/abs/higherorder-accurate-positivesemidefinite-estimation-of-largesample-covarianceand-spectral-density-matrices/8B6C65FEEBDDEABDFF2BE265884CED3D",
+  "notes": "Econometric Theory 27(4) 703-744 (2011) confirmed on Cambridge Core and RePEc."
+ },
+ {
+  "bibtex": "@article{vats2022lugsail,\n  author  = {Dootika Vats and James M. Flegal},\n  title   = {Lugsail lag windows for estimating time-average covariance matrices},\n  journal = {Biometrika},\n  volume  = {109},\n  number  = {3},\n  pages   = {735--750},\n  year    = {2022},\n  doi     = {10.1093/biomet/asab049}\n}",
+  "status": "verified",
+  "evidence_url": "https://academic.oup.com/biomet/article-abstract/109/3/735/6395353",
+  "notes": "Biometrika 109(3) 735-750 (September 2022) confirmed on the publisher page; arXiv:1809.04541."
+ },
+ {
+  "bibtex": "@misc{wei2026refining,\n  author        = {Ziyang Wei and Wanrong Zhu and Jingyang Lyu and Wei Biao Wu},\n  title         = {Refining Covariance Matrix Estimation in Stochastic Gradient Descent Through Bias Reduction},\n  year          = {2026},\n  eprint        = {2604.21203},\n  archivePrefix = {arXiv},\n  primaryClass  = {stat.ML},\n  note          = {arXiv:2604.21203}\n}",
+  "status": "verified",
+  "evidence_url": "https://arxiv.org/abs/2604.21203",
+  "notes": "arXiv:2604.21203, submitted 23 April 2026; title and all four authors read off the abstract page. Technical claim checked against the abstract: a fully online de-biased estimator that needs no second-order derivatives and attains n^{(alpha-1)/2} sqrt(log n). The abstract does not state the bias-reduction mechanism, so an earlier draft sentence attributing a cumulative-sum identity to them was removed as unverifiable."
+ },
+ {
+  "bibtex": "@article{wu2009recursive,\n  author  = {Wei Biao Wu},\n  title   = {Recursive estimation of time-average variance constants},\n  journal = {The Annals of Applied Probability},\n  volume  = {19},\n  number  = {4},\n  pages   = {1529--1552},\n  year    = {2009},\n  doi     = {10.1214/08-AAP587}\n}",
+  "status": "verified",
+  "evidence_url": "https://projecteuclid.org/journals/annals-of-applied-probability/volume-19/issue-4/Recursive-estimation-of-time-average-variance-constants/10.1214/08-AAP587.pdf",
+  "notes": "Ann. Appl. Probab. 19(4) 1529-1552 (2009) confirmed on Project Euclid; arXiv:0908.4540."
  }
 ]

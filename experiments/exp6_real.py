@@ -86,12 +86,10 @@ def protocol_a(streams, n_seg, b, psi_map, theta_map, sigma_map, n_noise, tuned)
         for mth in METHODS_A:
             f = common.METHODS[mth](np.ascontiguousarray(X), y, "linear", b, aux)
             out.append((name, mth, (f.theta - th), f.se, f.crit,
-                        np.diag(orc.sandwich_true), orc.kappa, (name, i0)))
+                        np.diag(orc.sandwich_true), orc.kappa, (name, i0),
+                        f.extras.get("n_psd_fallback", 0) / len(f.theta)))
         f = common.METHODS["BGSN"](np.ascontiguousarray(X), y, "linear", b, aux)
-        u_ = f.extras["W"] * f.extras["Ainv"]
-        num = np.abs(np.diag(u_ @ (f.extras["S_ft"] - f.extras["S_bm"]) @ u_))
-        den = np.maximum(np.diag(u_ @ f.extras["S_ft"] @ u_), 1e-30)
-        return out, float(np.mean(num / den))
+        return out, common.adequacy(f)
 
     res = Parallel(n_jobs=common.NJOBS, batch_size=2)(delayed(one)(j) for j in jobs)
     for out, a in res:
@@ -120,13 +118,13 @@ def cluster_se(values, clusters):
 def summarise_a(recs, n_seg):
     import collections
     grp = collections.defaultdict(list)
-    for name, mth, err, se, crit, V, kap, clu in recs:
-        grp[(name, mth)].append((err, se, crit, V, kap, clu))
+    for name, mth, err, se, crit, V, kap, clu, fb in recs:
+        grp[(name, mth)].append((err, se, crit, V, kap, clu, fb))
     rows = []
     for (name, mth), rs in grp.items():
         err = np.array([r[0] for r in rs]); se = np.array([r[1] for r in rs])
         crit = rs[0][2]; V = np.array([r[3] for r in rs]); kap = np.array([r[4] for r in rs])
-        clu = [r[5] for r in rs]
+        clu = [r[5] for r in rs]; fb = [r[6] for r in rs]
         covm = np.abs(err) <= crit * se
         wo = 2 * common.Z95 * np.sqrt(V / n_seg)
         # pooled prediction for the dependence-blind interval on this stream
@@ -137,9 +135,18 @@ def summarise_a(recs, n_seg):
                          coverage_se=float(cluster_se(covm.mean(axis=1), clu)),
                          coverage_min=float(covm.mean(axis=0).min()),
                          coverage_max=float(covm.mean(axis=0).max()),
-                         width_rel=float(np.mean(2 * crit * se / wo)),
+                         # both, because the two-scale estimator has a heavy right tail when
+                         # the number of retained blocks is small, and a mean width then says
+                         # more about that tail than about a typical interval
+                         width_rel=float(np.median(2 * crit * se / wo)),
+                         width_rel_mean=float(np.mean(2 * crit * se / wo)),
                          rmse_rel=float(np.sqrt(np.mean(err ** 2 * n_seg / V))),
                          kappa_median=float(np.median(kap)),
+                         # fraction of coordinates on which u'S_ft u came out non-positive and
+                         # the interval fell back to plain batch means (Remark 12).  This is
+                         # zero in every simulation but NOT on the real streams, where the
+                         # two-scale form is a difference of two large PSD matrices.
+                         psd_fallback_rate=float(np.mean(fb)),
                          predicted_plugin_coverage=pred))
     return rows
 
@@ -160,15 +167,13 @@ def protocol_b(streams, ys, n_seg, b, tuned):
             aux["H_true"] = E.empirical_hessian(Xs, ysg, "linear", th_full)
             for mth in METHODS_B:
                 f = common.METHODS[mth](Xs, ysg, "linear", b, aux)
-                recs.append((mth, f.theta - th_full, f.se, f.crit))
+                recs.append((mth, f.theta - th_full, f.se, f.crit,
+                             f.extras.get("n_psd_fallback", 0) / len(f.theta)))
             f = common.METHODS["BGSN"](Xs, ysg, "linear", b, aux)
-            u_ = f.extras["W"] * f.extras["Ainv"]
-            num = np.abs(np.diag(u_ @ (f.extras["S_ft"] - f.extras["S_bm"]) @ u_))
-            den = np.maximum(np.diag(u_ @ f.extras["S_ft"] @ u_), 1e-30)
-            adeq.append(float(np.mean(num / den)))
+            adeq.append(common.adequacy(f))
         import collections
         grp = collections.defaultdict(list)
-        for mth, e, se, c in recs:
+        for mth, e, se, c, _fb in recs:
             grp[mth].append((e, se, c))
         for mth, rs in grp.items():
             err = np.array([r[0] for r in rs]); se = np.array([r[1] for r in rs])
@@ -263,8 +268,15 @@ if __name__ == "__main__":
     # ---- Protocol A ------------------------------------------------------------------
     print("\n== Protocol A: real covariates, synthetic AR errors, exact oracle ==")
     for label, sts, n_seg, b, n_noise in [
-            ("metro", [metro], 4000, 40, R_NOISE_METRO),
-            ("airq", airq, 5000, 50, R_NOISE_AIRQ)]:
+            # Segment lengths are set by two requirements at once: b must exceed the stream's
+            # dependence horizon (integrated autocorrelation time about 8 hours for traffic and
+            # 21 for air quality), and the segment must then contain enough blocks for the
+            # long-run covariance estimator to be stable -- the dyadic window retains about
+            # half of them.  n = 4000 at b = 40 leaves 100 blocks and roughly 50 retained,
+            # which is too few: the two-scale estimator is then so variable that the mean
+            # interval width on the air-quality stream came out 49 times the oracle width.
+            ("metro", [metro], 8000, 40, R_NOISE_METRO),
+            ("airq", airq, 10000, 50, R_NOISE_AIRQ)]:
         streams = [(s.name, np.ascontiguousarray(s.X)) for s in sts]
         recs, adeq = protocol_a(
             streams, n_seg, b,
@@ -286,7 +298,7 @@ if __name__ == "__main__":
 
     # ---- Protocol B ------------------------------------------------------------------
     print("\n== Protocol B: fully real response, target = full-stream M-estimator ==")
-    for label, sts, n_seg, b in [("metro", [metro], 4000, 40), ("airq", airq, 5000, 50)]:
+    for label, sts, n_seg, b in [("metro", [metro], 8000, 40), ("airq", airq, 10000, 50)]:
         streams = [(s.name, np.ascontiguousarray(s.X)) for s in sts]
         ys = {s.name: np.ascontiguousarray(s.y) for s in sts}
         rows, adeq = protocol_b(streams, ys, n_seg, b, tuned_per_stream)
@@ -307,12 +319,12 @@ if __name__ == "__main__":
     print("\n== Protocol A, block length sweep (metro) ==")
     out["protoA_metro_bsweep"] = []
     for b in [10, 20, 40, 80, 160, 400]:
-        recs, adeq = protocol_a([(metro.name, np.ascontiguousarray(metro.X))], 4000, b,
+        recs, adeq = protocol_a([(metro.name, np.ascontiguousarray(metro.X))], 8000, b,
                                 {metro.name: prep[metro.name]["psi"]},
                                 {metro.name: prep[metro.name]["theta"]},
                                 {metro.name: prep[metro.name]["sigma"]},
                                 max(R_NOISE_METRO // 2, 10), tuned_per_stream)
-        rows = summarise_a(recs, 4000)
+        rows = summarise_a(recs, 8000)
         rec = {r["method"]: r["coverage"] for r in rows}
         w = {r["method"]: r["width_rel"] for r in rows}
         out["protoA_metro_bsweep"].append(dict(b=b, adequacy=adeq, coverage=rec, width=w))

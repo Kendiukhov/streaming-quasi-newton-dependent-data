@@ -34,7 +34,7 @@ def one(seed, g, m, mode):
         mm, p = m, 1.0
     else:                      # Bernoulli thinning at the same expected update count
         mm, p = 1, 1.0 / m
-    Ainv, W, nc = _core.curvature_only(X, g.theta_star, mm, p, 0.0, 0.0, 0.4, 1e-6,
+    Ainv, W, nc = _core.curvature_only(X, g.theta_star, mm, p, 0.0, 0.0, 0.2, 1e-6,
                                        0 if g.model == "linear" else 1, seed, 20)
     return np.linalg.inv(W * Ainv), nc
 

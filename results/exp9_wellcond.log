@@ -1,0 +1,12 @@
+well-conditioned design: cond(H)=1.00  kappa in [2.92, 2.92]
+   tuned: c_asgd=1 c_adagrad=0.3162  (9s)
+   AdaGrad-2scale   cov=0.943+-0.003 width=1.00 rmse=1.03
+   BGSN             cov=0.942+-0.003 width=1.00 rmse=1.03
+   Oracle-var       cov=0.941+-0.003 width=1.00 rmse=1.03
+   BGSN-BM          cov=0.933+-0.003 width=0.97 rmse=1.03
+   ASGD-2scale      cov=0.931+-0.003 width=1.00 rmse=1.07
+   ASGD-RS          cov=0.917+-0.004 width=1.28 rmse=1.07
+   BGSN-plugin      cov=0.743+-0.005 width=0.59 rmse=1.03
+   SN-iid           cov=0.740+-0.005 width=0.59 rmse=1.03
+   ASGD-plugin      cov=0.721+-0.006 width=0.59 rmse=1.07
+[saved] /Volumes/Crucial X6/MacBook/Code/ml_papers/streaming_qn_dependent/experiments/../results/exp9_wellcond.json

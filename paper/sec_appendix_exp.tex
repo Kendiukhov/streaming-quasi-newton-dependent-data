@@ -56,12 +56,20 @@ proportional to $\Sigma$, so $R_k=\lambda_2^{k}\Sigma$ with $\lambda_2$ the chai
 eigenvalue and $\kappa_j\to(1+\psi\lambda_2)/(1-\psi\lambda_2)$ as $\Sigma_\nu\to0$: at our
 settings, $\kappa_j=7.55$ in every coordinate against the noise-free limit $7.88$.
 
-This design is also the one that forces the longer warm-up. With
-$\Prob(s_t=s_{t-1})=0.97$ the chain dwells in a regime for about $33$ observations, so a block
-of $b=20$ consecutive observations almost always lies inside a single regime and its empirical
-curvature is nearly rank one. A warm-up of $50d$ \emph{consecutive} observations then spans
-only about thirty regime visits, leaves $\Hb$ rank-starved, and the $1/t$ schedule diverges
-outright (\Cref{tab:ablation}(c$'$)); $200d$ suffices.
+This design is the one that forces both the longer warm-up and the stability shift, and the
+same feature causes both. With $\Prob(s_t=s_{t-1})=0.97$ the chain dwells in a regime for about
+$33$ observations and its integrated autocorrelation time is
+$(1+0.97)/(1-0.97)\approx66$, so a block of $b=20$ consecutive observations almost always lies
+inside a single regime and the block Hessian $\Hh_t$ is nearly rank one. Two consequences,
+which we separated only after mistaking the second for the first. A warm-up of $50d$
+\emph{consecutive} observations spans only about thirty regime visits, so it leaves $\Hb$
+rank-starved; $200d$ fixes that (\Cref{tab:ablation}(c$'$)). But a well-estimated $\Hb$ is not
+enough, because the near-rank-one $\Hh_t$ makes $\opnorm{\Hb^{-1}\Hh_t}$ large --- median $33$
+here, against $20$ on AR-hom, with block maxima $89$ and $55$ --- so the contraction condition
+\eqref{eq:contract} fails at $\gamma_1=1$ and the first few steps overshoot by orders of
+magnitude. At $c_{\mathrm w}=200$ and no shift, the relative error of the point estimate still
+exceeds one on $7$ of $10$ replicates. Both fixes are needed, and neither substitutes for the
+other (\Cref{tab:ablation}(i)).
 
 \paragraph{Logistic (simulated oracle).}
 $x_t$ is AR(1) with $\phi=0.7$; the latent error is $e_t=\mathrm{logit}(\Phi(\nu_t))$ with
@@ -82,6 +90,17 @@ paper.
 
 \subsection{Real streams: features, segments and Protocol B's nominal level}
 \label{app:real}
+
+\paragraph{Responses.} Both responses are log-transformed and then standardised to zero mean and
+unit variance, exactly as the covariates are. The standardisation is not cosmetic. Without it the
+mean of $\log(\text{traffic volume})$, about $7.9$, sits entirely in the intercept, which is then
+roughly $400$ standard errors from the $\theta_0=0$ that a streaming method starts from; a $1/t$
+schedule needs of order that many steps merely to cover the distance, so on a $4000$-hour segment
+(which affords only about $100$ blocked steps at $b=40$) the experiment would be measuring the distance
+to the initialisation rather than anything about inference --- the infeasible oracle-variance
+interval covered $0.14$ in that configuration, which is the diagnostic that the point estimate,
+not the covariance, was at fault. Standardising the response is an affine reparametrisation of a
+linear model and changes no coverage statement; it is also what any practitioner would do.
 
 \paragraph{Features.} Traffic: intercept, standardised temperature and cloud cover, two daily
 harmonics and one weekly harmonic, a holiday indicator propagated from the labelled midnight
@@ -115,8 +134,15 @@ $2\Phi\big(z_{\alpha/2}/\sqrt{1-1/R}\big)-1$, which is what the header of \Cref{
 reports. Assumption (iii) requires the full-stream estimator to be (approximately) the equally
 weighted average of the segment estimators, which holds when the segments have equal length
 and similar $\widehat H$; (i) is the same approximation that makes segments usable as
-replicates at all. The correction is small---it raises the target from $0.950$ to about
-$0.955$ at $R=8$---and we report the raw coverage alongside it.
+replicates at all. The correction is small but not negligible---at the $R$ of our traffic stream
+it raises the target from $0.950$ to $\ProtoBNominalMetro$, and at the $R$ of the air-quality
+stream to $\ProtoBNominalAirq$---and both the corrected target and the raw coverage appear in
+\Cref{tab:real}, computed from $R$ rather than quoted from memory. The correction is also least
+trustworthy exactly where it is largest: with only a handful of segments per stream, assumption
+(iii) is a crude approximation and the corrected target is close to one, which compresses the
+comparison. That is the main reason we treat Protocol~A, whose target is exact by construction,
+as the primary real-data evidence and Protocol~B as the check that the conclusion survives a real
+error process.
 
 \subsection{Hyperparameters}
 \label{app:hyper}
@@ -125,10 +151,21 @@ Unless a sweep says otherwise: block length $b=20$ ($=d$), gap $m=b$ (one curvat
 block), no Bernoulli thinning ($p=1$), log-weights off ($w'=0$), ridge $c_\iota=0.01$,
 $\qr=0.4$, initial curvature scale $\lambda_0=10^{-6}$ (relative to the first block's mean
 curvature magnitude, so it is dimensionless), warm-up $c_{\mathrm w}=200$ observations per
-parameter, retained window dyadic (last half to last three quarters of blocks).
+parameter capped at $\varpi_{\mathrm w}=10\%$ of the stream, retained window dyadic (last half to
+last three quarters of blocks), step-length safeguard constant $c_D=1$ in \eqref{eq:step}, and the
+schedule shift of \Cref{app:t0} switched off (\texttt{t0\_mult}$\,=0$).
 \Cref{tab:ablation} varies each of these. The warm-up constant is $200$ rather than the $50$
 that suffices on the autoregressive designs because of the regime-switching design, for the
-reason given in \Cref{app:dgps}.
+reason given in \Cref{app:dgps}. The warm-up and the safeguard address different failures and
+neither substitutes for the other: the warm-up makes $\Hb$ informative, and the safeguard makes
+the first steps safe to take even when it is. With $c_{\mathrm w}=200$ and no safeguard the
+regime-switching design still diverges (\Cref{tab:ablation}(i)); with the safeguard and
+$c_{\mathrm w}=50$ it no longer diverges but the curvature is still rank-starved, and the relative
+variance is $\WarmMarkovFifty$ against $\WarmMarkovTwoHundred$ at $c_{\mathrm w}=200$
+(\Cref{tab:ablation}(c$'$)). The two devices are complementary in exactly that way: the safeguard
+turns a divergence into an inefficiency, and the warm-up removes the inefficiency. The $10\%$ cap on the warm-up never binds
+in the simulations, where $N=200{,}000$ and $c_{\mathrm w}d\le 4000$; it binds on every real-data
+segment, where $N$ is $\RealNMetro$ or $\RealNAirq$ (\Cref{tab:ablation}(j)).
 
 The dependence-blind competitor ``streaming Newton, i.i.d.\ theory'' uses the base method's
 schedule exactly: every observation is a candidate curvature slot ($m=1$) with Bernoulli

@@ -37,11 +37,12 @@ $\|\widehat\Sigma-\Sigma\|=O(N^{-1/8})$; \citet{singh2025utility} show equal bat
 are preferable and apply the flat-top bias correction; \citet{ni2026online} improve the
 batch-means rate to $N^{-1/6}$ and establish the minimax rate
 $\Theta(N^{-(1-a)/2})$ for \emph{Hessian-free} covariance estimation from the iterate path;
-\citet{wei2026refining} reduce the bias by a cumulative-sum identity rather than a
-two-scale device. \citet{fang2018online,fang2019scalable} bootstrap;
+\citet{wei2026refining} give a fully online de-biased estimator that needs no second-order
+information and reaches $N^{(a-1)/2}\sqrt{\log N}$, i.e.\ that minimax rate up to a logarithm,
+so the Hessian-free class is close to saturated. \citet{fang2018online,fang2019scalable} bootstrap;
 \citet{su2023higrad} split the trajectory; \citet{lee2022fast,li2026stream,chen2024online}
 studentise by a random scaling matrix and estimate nothing.
-\citet{leung2022principles} and \citet{wu2009recursive} design recursive long-run
+\citet{leung2026principles} and \citet{wu2009recursive} design recursive long-run
 variance estimators directly. \textbf{None of these is a claim we duplicate};
 what we take from them is the batch-means template and the flat-top correction, and what
 we add is the block-\emph{gradient} construction and its consequence for the rate
@@ -68,7 +69,7 @@ time-dependent and biased gradients, and identify blocked or growing mini-batche
 device that breaks dependence; they give $L^2$ rates but no central limit theorem and no
 inference. \textbf{Blocked gradients as a dependence-breaking device are theirs.}
 
-On the inference side, \citet{liu2026statistical} give a multiplier bootstrap for
+On the inference side, \citet{liu2023mixing} give a multiplier bootstrap for
 $\phi$-mixing streams using alternating growing blocks, and establish the long-run
 sandwich limit and, qualitatively, the failure of dependence-blind intervals;
 \citet{li2023markovian} give a functional central limit theorem and the semiparametric

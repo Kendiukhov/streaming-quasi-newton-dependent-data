@@ -20,6 +20,7 @@ STEPS = [
     ("exp7_cost.py",            "exp7_cost.json"),
     ("exp2_coverage_law.py",    "exp2_coverage_law.json"),
     ("exp1_main.py",            "exp1_main.json"),
+    ("exp10_hard_design.py",    "exp10_hard_design.json"),
     ("exp6_real.py",            "exp6_real.json"),
     ("exp5_ablations.py",       "exp5_ablations.json"),
     ("exp9_wellcond.py",        "exp9_wellcond.json"),

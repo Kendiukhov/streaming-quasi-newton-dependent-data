@@ -93,11 +93,13 @@ def _sandwich_from_H(H: np.ndarray, S: np.ndarray, N: int,
 # --------------------------------------------------------------------------------------
 def streaming_newton(X, y, model: str, b: int, m: int = None, p: float = 1.0,
                      theta0: Optional[np.ndarray] = None, w_hess: float = 0.0,
-                     ci_reg: float = 0.01, ci_pow: float = 0.4, lam0: float = 1e-6,
+                     ci_reg: float = 0.01, ci_pow: float = 0.2, lam0: float = 1e-6,
                      warm_mult: float = 200.0, n_warm: Optional[int] = None,
                      warm_mult_max: float = 1000.0, warm_tol: float = 0.0,
                      auto_ridge: bool = True,
                      a_step: float = 1.0, c_step: float = 1.0, w_avg: float = 0.0,
+                     t0_mult: float = 0.0, step_cap: float = 1.0,
+                     warm_frac: float = 0.1,
                      averaged: bool = False,
                      seed: int = 0, variance: str = "twoscale",
                      z: float = 1.959963984540054, traj_every: int = 0,
@@ -125,6 +127,19 @@ def streaming_newton(X, y, model: str, b: int, m: int = None, p: float = 1.0,
     regime-switching design, say -- because there a fixed number of observations can span very
     few effectively distinct design points.  The whole warm-up consumes O(d) observations and
     ``O(warm_mult d^3)`` flops, O(1) in N, and leaves every asymptotic statement unchanged.
+
+    **Stability shift.**  A blocked preconditioned step is not automatically safe to take at
+    full length.  Writing the linearised error recursion,
+    ``theta_t - theta* = (I - gamma_t Hbar^{-1} Hhat_t)(theta_{t-1} - theta*) + noise``, it
+    contracts only while ``gamma_t ||Hbar^{-1} Hhat_t||_2 < 2``.  On an *independent* stream a
+    block of ``b >= d`` observations gives a full-rank ``Hhat_t`` and this holds at
+    ``gamma_1 = 1``; on a *dependent* stream the same block can span far fewer than ``b``
+    distinct covariate directions, so ``Hhat_t`` is near-singular and the amplification is
+    large.  We therefore use ``gamma_t = c_step (t + t0)^{-a_step}`` with
+    ``t0 = max(0, t0_mult * c_step * max_t ||Hbar^{-1} Hhat_t||_2 - 1)``, the maximum taken over
+    the warm-up blocks only.  ``t0_mult = 0.5`` is the value the contraction condition
+    dictates.  ``t0`` is a finite constant fixed before the first parameter step, so it changes
+    no asymptotic statement; set ``t0_mult = 0`` to recover the unshifted schedule.
     """
     X = np.ascontiguousarray(X, dtype=np.float64)
     y = np.ascontiguousarray(y, dtype=np.float64)
@@ -134,15 +149,22 @@ def streaming_newton(X, y, model: str, b: int, m: int = None, p: float = 1.0,
     if theta0 is None:
         theta0 = np.zeros(d)
     if n_warm is None:
-        n_warm = int(np.ceil(warm_mult * d / b))
-    n_warm_max = max(n_warm, int(np.ceil(warm_mult_max * d / b)))
+        # A warm-up of c_w d observations is O(1) in N, but on a short stream it can be a
+        # large fraction of it, leaving too few blocked steps for the 1/t schedule to do
+        # anything.  Cap it at warm_frac of the stream: this binds only when
+        # c_w d > warm_frac N, i.e. exactly in the regime where the asymptotic argument for
+        # ignoring the warm-up does not apply.
+        n_warm = min(int(np.ceil(warm_mult * d / b)),
+                     max(1, int(np.floor(warm_frac * N / b))))
+    n_warm_max = max(n_warm, min(int(np.ceil(warm_mult_max * d / b)),
+                                 max(1, int(np.floor(warm_frac * N / b)))))
     want_plugin = 1 if variance in ("plugin", "both") else 0
     (th, tbar, Ainv, W, S_bm, S_ft, G0, n_curv, nkeep, tn, tt,
-     n_warm_used) = _core.bgsn_run(
+     n_warm_used, t0_used, n_clip) = _core.bgsn_run(
         X, y, np.ascontiguousarray(theta0, dtype=np.float64), b, m, p, w_hess,
         ci_reg, ci_pow, lam0, MODEL_CODE[model], seed, want_plugin, traj_every,
         n_warm, 1 if auto_ridge else 0, a_step, c_step, w_avg,
-        n_warm_max, warm_tol)
+        n_warm_max, warm_tol, t0_mult, step_cap)
     Nused = (N // b) * b
     point = tbar if averaged else th
     Suse = {"plugin": G0, "batchmeans": S_bm, "twoscale": S_ft}.get(variance, S_ft)
@@ -153,7 +175,7 @@ def streaming_newton(X, y, model: str, b: int, m: int = None, p: float = 1.0,
                extras=dict(Ainv=Ainv, W=W, S_bm=S_bm, S_ft=S_ft, Gamma0_hat=G0,
                            theta_last=th, theta_bar=tbar, n_warm=n_warm_used,
                            n_psd_fallback=n_fb, n_curv=n_curv, n_blocks_kept=nkeep,
-                           traj_n=tn, traj_theta=tt))
+                           t0=t0_used, n_clip=n_clip, traj_n=tn, traj_theta=tt))
 
 
 def first_order(X, y, model: str, b: int, c_step: float, a_step: float = 0.75,

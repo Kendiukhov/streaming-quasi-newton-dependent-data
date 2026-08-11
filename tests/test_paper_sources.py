@@ -44,8 +44,10 @@ def test_every_data_macro_is_defined():
         return
     defined = set(re.findall(r"(?:newcommand|providecommand)\{\\(\w+)\}",
                              open(nums).read()))
-    pat = re.compile(r"^(Cov|Kappa|Width|Time|Rmse|Real|Cost|Flop|Ks|Lrv|Se|Rate|Asym|Wc)"
-                     r"[A-Z]")
+    # keep this prefix list in sync with emit_macros() in experiments/make_tables.py: the two
+    # must agree, or a macro can be used in the text and silently never emitted
+    pat = re.compile(r"^(Cov|Kappa|Width|Time|Rmse|Real|Cost|Flop|Ks|Lrv|Se|Rate|Asym|Wc|"
+                     r"Stream|Hard|Shift|Gap|Adeq|Psd|Proto|Cond|Warm|Strong)[A-Z]")
     used = set()
     for f in SECTIONS + ["main.tex"]:
         used |= set(re.findall(r"\\([A-Za-z]+)", open(os.path.join(PAPER, f)).read()))

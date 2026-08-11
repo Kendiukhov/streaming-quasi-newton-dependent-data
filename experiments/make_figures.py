@@ -395,6 +395,52 @@ def fig7_lrv_rate():
     savefig(fig, "fig7_lrv_rate.pdf")
 
 
+
+def fig8_hard_design():
+    """Coverage against N on the two designs whose point estimate has not converged.
+
+    The point of the figure is the *gap* between our curve and the oracle-variance curve: where
+    it is invisible the undercoverage belongs to the central limit theorem and not to our
+    covariance estimator, and where it is not we own it.
+    """
+    if not _ok("exp10_hard_design.json"):
+        return
+    d = common.load("exp10_hard_design.json")
+    designs = [(k, v) for k, v in d.items() if isinstance(v, dict)]
+    fig, ax = plt.subplots(1, len(designs) + 1, figsize=(2.5 * (len(designs) + 1), 2.9))
+    for k, (label, dd) in enumerate(designs):
+        a = ax[k]
+        r = dd["rows"]
+        N = [q["N"] for q in r]
+        a.axhline(0.95, color="k", lw=0.8, ls=":", label="nominal")
+        a.errorbar(N, [q["cov_bgsn"] for q in r],
+                   yerr=[1.96 * q["cov_bgsn_se"] for q in r], marker="o", ms=5,
+                   color=C["ours"], capsize=2, lw=1.5, label="ours (BGSN)")
+        a.plot(N, [q["cov_oracle"] for q in r], marker="s", ms=4, mfc="none",
+               color=C["oracle"], lw=1.2, ls="--", label="oracle variance (infeasible)")
+        a.plot(N, [q["cov_plugin"] for q in r], marker="v", ms=4, color=C["plugin"], lw=1.5,
+               label="dependence-blind")
+        a.set_xscale("log"); a.set_xlabel("stream length $N$")
+        if k == 0:
+            a.set_ylabel("coverage")
+            a.legend(fontsize=6.5, loc="center right", framealpha=0.9)
+        a.set_ylim(0.0, 1.0)
+        a.set_title(f"({chr(97 + k)}) {label}", fontsize=9, loc="left")
+
+    a = ax[-1]
+    a.axhline(1.0, color="k", lw=0.8, ls=":", label="efficient")
+    for (label, dd), mk in zip(designs, ("o", "^")):
+        r = dd["rows"]
+        a.plot([q["N"] for q in r], [q["rmse_rel_median"] for q in r], marker=mk, ms=5,
+               lw=1.5, label=label)
+    a.set_xscale("log"); a.set_xlabel("stream length $N$")
+    a.set_ylabel("RMSE / efficient s.e.")
+    a.set_title(f"({chr(97 + len(designs))}) why: the point estimate", fontsize=9, loc="left")
+    a.legend(fontsize=6.5)
+
+    savefig(fig, "fig8_hard_design.pdf")
+
+
 if __name__ == "__main__":
     fig1_headline(); fig2_lrv(); fig3_gapping(); fig4_cost(); fig5_ablations(); fig6_real()
-    fig7_lrv_rate()
+    fig7_lrv_rate(); fig8_hard_design()

@@ -148,6 +148,58 @@ def run_one_seed(g, N, b, methods, seed, tuned, extra=None):
 NJOBS = int(os.environ.get("NJOBS", 5))
 
 
+
+def logit_dgp(d: int = 20, phi: float = 0.7, psi: float = 0.8, cond_exponent: float = 1.0):
+    """The dependent-logistic DGP, with its simulated long-run covariance oracle cached.
+
+    The oracle for this design has no closed form and costs a long simulation, so it is cached
+    on disk and shared by every experiment that uses the design.  Sharing matters for more than
+    speed: two experiments that built the oracle independently would be comparing against
+    slightly different targets.
+    """
+    from bgsn import streams as _st, dgp as _dg
+    th = np.linspace(-1.0, 1.0, d)
+    Sig = _st.illconditioned_cov(d, np.random.default_rng(30_000), cond_exponent)
+    cache = os.path.join(RESULTS, "logit_oracle_d%d.npz" % d)
+    if os.path.exists(cache):
+        z = np.load(cache)
+        orc = _st.Oracle(theta_star=th, H=z["H"], Gamma0=z["G0"], S=z["S"],
+                         exact=False, oracle_error=float(z["err"]),
+                         meta=dict(dgp="logit_copula", cached=True))
+    else:
+        import time as _t
+        print("  [building the logistic oracle by long simulation ...]", flush=True)
+        t0 = _t.time()
+        orc = _st.logit_copula_oracle(d, phi, psi, cond_exponent, th, Sig,
+                                      n_sim=1_000_000, n_rep=8, lag=100)
+        np.savez(cache, H=orc.H, G0=orc.Gamma0, S=orc.S, err=orc.oracle_error)
+        print(f"  [done in {_t.time()-t0:.0f}s, relative Monte Carlo error of the sandwich "
+              f"diagonal = {orc.oracle_error:.2e}]", flush=True)
+    return _dg.make_logit_copula(d=d, phi=phi, psi=psi, cond_exponent=cond_exponent,
+                                 oracle=orc)
+
+
+def adequacy(fit) -> float:
+    """The free block-adequacy diagnostic, averaged over coordinates.
+
+    ``r_j = |u_j'(S_ft - S_bm)u_j| / (u_j'S_bm u_j)`` with ``u_j = Hbar^{-1}e_j``.  The
+    denominator is the plain batch-means quadratic form, NOT the two-scale one: ``S_bm`` is a
+    sum of outer products and so is positive semidefinite, whereas ``S_ft`` is a difference of
+    two such matrices and its quadratic forms can be negative (Remark 12).  Dividing by the
+    two-scale form and flooring it at a tiny positive number, as an earlier version did, turns
+    those coordinates into astronomically large numbers and makes the average meaningless on
+    real streams.  With the batch-means denominator the diagnostic keeps its interpretation:
+    an estimate of the relative block-length bias of plain batch means.
+    """
+    u = fit.extras["W"] * fit.extras["Ainv"]
+    num = np.abs(np.diag(u @ (fit.extras["S_ft"] - fit.extras["S_bm"]) @ u))
+    den = np.diag(u @ fit.extras["S_bm"] @ u)
+    ok = den > 0
+    if not ok.any():
+        return float("nan")
+    return float(np.mean(num[ok] / den[ok]))
+
+
 def run_mc(g, N, b, methods, R, tuned, n_jobs=None, extra=None, batch_size=2):
     from joblib import Parallel, delayed
     res = Parallel(n_jobs=n_jobs or NJOBS, batch_size=batch_size)(

@@ -1,57 +1,57 @@
 == AR-hom: lin_hom(phi=0.7,psi=0.7)  kappa in [2.92, 2.92]  cond(H)=400
-   tuned: c_asgd=1.778 c_adagrad=3.162  (130s)
-   Offline-HAC      cov=0.961±0.011 [0.90,1.00] width=0.99 rmse=0.95 t=6177ms
-   Oracle-var       cov=0.950±0.006 [0.93,0.97] width=1.00 rmse=1.01 t=110ms
-   BGSN             cov=0.950±0.006 [0.93,0.97] width=1.00 rmse=1.01 t=151ms
-   SN-iid+2scale    cov=0.948±0.006 [0.94,0.97] width=1.00 rmse=1.01 t=142ms
-   BGSN-BM          cov=0.942±0.006 [0.92,0.97] width=0.97 rmse=1.01 t=130ms
-   BGSN-plugin      cov=0.748±0.012 [0.71,0.79] width=0.59 rmse=1.01 t=362ms
-   SN-iid           cov=0.748±0.012 [0.71,0.78] width=0.59 rmse=1.01 t=369ms
-   AdaGrad-2scale   cov=0.547±0.018 [0.38,0.90] width=1.03 rmse=2.99 t=73ms
-   ASGD-RS          cov=0.083±0.003 [0.00,0.65] width=1.26 rmse=9.77 t=56ms
-   ASGD-2scale      cov=0.051±0.002 [0.00,0.44] width=1.02 rmse=9.77 t=65ms
-   ASGD-plugin      cov=0.028±0.002 [0.00,0.25] width=0.59 rmse=9.77 t=290ms
-   (449s total)
+   tuned: c_asgd=1.778 c_adagrad=3.162  (11s)
+   Offline-HAC      cov=0.961±0.011 [0.90,1.00] width=0.99 rmse=0.95 t=627ms
+   Oracle-var       cov=0.950±0.006 [0.93,0.97] width=1.00 rmse=1.01 t=14ms
+   SN-iid+2scale    cov=0.949±0.006 [0.93,0.97] width=1.00 rmse=1.01 t=15ms
+   BGSN             cov=0.949±0.006 [0.93,0.97] width=1.00 rmse=1.01 t=14ms
+   BGSN-BM          cov=0.939±0.006 [0.92,0.96] width=0.96 rmse=1.01 t=13ms
+   SN-iid           cov=0.743±0.011 [0.69,0.78] width=0.58 rmse=1.01 t=38ms
+   BGSN-plugin      cov=0.742±0.011 [0.70,0.79] width=0.58 rmse=1.01 t=36ms
+   AdaGrad-2scale   cov=0.547±0.018 [0.38,0.90] width=1.03 rmse=2.99 t=6ms
+   ASGD-RS          cov=0.083±0.003 [0.00,0.65] width=1.26 rmse=9.77 t=6ms
+   ASGD-2scale      cov=0.051±0.002 [0.00,0.44] width=1.02 rmse=9.77 t=6ms
+   ASGD-plugin      cov=0.028±0.002 [0.00,0.25] width=0.59 rmse=9.77 t=30ms
+   (47s total)
 == AR-het: lin_het(psi=0.7)  kappa in [1.00, 4.41]  cond(H)=69
-   tuned: c_asgd=1.778 c_adagrad=1  (48s)
-   Offline-HAC      cov=0.955±0.008 [0.90,1.00] width=0.99 rmse=0.98 t=1033ms
-   BGSN             cov=0.949±0.003 [0.93,0.98] width=1.00 rmse=1.01 t=43ms
-   Oracle-var       cov=0.948±0.003 [0.93,0.98] width=1.00 rmse=1.01 t=43ms
-   AdaGrad-2scale   cov=0.947±0.003 [0.93,0.96] width=1.01 rmse=1.03 t=17ms
-   SN-iid+2scale    cov=0.947±0.004 [0.92,0.97] width=1.00 rmse=1.01 t=48ms
-   BGSN-BM          cov=0.944±0.004 [0.91,0.97] width=0.98 rmse=1.01 t=45ms
-   BGSN-plugin      cov=0.834±0.006 [0.64,0.96] width=0.73 rmse=1.01 t=130ms
-   SN-iid           cov=0.832±0.006 [0.64,0.96] width=0.73 rmse=1.01 t=135ms
-   ASGD-RS          cov=0.679±0.009 [0.25,0.90] width=8.51 rmse=50.34 t=20ms
-   ASGD-2scale      cov=0.271±0.010 [0.05,0.64] width=1.06 rmse=50.34 t=19ms
-   ASGD-plugin      cov=0.195±0.008 [0.05,0.50] width=1.03 rmse=50.34 t=108ms
-   (161s total)
+   tuned: c_asgd=1.778 c_adagrad=1  (10s)
+   Offline-HAC      cov=0.955±0.008 [0.90,1.00] width=0.99 rmse=0.98 t=648ms
+   SN-iid+2scale    cov=0.951±0.003 [0.92,0.98] width=1.00 rmse=1.01 t=13ms
+   BGSN             cov=0.950±0.003 [0.92,0.98] width=1.00 rmse=1.01 t=11ms
+   Oracle-var       cov=0.949±0.003 [0.92,0.98] width=1.00 rmse=1.01 t=12ms
+   AdaGrad-2scale   cov=0.947±0.003 [0.93,0.96] width=1.01 rmse=1.03 t=6ms
+   BGSN-BM          cov=0.944±0.004 [0.90,0.98] width=0.98 rmse=1.01 t=12ms
+   SN-iid           cov=0.834±0.006 [0.64,0.96] width=0.73 rmse=1.01 t=36ms
+   BGSN-plugin      cov=0.832±0.006 [0.63,0.96] width=0.73 rmse=1.01 t=35ms
+   ASGD-RS          cov=0.679±0.009 [0.25,0.90] width=8.51 rmse=50.34 t=6ms
+   ASGD-2scale      cov=0.271±0.010 [0.05,0.64] width=1.06 rmse=50.34 t=6ms
+   ASGD-plugin      cov=0.195±0.008 [0.05,0.50] width=1.03 rmse=50.34 t=29ms
+   (44s total)
 == Markov: markov_cov(K=21,stay=0.97,psi=0.8)  kappa in [7.55, 7.55]  cond(H)=400
-   tuned: c_asgd=0.5623 c_adagrad=0.3162  (10s)
-   Offline-HAC      cov=0.968±0.008 [0.93,1.00] width=0.98 rmse=0.85 t=1850ms
-   SN-iid           cov=0.771±0.013 [0.66,0.86] width=427461601871711240192.00 rmse=7661028551144159313920.00 t=103ms
-   BGSN-plugin      cov=0.768±0.013 [0.72,0.80] width=16048891526365667393536.00 rmse=860669488774876319711232.00 t=102ms
-   AdaGrad-2scale   cov=0.533±0.013 [0.23,0.80] width=1.00 rmse=2.76 t=11ms
-   ASGD-2scale      cov=0.239±0.005 [0.00,0.77] width=1.09 rmse=7.95 t=12ms
-   ASGD-RS          cov=0.230±0.005 [0.01,0.77] width=1.73 rmse=7.95 t=12ms
-   SN-iid+2scale    cov=0.105±0.006 [0.06,0.13] width=37762972153236750336.00 rmse=7661028551144159313920.00 t=34ms
-   BGSN             cov=0.102±0.005 [0.06,0.14] width=3310608509220257005568.00 rmse=860669488774876319711232.00 t=36ms
-   ASGD-plugin      cov=0.073±0.003 [0.00,0.30] width=0.38 rmse=7.95 t=91ms
-   BGSN-BM          cov=0.070±0.005 [0.04,0.10] width=2156034358789631639552.00 rmse=860669488774876319711232.00 t=33ms
-   Oracle-var       cov=0.011±0.004 [0.00,0.02] width=1.00 rmse=860669488774876319711232.00 t=34ms
-   (96s total)
+   tuned: c_asgd=0.5623 c_adagrad=0.3162  (5s)
+   Offline-HAC      cov=0.968±0.008 [0.93,1.00] width=0.98 rmse=0.85 t=685ms
+   SN-iid+2scale    cov=0.890±0.008 [0.86,0.91] width=1.02 rmse=1.27 t=19ms
+   BGSN             cov=0.890±0.009 [0.86,0.91] width=1.02 rmse=1.27 t=18ms
+   Oracle-var       cov=0.886±0.009 [0.86,0.92] width=1.00 rmse=1.27 t=18ms
+   BGSN-BM          cov=0.856±0.009 [0.83,0.88] width=0.92 rmse=1.27 t=17ms
+   AdaGrad-2scale   cov=0.533±0.013 [0.23,0.80] width=1.00 rmse=2.76 t=9ms
+   BGSN-plugin      cov=0.460±0.011 [0.42,0.53] width=0.38 rmse=1.27 t=47ms
+   SN-iid           cov=0.460±0.011 [0.43,0.52] width=0.38 rmse=1.27 t=48ms
+   ASGD-2scale      cov=0.239±0.005 [0.00,0.77] width=1.09 rmse=7.95 t=7ms
+   ASGD-RS          cov=0.230±0.005 [0.01,0.77] width=1.73 rmse=7.95 t=8ms
+   ASGD-plugin      cov=0.073±0.003 [0.00,0.30] width=0.38 rmse=7.95 t=38ms
+   (44s total)
 == Logistic: logit_copula(phi=0.7,psi=0.8)  kappa in [2.27, 2.32]  cond(H)=20
-   tuned: c_asgd=17.78 c_adagrad=0.3162  (27s)
-   Offline-HAC      cov=0.945±0.008 [0.90,1.00] width=1.00 rmse=1.03 t=6082ms
-   ASGD-RS          cov=0.925±0.004 [0.83,0.97] width=2.16 rmse=1.91 t=29ms
-   AdaGrad-2scale   cov=0.911±0.006 [0.82,0.95] width=1.01 rmse=1.15 t=34ms
-   Oracle-var       cov=0.782±0.011 [0.61,0.89] width=1.00 rmse=1.74 t=58ms
-   BGSN             cov=0.774±0.010 [0.59,0.89] width=0.98 rmse=1.74 t=62ms
-   SN-iid+2scale    cov=0.771±0.010 [0.58,0.88] width=0.98 rmse=1.74 t=66ms
-   BGSN-BM          cov=0.759±0.010 [0.58,0.88] width=0.95 rmse=1.74 t=60ms
-   ASGD-2scale      cov=0.714±0.010 [0.53,0.86] width=1.01 rmse=1.91 t=36ms
-   BGSN-plugin      cov=0.588±0.011 [0.39,0.72] width=0.64 rmse=1.74 t=151ms
-   SN-iid           cov=0.586±0.011 [0.40,0.73] width=0.64 rmse=1.74 t=166ms
-   ASGD-plugin      cov=0.520±0.010 [0.34,0.71] width=0.66 rmse=1.91 t=132ms
-   (248s total)
+   tuned: c_asgd=17.78 c_adagrad=0.3162  (11s)
+   Offline-HAC      cov=0.945±0.008 [0.90,1.00] width=1.00 rmse=1.03 t=858ms
+   ASGD-RS          cov=0.925±0.004 [0.83,0.97] width=2.16 rmse=1.91 t=13ms
+   AdaGrad-2scale   cov=0.911±0.006 [0.82,0.95] width=1.01 rmse=1.15 t=14ms
+   Oracle-var       cov=0.858±0.006 [0.71,0.94] width=1.00 rmse=1.33 t=24ms
+   BGSN             cov=0.783±0.007 [0.61,0.88] width=0.84 rmse=1.33 t=21ms
+   SN-iid+2scale    cov=0.781±0.007 [0.61,0.88] width=0.84 rmse=1.33 t=24ms
+   BGSN-BM          cov=0.768±0.008 [0.59,0.86] width=0.81 rmse=1.33 t=22ms
+   ASGD-2scale      cov=0.714±0.010 [0.53,0.86] width=1.01 rmse=1.91 t=13ms
+   SN-iid           cov=0.584±0.008 [0.39,0.72] width=0.55 rmse=1.33 t=55ms
+   BGSN-plugin      cov=0.581±0.008 [0.38,0.73] width=0.55 rmse=1.33 t=52ms
+   ASGD-plugin      cov=0.520±0.010 [0.34,0.71] width=0.66 rmse=1.91 t=45ms
+   (64s total)
 [saved] /Volumes/Crucial X6/MacBook/Code/ml_papers/streaming_qn_dependent/experiments/../results/exp1_main.json

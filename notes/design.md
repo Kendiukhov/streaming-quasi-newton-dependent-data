@@ -43,8 +43,39 @@ Two structural knobs, doing two different jobs:
 * **Gapping** (gap m): curvature rank-1 updates use only every m-th observation
   (equivalently: one designated slot per block). Decorrelates curvature terms,
   restores near-i.i.d. Riccati analysis, and cuts cost.
-Neither alone suffices: gapping does not fix inference; blocking alone leaves the
-curvature recursion with dependent increments. Theorem states the admissible triple.
+* **Step-length safeguard**: found empirically, then explained. Blocking makes the step's
+  contraction condition `gamma_t lambda_max(Hbar^{-1} Hhat_t) < 2` non-trivial, where `Hhat_t` is
+  the *block* Hessian. On dependent data a block of b observations spans far fewer than b distinct
+  covariate directions, so `Hhat_t` is nearly singular and the norm is 20-90 at b=20 in our
+  designs; `gamma_1 = 1` then explodes (2/6 replicates on the Markov design).
+  Fix: cap each step at `c_D (1 + ||theta_{t-1}||)`, `c_D = 1`. O(d), binds 2-7 times per run,
+  and the bind count does not grow with N. Asymptotically invisible ON the event that it binds
+  finitely often (`prop:shift`); we do NOT prove that event has probability one, and we say so --
+  the cap factor depends on the current block's gradient so it is not predictable. Route to
+  closing it: expanding truncations (Chen; Andrieu-Moulines-Priouret), or cap on the PREVIOUS
+  block's amplification, which is predictable, at +O(d^2) per block.
+* **Rejected alternative: step-size shift** `gamma_t = c/(t+t0)^a` with
+  `t0 = (c/2) max_t ||Hbar^{-1} Hhat_t|| - 1` from the warm-up window. Cleaner theory (finite
+  deterministic reindexing), worse in practice: relative variance 1.85 vs 1.23 on Markov because
+  it slows all 10^4 steps to fix a handful, and on a short stream t0 can exceed the number of
+  steps and freeze the estimator (this is what broke the real-data segments). Kept in the code
+  and reported as the comparison that justifies the choice.
+* **Frozen ridge scale**: the ridge `iota_n = c_iota * varsigma * n^{-q_r}` must use a scale
+  FROZEN on the first curvature block, not the running harmonic mean `d/tr(Hbar^{-1})`. With the
+  running scale the ridge shrinks exactly when the curvature estimate degenerates and the ridge
+  lemma presupposes its own conclusion (an adversarial review caught this; see
+  `review_response.md`). Also `q_r < 1/4`, not `1/2`: the preliminary-rate rung needs it.
+
+Where each is load-bearing, stated honestly because the ablations measure it:
+* Blocking is what fixes inference; removing it (i.i.d. plug-in variance) is what collapses
+  coverage. This is the paper's claim.
+* The shift is what makes the method not diverge on a persistent design. Cost of the fix on
+  well-behaved designs: relative variance 1.00 -> 1.03. This is ours to own: blocking created
+  the problem.
+* Gapping does NOT measurably move coverage, and we say so. It is a strictly better cost knob
+  than the base method's Bernoulli thinning (O(rho^m) vs (kappa_H-1)/m excess curvature
+  variance at matched cost), and it makes the per-block cost deterministic. That is the whole
+  claim for it.
 
 **Long-run covariance estimator (streaming, O(d^2) per block, O(d^2 N / b) total):**
    Shat_T = (b/T) sum_{t<=T} (gbar_t(theta_t)) (gbar_t(theta_t))^T          (uncentred BM)

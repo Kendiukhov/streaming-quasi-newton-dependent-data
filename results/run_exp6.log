@@ -1,0 +1,3 @@
+[run ] exp6_real.py -> exp6_real.json
+[done] exp6_real.py rc=0 (14s, log: exp6_real.log)
+[all] finished

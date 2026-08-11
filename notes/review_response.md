@@ -3,7 +3,9 @@
 Before finalising, the manuscript and code were put through a five-lens adversarial review
 (theory correctness, statistical/experimental design, positioning versus prior art, clarity,
 code correctness), with every blocking/major finding independently verified against the files
-before being accepted. Forty candidate findings; twenty-eight survived verification. The raw
+before being accepted. Forty candidate findings; twenty-eight survived verification. Two further findings came
+out of the final re-run rather than the review itself, and are recorded here too because they
+changed the algorithm. The raw
 records are in `review_raw.json` and `review_findings.txt`.
 
 Two of the findings changed *numbers*, not just wording, and both had been biasing results in
@@ -27,6 +29,82 @@ segments and collinear with the intercept. The "exact conditional oracle" was th
 singular matrix. Fixed by dropping rainfall from the traffic feature set (temperature and cloud
 cover carry the weather signal), and `exp6_real.py` now *asserts* that every evaluation segment
 has full rank and reports the worst per-segment condition number, so this cannot recur silently.
+
+**3. Our own method diverged on the regime-switching design, and the cause was not the one we
+first assumed.** The first diagnosis was an under-long curvature warm-up, and raising
+`warm_mult` from 50 to 200 reduced but did not remove the failure: at `warm_mult=200` the
+relative error of the point estimate was still `>1` on 7 of 10 replicates, with coverage 0.27.
+Tracing the iterates showed the step magnitudes *growing* over the first ten blocks
+(6.3 -> 63 -> 234 -> 1963 -> 1.3e4 -> 8.0e4), i.e. an explosive linear recursion, not a slowly
+decaying bias. Linearising the update identified the cause exactly: the error map is
+`I - gamma_t Hbar^{-1} Hhat_t` with `Hhat_t` the *block* Hessian, and because
+`Hbar^{-1} Hhat_t` is a product of PSD matrices this contracts only while
+`gamma_t ||Hbar^{-1} Hhat_t|| < 2`. Measuring `||H^{-1} Hhat_t||` directly at `b=20` gave a
+median of 20 on the AR design and 33 on the regime-switching design (block maxima 55 and 89),
+so `gamma_1 = 1` violates the condition on *both* designs — the AR designs were simply lucky.
+Neither gapping (`m=1` fails too) nor a larger `b` (which reduces the amplification but cuts the
+number of steps, making the point estimate worse: rmse/efficient 1.82 at `b=20` rising
+monotonically to 3.24 at `b=800`) is the fix. The fix is a step-size shift
+`gamma_t = c/(t+t0)^a` with `t0` set from the contraction condition on the warm-up window,
+eq. (t0) in the paper. This is now a stated contribution with a proposition and proof
+(`prop:shift`, `app:shift`), an ablation panel, a unit test that checks the power-iteration
+norm against `numpy.linalg.norm(...,2)` to 2e-16 and that the shift restores contraction, and a
+limitations paragraph. Effect: on the regime-switching design, 0/10 divergences instead of
+7/10, coverage 0.74 instead of 0.27; on the AR designs, coverage 0.948 instead of 0.956 and
+relative variance 1.03 instead of 1.00 — a small, honestly reported cost.
+
+**4. The regime-switching design's residual undercoverage was then traced to the central limit
+theorem, not to the variance estimator, and this is now shown rather than asserted.** At
+`N=2e5` that design's point estimate is still 1.9x the efficient standard error, so *any*
+interval built from the correct asymptotic variance must undercover. A new experiment
+(`exp10_hard_design.py`) sweeps `N` and reports our coverage beside the coverage of an
+infeasible interval using the exact `H^{-1} S H^{-1}` at the same iterate. The two agree to
+within 0.004 at every `N` and both rise to nominal (0.914 vs 0.916 at `N=2e6`) while the
+dependence-blind interval stays flat. The paper reports every design at the same `N` in Table 1
+and resolves this column in its own table and figure.
+
+**5. A second five-lens adversarial review, run after the algorithm changes above, produced
+46 candidate findings of which 26 survived independent verification.** The two blocking ones were
+both real and both are fixed:
+
+*The ridge lemma was circular.* The vanishing ridge was scaled by the *running* harmonic mean of
+the curvature eigenvalues, `varsigma_n = d/tr(Hbar_n^{-1})`. Since that quantity is bounded above
+by `d * lambda_min(Hbar_n)`, assuming it bounded below (as the proof did, in a parenthetical) is
+equivalent to assuming the lemma's conclusion; and the only unconditional bound available,
+`varsigma_k >= lambda_0/W_k = Theta(1/k)`, gives `sum iota_k = O(1)` instead of the required
+`Omega(n^{1-q_r})`, with a Gronwall argument showing that is tight. The bound does hold once
+`Hbar_t -> H > 0`, but that is three rungs higher in the paper's own ladder. Fixed by *freezing*
+the ridge scale on the first curvature-bearing block (`_core.py`): it is then a positive finite
+constant measurable with respect to that block, the sum bound holds unconditionally, and the
+lemma sits at the bottom of the ladder as advertised. A remark now explains why freezing is
+necessary rather than cosmetic.
+
+*The contraction condition was stated as an equivalence with the wrong norm.* "Product of two PSD
+matrices, so eigenvalues real and non-negative, so the map is a contraction exactly when
+`gamma ||Hbar^{-1} Hhat|| < 2`" is a non-sequitur: real non-negative eigenvalues give a statement
+about the *spectral radius*, not about the operator norm of a single step, and `lambda_max` is not
+`||.||`. Restated: the spectral radius is below one exactly when
+`gamma lambda_max(Hbar^{-1} Hhat) < 2`, for which the operator-norm version is sufficient, and the
+text now says why we use the norm (computable, conservative) and what the condition does and does
+not rule out.
+
+Four further theory findings were also real: rung (iii) of the ladder (the preliminary almost sure
+rate) was asserted but never proved -- now proved as `lem:prelim`, with a bootstrap, and it is the
+only place `q_r < 1/4` is needed, so the default exponent was changed from 0.4 to 0.2 to sit
+inside the range the theory covers; `lem:incr` was stated under `thm:curv`'s assumptions but used
+at a lower rung -- now split into part (a) from the ridge alone and part (b) sharper under
+`thm:curv`; two citations of `thm:curv` were really citations of `lem:ridge`; and one almost sure
+bound was cited where an L2 bound was needed. The variance part of `thm:lrv` needed `4 + nu`
+moments rather than exactly four, because Davydov applied to the quadratic block products needs a
+margin -- the assumption now says so.
+
+Three empirical claims were overstated or wrong and are corrected: the PSD fallback was claimed
+never to trigger, but it was never recorded on the real streams and does trigger there (now
+recorded and reported); the block-adequacy diagnostic divided by the two-scale quadratic form,
+which can be negative, and produced numbers of order 1e30 on the traffic stream (now divided by
+the batch-means form, which is PSD by construction); and the cost table's caption said "median of
+7 runs" when the code reports the minimum over interleaved repetitions, and declared ten columns
+while emitting eleven.
 
 ## Theory
 
