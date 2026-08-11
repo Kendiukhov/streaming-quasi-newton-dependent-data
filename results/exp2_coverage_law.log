@@ -1,0 +1,10 @@
+phi=psi=0.00 kappa= 1.00  predicted=0.9500  measured(plugin)=0.9477+-0.0061  BGSN=0.9477  BM=0.9468  oracle=0.9463
+phi=psi=0.25 kappa= 1.13  predicted=0.9344  measured(plugin)=0.9383+-0.0067  BGSN=0.9537  BM=0.9525  oracle=0.9530
+phi=psi=0.45 kappa= 1.51  predicted=0.8895  measured(plugin)=0.8967+-0.0085  BGSN=0.9532  BM=0.9500  oracle=0.9518
+phi=psi=0.60 kappa= 2.12  predicted=0.8212  measured(plugin)=0.8210+-0.0104  BGSN=0.9530  BM=0.9480  oracle=0.9525
+phi=psi=0.70 kappa= 2.92  predicted=0.7485  measured(plugin)=0.7482+-0.0116  BGSN=0.9495  BM=0.9423  oracle=0.9502
+phi=psi=0.80 kappa= 4.56  predicted=0.6415  measured(plugin)=0.6297+-0.0122  BGSN=0.9352  BM=0.9215  oracle=0.9353
+phi=psi=0.85 kappa= 6.21  predicted=0.5685  measured(plugin)=0.5310+-0.0124  BGSN=0.9020  BM=0.8733  oracle=0.9002
+
+max |measured - predicted| over the sweep: 0.0375
+[saved] /Volumes/Crucial X6/MacBook/Code/ml_papers/streaming_qn_dependent/experiments/../results/exp2_coverage_law.json

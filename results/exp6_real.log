@@ -1,0 +1,28 @@
+metro: n=40562 d=11 resid AR(1)=0.756 R2=0.782 cond(H)=45.5
+airq[Aotizhongxin]: n=34119 d=12 resid AR(1)=0.915 R2=0.321 cond(H)=31.6
+airq[Changping]: n=34236 d=12 resid AR(1)=0.893 R2=0.298 cond(H)=30.1
+airq[Dingling]: n=34231 d=12 resid AR(1)=0.899 R2=0.300 cond(H)=30.2
+airq[Dongsi]: n=34294 d=12 resid AR(1)=0.909 R2=0.353 cond(H)=30.0
+airq[Guanyuan]: n=34428 d=12 resid AR(1)=0.909 R2=0.335 cond(H)=31.8
+airq[Gucheng]: n=34367 d=12 resid AR(1)=0.910 R2=0.332 cond(H)=30.0
+airq[Huairou]: n=34055 d=12 resid AR(1)=0.917 R2=0.237 cond(H)=33.2
+airq[Nongzhanguan]: n=34416 d=12 resid AR(1)=0.902 R2=0.350 cond(H)=30.4
+airq[Shunyi]: n=34097 d=12 resid AR(1)=0.911 R2=0.312 cond(H)=31.5
+airq[Tiantan]: n=34367 d=12 resid AR(1)=0.893 R2=0.348 cond(H)=30.2
+airq[Wanliu]: n=34662 d=12 resid AR(1)=0.908 R2=0.311 cond(H)=34.6
+airq[Wanshouxigong]: n=34349 d=12 resid AR(1)=0.888 R2=0.348 cond(H)=30.0
+  tuned on metro hold-out: {'c_asgd': 1.7782794100389228, 'c_adagrad': 3.1622776601683795} (interior: True, True)
+  tuned on airq[Aotizhongxin] hold-out: {'c_asgd': 1.0, 'c_adagrad': 1.7782794100389228} (interior: True, True)
+  tuned on airq[Changping] hold-out: {'c_asgd': 1.0, 'c_adagrad': 1.7782794100389228} (interior: True, True)
+  tuned on airq[Dingling] hold-out: {'c_asgd': 1.0, 'c_adagrad': 1.0} (interior: True, True)
+  tuned on airq[Dongsi] hold-out: {'c_asgd': 1.7782794100389228, 'c_adagrad': 1.7782794100389228} (interior: True, True)
+  tuned on airq[Guanyuan] hold-out: {'c_asgd': 1.0, 'c_adagrad': 1.7782794100389228} (interior: True, True)
+  tuned on airq[Gucheng] hold-out: {'c_asgd': 1.0, 'c_adagrad': 3.1622776601683795} (interior: True, True)
+  tuned on airq[Huairou] hold-out: {'c_asgd': 1.0, 'c_adagrad': 1.7782794100389228} (interior: True, True)
+  tuned on airq[Nongzhanguan] hold-out: {'c_asgd': 1.7782794100389228, 'c_adagrad': 1.0} (interior: True, True)
+  tuned on airq[Shunyi] hold-out: {'c_asgd': 1.0, 'c_adagrad': 1.7782794100389228} (interior: True, True)
+  tuned on airq[Tiantan] hold-out: {'c_asgd': 1.7782794100389228, 'c_adagrad': 1.0} (interior: True, True)
+  tuned on airq[Wanliu] hold-out: {'c_asgd': 1.0, 'c_adagrad': 1.7782794100389228} (interior: True, True)
+  tuned on airq[Wanshouxigong] hold-out: {'c_asgd': 1.7782794100389228, 'c_adagrad': 1.7782794100389228} (interior: True, True)
+
+== Protocol A: real covariates, synthetic AR errors, exact oracle ==

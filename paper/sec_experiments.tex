@@ -1,0 +1,215 @@
+Every number quoted below is generated from the saved results by
+\texttt{experiments/make\_tables.py} and injected as a macro, so the prose cannot drift
+from the data. Monte Carlo standard errors are shown or stated everywhere.
+
+\paragraph{Designs.}
+Four simulated dependent designs with $d=20$, described in full in \Cref{app:dgps}:
+\textbf{AR-hom} (autoregressive covariates and autoregressive errors, closed-form $S$, the
+same variance inflation $\kappa=\KappaLoArhom$ in every coordinate);
+\textbf{AR-het} (coordinatewise-varying persistence, closed-form $S$, $\kappa_j$ ranging
+over $[\KappaLoArhet,\KappaHiArhet]$, so a scalar correction cannot pass);
+\textbf{Markov} (covariates are a Markov-modulated Gaussian mixture with $d+1$ regimes, hence
+non-Gaussian with discrete latent state and regime dependence, closed-form $S$,
+$\kappa_j\equiv\KappaLoMarkov$);
+\textbf{Logistic} (a correctly specified marginal logistic model with a serially dependent
+latent error, so $\ts$ is exactly the generating value while the score is autocorrelated;
+$S$ from an independent long simulation, relative Monte Carlo error $7.5\times10^{-3}$).
+All covariate covariances are the ill-conditioned design of the base paper
+($\mathrm{cond}(H)$ up to $400$); \Cref{tab:wellcond} adds a well-conditioned counterpart, and
+two real hourly streams are described under \Cref{tab:real}.
+
+\paragraph{Methods compared.}
+Our estimator \bgsn{}; the same point estimator with plain batch means or with the i.i.d.\
+plug-in variance (so that the interval, and only the interval, changes); the base
+independent-data streaming Newton method with its own curvature schedule
+($m=1$, Bernoulli $p=1/d$) and its own prescribed plug-in variance; averaged SGD and
+streaming AdaGrad with tuned step sizes, each with the i.i.d.\ plug-in, with our long-run
+variance, or with random scaling; an offline HAC reference; and an infeasible
+oracle-variance interval that uses the true $H$ and $S$. First-order baselines are given the \emph{true} Hessian for their sandwich --- an advantage no
+practitioner has --- and their step-size constants are tuned by grid search on pilot streams
+disjoint from the evaluation streams (\Cref{app:hyper}). Our method has no learning rate to
+tune.
+
+\subsection{The failure is exactly as predicted, and it is not small}
+
+\Cref{fig:coverage}(a) sweeps the dependence strength and compares the measured coverage of
+dependence-blind intervals with the parameter-free prediction
+$2\Phi(z_{0.025}/\sqrt{\kappa})-1$. For $\kappa$ up to $\CovLawKappaModerate$ the largest
+absolute discrepancy is $\CovLawMaxErrModerate$, of the same order as the Monte Carlo standard
+error: at $\kappa=\CovLawMidKappa$ the prediction is $\CovLawMidPred$ and the measurement is
+$\CovLawMidMeas\pm\CovLawMidSe$. \bgsn{} stays at nominal over that range
+($\CovLawMidBgsn$ at $\kappa=\CovLawMidKappa$), including at $\phi=\psi=0$, where all four
+intervals agree --- the control showing that the machinery is not simply widening intervals.
+
+At the strongest dependence we tried, $\kappa=\CovLawHardKappa$, the measurement is
+$\CovLawHardMeas$ against a predicted $\CovLawHardPred$, and the largest discrepancy over the
+whole sweep is $\CovLawMaxErr$. That gap is finite-sample, not a failure of the formula, and
+the infeasible oracle interval says so: it covers only $\CovLawHardOracle$ there, so at
+$N=200{,}000$ the central limit theorem itself is not yet accurate at that dependence level.
+\bgsn{} covers $\CovLawHardBgsn$, i.e.\ it tracks the oracle rather than the formula ---
+which is the right diagnosis of where the remaining error lives.
+
+The oracle comparison is worth stating as a general point, because it separates two things
+that are easy to confuse. \bgsn{}'s coverage tracks the \emph{infeasible oracle-variance}
+interval --- built from the true $H$ and the true $S$ --- to within Monte Carlo error at every
+dependence level in the sweep. Whatever undercoverage remains is therefore attributable to the
+central limit theorem at finite $N$, not to our variance estimator. Plain batch means, by
+contrast, fall $1$--$3$ percentage points \emph{below} the oracle once $\kappa\ge4$, which is
+exactly the $O(1/b)$ bias the two-scale correction removes.
+
+\Cref{tab:main} gives the full picture. On AR-hom, the base method's interval covers
+$\CovSniidArhom$ and our interval covers $\CovBgsnArhom$ against a nominal $0.95$, with the
+infeasible oracle interval at $\CovOracleArhom$ (which is the sanity check that the central
+limit theorem itself, and our Monte Carlo harness, are right). The price is width: our
+interval is $\WidthRatioArhom\times$ the dependence-blind one, which is exactly
+$\sqrt{\kappa}$ --- there is no free lunch, the dependence-blind interval is simply the
+wrong length. On the Logistic design, where $\kappa$ ranges over
+$[\KappaLoLogistic,\KappaHiLogistic]$, the pattern is the same. AR-het is worth a separate
+look, because its $\kappa_j$ varies across coordinates by construction: the dependence-blind
+interval's \emph{per-coordinate} coverage there ranges from $\CovPluginLoArhet$ to
+$\CovPluginHiArhet$, while ours ranges from $\CovBgsnLoArhet$ to $\CovBgsnHiArhet$. No scalar
+inflation of the interval width could produce the first pattern from the second; the whole
+matrix has to be estimated.
+Crucially, replacing \emph{only} the variance estimator repairs the base method
+(row ``with our long-run variance''), and replacing only the point estimator does not: this
+isolates the inference component as the operative one.
+
+The first-order rows of \Cref{tab:main} need a caveat, and it cuts against us if we hide it.
+These designs are ill-conditioned --- $\mathrm{cond}(H)=400$ for AR-hom --- which is precisely
+the regime streaming second-order methods exist for, and there averaged SGD's \emph{point}
+estimate has not converged: its root-mean-square error is $\RmseAsgdArhom$ times the
+efficient value against $\RmseBgsnArhom$ for \bgsn{}. Its intervals are therefore
+uninformative about the inference question, whatever covariance they use. Two pieces of evidence show that this is about conditioning and not about our construction.
+First, within \Cref{tab:main} itself: streaming AdaGrad, which rescales per coordinate, is
+efficient on AR-het ($\RmseAdagradArhet$) and with our long-run variance it covers
+$\CovAdagradArhet$ --- so the construction transfers to a first-order method as soon as that
+method's point estimate converges. Second, \Cref{tab:wellcond} repeats the AR-hom design with
+$\Sigma_x=I$, where every point estimator is efficient ($\WcRmseAsgd$ for averaged SGD,
+$\WcRmseBgsn$ for \bgsn{}) and only the covariance can decide coverage: averaged SGD with our
+long-run variance covers $\WcCovAsgdOurs$, the same estimator with the i.i.d.\ plug-in covers
+$\WcCovAsgdPlugin$, and \bgsn{} covers $\WcCovBgsn$.
+
+Coverage checks a single quantile, while the theorem claims a whole distribution, so we also
+report the Kolmogorov--Smirnov distance between the studentised error
+$\sqrt N(\theta_{T,j}-\ts_j)/\{u_j^{\!\top}\Sft u_j\}^{1/2}$ and the standard normal, taken
+per coordinate across replicates. On AR-hom the worst coordinate gives $\KsBgsnArhom$
+against a $5\%$ critical value of $\KsCritArhom$, so the studentised distribution is not
+distinguishable from normal; the dependence-blind studentisation gives $\KsPluginArhom$,
+far outside it. The standard errors themselves are accurate: $\SeRatioBgsnArhom$ times the
+truth on average.
+
+\subsection{The long-run covariance estimator behaves as the theory says}
+
+\Cref{fig:lrv}(a) plots $\E[\widehat S]/S$ against the block length against the \emph{exact}
+prediction $\sum_{|k|<b}(1-|k|/b)\Gamma_k/S$, which is closed form for this design (we plot
+the exact Bartlett-weighted sum rather than its $1/b$ expansion, so the comparison carries no
+approximation of its own). Plain batch means track it over the whole range, at $b=20$
+measured $\LrvBmAtBTwenty$ against predicted $\LrvBmTheoryAtBTwenty$, and the two-scale
+estimator is within Monte Carlo error of $1$ for $b\ge10$ (at $b=20$: $\LrvFtAtBTwenty$); the
+small residual at $b=5$ is the $O(\rho^{b})$ term, which is only $\rho^5=0.03$ there. This is
+\Cref{thm:lrv}(i)--(ii) with no fitted constants.
+
+\Cref{fig:lrvrate} measures the rate. Panel (b) is the rate for $S$ itself: under the
+$b\asymp\log N$ schedule the two-scale estimator's relative error falls with fitted exponent
+$\RateExpFt$ against the $-1/2$ of \Cref{thm:lrv}(iv), while plain batch means under their own
+optimal $b\asymp N^{1/3}$ schedule give $\RateExpBm$ against $-1/3$.
+
+Panel (a) is the comparison that matters, and it is a head-to-head on the same object. An
+interval uses the whole sandwich $\Sigma=H^{-1}SH^{-1}$, so we compare our composite
+$\Hb^{-1}\Sft\Hb^{-1}$ with overlapping batch means on the \emph{iterate} path at the block
+length its analysis requires --- the estimator of $\Sigma$ that uses no gradients and no
+curvature. Our error falls with exponent $\RateExpSandwich$ and the iterate-path estimator's
+with $\RateExpIterateObm$; at $N=10^{5}$ ours is several times more accurate. This replaces
+what would otherwise be a comparison between an estimator of $S$ and estimators of $\Sigma$.
+
+\Cref{fig:lrv}(b) addresses the objection that a block average must span enough parameter
+movement to behave like an independent draw --- the reason iterate-based batch means need
+$b\asymp N^{3/4}$ \citep{samsonov2025statistical}. We decompose the algorithm's block
+gradients exactly into the score at $\ts$ and the drift $\widehat H_t(\theta_{t-1}-\ts)$ and
+evaluate the long-run covariance of each. The drift component contributes
+$\LrvDriftAtBTwenty$ of $S$ at $b=20$ and grows like $\tau_{b,N}=(b+d)\log^2N/N$, confirming
+\Cref{rem:whyfast}: because the blocks carry gradients rather than iterates, the block
+length is set by the data's mixing time, not the optimiser's.
+
+\subsection{Curvature schedules}
+
+\Cref{fig:gap} compares deterministic gapping with Bernoulli thinning at a matched number of
+rank-one updates, with the optimisation frozen at $\ts$ so that only estimation quality is
+measured. The excess variance over the independent-data benchmark follows the two predicted
+curves --- $O(\rho^{m})$ for gapping, $(\kappa_H-1)/m$ for thinning --- over more than an
+order of magnitude in $m$. As stated in \Cref{sec:limits}, this is a curvature-side result:
+\Cref{tab:ablation}(f) shows that the end-to-end effect on coverage is within Monte Carlo
+error, which is what the theory predicts, since $\Hb$ enters the limit only through a rate.
+
+\subsection{Ablations}
+
+\Cref{fig:ablation} and \Cref{tab:ablation} vary one design choice at a time.
+(a) Coverage rises monotonically to nominal with $N$, and the gap to the dependence-blind
+interval does \emph{not} close --- it converges to the predicted $0.749$.
+(b) Coverage as a function of $b$ is flat for the two-scale estimator over
+$b\in[10,320]$ and degrades at both ends for plain batch means (bias at small $b$, noise at
+large $b$): the practical content of the $O(\rho^{b})$-versus-$O(1/b)$ distinction.
+(c) The curvature warm-up is necessary, not cosmetic: with essentially no warm-up, coverage
+falls to $\CovNoWarmup$ even though the variance estimate remains accurate, because the
+$1/t$ schedule starting from a bad preconditioner leaves a slowly decaying error; above
+$c_{\mathrm w}\approx25$ the result is insensitive.
+(d)--(e) Results are insensitive to the ridge constants over three orders of magnitude and
+to the initial curvature scale over eight, which matters because those are the parameters a
+user would otherwise have to think about.
+(f) Gap and thinning behave as \Cref{prop:gap} predicts and do not move coverage, which is
+what the theory says: $\Hb$ enters the limit only through a rate.
+(g) At strong dependence ($\phi=\psi=0.85$, $\kappa=7.0$) the block length has to respect
+the dependence horizon: coverage improves monotonically as $b$ grows from $20$ to a few
+hundred, and the free diagnostic $r_j$ falls in step with it, which is what makes it usable as
+a guide.
+(h) The weighted averaged variant is slightly better at small $N$ and slightly worse at
+large $N$; both are reported.
+The non-positive-definiteness fallback of \Cref{rem:psd} never triggered
+($0.0\%$ of all runs, all panels).
+
+\subsection{The correct interval is also the cheaper one}
+
+The authoritative statement is the operation count, because it is exact and independent of
+the machine. At fixed $N$ and $b=m=d$, total work grows as $d^{\FlopExpBgsn}$ for \bgsn{} and
+as $d^{\FlopExpPlugin}$ once the i.i.d.\ plug-in variance is added, because the plug-in score
+covariance costs $O(d^2)$ per \emph{observation} whereas our long-run covariance costs
+$O(d^2)$ per \emph{block} (\Cref{tab:cost}). \bgsn{}'s exponent exceeds one at these settings, and the
+reason is \eqref{eq:cost}: at $N=200{,}000$ the one-off $O(c_{\mathrm w}d^3)$ warm-up is
+comparable to the $O(dN)$ streaming pass once $d\ge40$, so the measured exponent interpolates
+between $1$ and $3$. Evaluating the same exact counts at $N=10^{8}$, where the warm-up is
+negligible, gives $d^{\AsymExpBgsn}$ for \bgsn{} against $d^{\AsymExpPlugin}$ with the
+plug-in variance --- the $O(dN)$ versus $O(d^2N)$ separation the design predicts. Measured wall-clock times, on a shared and
+heavily loaded machine, give $d^{\CostExpBgsn}$ and $d^{\CostExpPlugin}$; they are noisier
+than the counts and we report them only as corroboration. In the main configuration \bgsn{}
+runs in $\TimeRatioArhom$ times the time of the dependence-blind streaming Newton method
+--- that is, our valid intervals cost less than the invalid ones, not more.
+
+\subsection{Real streams}
+
+\Cref{tab:real} reports two protocols on hourly traffic volume on Interstate~94 and hourly
+PM2.5 at twelve Beijing monitoring sites. After a fixed regression adjustment (weather plus
+calendar harmonics) the residual lag-one autocorrelation is $\RealAcfMetro$ and
+$\RealAcfAirq$ respectively, and the estimated variance inflation is around $2$ for traffic and around $20$ for air
+quality. \Cref{tab:real} reports, for each stream, the pooled prediction
+$d^{-1}\sum_j\{2\Phi(z_{0.025}/\sqrt{\kappa_j})-1\}$ next to the measurement, so the
+comparison is against the quantity the table actually measures rather than a single
+representative $\kappa$.
+
+Protocol~A keeps the real (strongly dependent) covariate stream and replaces the response by
+$x_t^{\!\top}\ts+u_t$ with $u$ an autoregression whose coefficient equals that of the real
+residuals. This gives an \emph{exact} target and an exact conditional long-run covariance
+while retaining real covariate dependence: \bgsn{} covers $\RealCovBgsnMetroA$ (traffic) and
+$\RealCovBgsnAirqA$ (air quality) against nominal $0.95$, while the dependence-blind interval
+covers $\RealCovPluginMetroA$ and $\RealCovPluginAirqA$.
+Protocol~B uses the real response and takes the full-stream $M$-estimator as the target;
+because that target is itself estimated from a superset of each segment, the correct nominal
+level for the comparison is $2\Phi(z_{0.025}/\sqrt{1-1/R})-1$, which we compute exactly and
+report in the table header. \bgsn{} covers $\RealCovBgsnMetroB$ and $\RealCovBgsnAirqB$.
+Neither protocol alone would settle the matter---A has an exact target but a synthetic error
+process, B has a real error process but an estimated target---and they agree.
+
+\Cref{fig:real}(c) shows why the block length is the one parameter a practitioner must think
+about on real data, and that the free diagnostic
+$r_j=|u_j^{\!\top}(\Sft-\Sbm)u_j|/(u_j^{\!\top}\Sft u_j)$ flags the problem: on the traffic
+stream $r_j$ falls below $0.05$ once $b\ge40$, which is exactly where coverage reaches
+nominal.

@@ -1,0 +1,30 @@
+__pycache__/
+*.pyc
+.DS_Store
+._*
+
+# downloaded datasets (fetch with: python experiments/fetch_data.py)
+data/*.zip
+data/*.csv
+data/*.csv.gz
+data/*.JPG
+data/airq/
+
+# LaTeX build artefacts
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.log
+paper/*.out
+paper/*.toc
+paper/*.synctex.gz
+
+# large caches (regenerated on demand)
+results/*.npz
+
+# scratch / third-party reference material we do not redistribute
+notes/base_paper.pdf
+notes/base_abs.html
+notes/base_paper.txt
+notes/paper_draft.txt
+experiments/_tune*.py

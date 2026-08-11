@@ -1,0 +1,644 @@
+[
+ {
+  "bibtex": "@article{boyer2023asymptotic,\n  author  = {Claire Boyer and Antoine Godichon-Baggioni},\n  title   = {On the asymptotic rate of convergence of {S}tochastic {N}ewton algorithms and their {W}eighted {A}veraged versions},\n  journal = {Computational Optimization and Applications},\n  year    = {2023},\n  volume  = {84},\n  number  = {3},\n  pages   = {921--972},\n  doi     = {10.1007/s10589-022-00442-3},\n  note    = {arXiv:2011.09706. Correction: Comput. Optim. Appl. 87(2):705--706, 2024, doi:10.1007/s10589-023-00511-1}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1007/s10589-022-00442-3",
+  "notes": "All candidate fields confirmed. Crossref (publisher-deposited) record for the DOI gives title, both authors (Claire Boyer, Antoine Godichon-Baggioni), Computational Optimization and Applications, vol 84, issue 3, pp 921-972, published-print April 2023 (online 29 Dec 2022). Title wording and authors independently confirmed on https://arxiv.org/abs/2011.09706 (journal-ref line: Computational Optimization and Applications, 2022). The correction cited in the candidate venue string was also confirmed via Crossref bibliographic search: 'Correction: On the asymptotic rate of convergence...', COAP 87(2):705-706, 2024, doi 10.1007/s10589-023-00511-1; kept in `note` only. The Springer landing page (link.springer.com) redirects to an IdP login and could not be read directly."
+ },
+ {
+  "bibtex": "@article{sherman1950adjustment,\n  author  = {Jack Sherman and Winifred J. Morrison},\n  title   = {Adjustment of an Inverse Matrix Corresponding to a Change in One Element of a Given Matrix},\n  journal = {The Annals of Mathematical Statistics},\n  year    = {1950},\n  volume  = {21},\n  number  = {1},\n  pages   = {124--127},\n  doi     = {10.1214/aoms/1177729893}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1214/aoms/1177729893",
+  "notes": "Confirmed exactly as given: Jack Sherman and Winifred J. Morrison, The Annals of Mathematical Statistics 21(1):124-127, 1950, doi 10.1214/aoms/1177729893. The Project Euclid landing page returns a bot-detection interstitial ('Pardon Our Interruption') and could not be read, so the IMS/Euclid-deposited Crossref record was used. No braces needed in the title (no proper nouns or acronyms)."
+ },
+ {
+  "bibtex": "@article{robbins1951stochastic,\n  author  = {Herbert Robbins and Sutton Monro},\n  title   = {A Stochastic Approximation Method},\n  journal = {The Annals of Mathematical Statistics},\n  year    = {1951},\n  volume  = {22},\n  number  = {3},\n  pages   = {400--407},\n  doi     = {10.1214/aoms/1177729586}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1214/aoms/1177729586",
+  "notes": "Confirmed exactly as given: Herbert Robbins and Sutton Monro, The Annals of Mathematical Statistics 22(3):400-407, 1951, doi 10.1214/aoms/1177729586. The candidate's projecteuclid.org URL is bot-blocked (returns an access-interruption page), so the DOI's Crossref record was used as evidence. Page range written with an en-dash range (400--407)."
+ },
+ {
+  "bibtex": "@article{pelletier2000asymptotic,\n  author  = {Mariane Pelletier},\n  title   = {Asymptotic Almost Sure Efficiency of Averaged Stochastic Algorithms},\n  journal = {SIAM Journal on Control and Optimization},\n  year    = {2000},\n  volume  = {39},\n  number  = {1},\n  pages   = {49--72},\n  doi     = {10.1137/S0363012998308169}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1137/S0363012998308169",
+  "notes": "Confirmed: single author Mariane Pelletier, SIAM Journal on Control and Optimization 39(1):49-72, published-print 2000, doi 10.1137/S0363012998308169. The epubs.siam.org landing page is behind a login wall (only nav/login markup returned), so the SIAM-deposited Crossref record was used. DOI written with the original uppercase 'S' prefix as SIAM registers it (Crossref normalises it to lowercase, which is equivalent)."
+ },
+ {
+  "bibtex": "@inproceedings{kingma2015adam,\n  author    = {Diederik P. Kingma and Jimmy Ba},\n  title     = {{A}dam: A Method for Stochastic Optimization},\n  booktitle = {3rd International Conference on Learning Representations ({ICLR})},\n  address   = {San Diego, CA, USA},\n  year      = {2015},\n  note      = {arXiv:1412.6980}\n}",
+  "status": "verified",
+  "evidence_url": "https://arxiv.org/abs/1412.6980",
+  "notes": "Confirmed on the arXiv abstract page: exact title 'Adam: A Method for Stochastic Optimization', authors Diederik P. Kingma and Jimmy Ba, arXiv:1412.6980 (v1 22 Dec 2014, through v9 30 Jan 2017), comments field reads 'Published as a conference paper at the 3rd International Conference for Learning Representations, San Diego, 2015'. ICLR 2015 has no page numbers or proceedings volume, so none are given (nothing invented). Entry type @inproceedings since it is a published conference paper; arXiv id retained in `note`. 'Adam' and 'ICLR' brace-protected against title lowercasing."
+ },
+ {
+  "bibtex": "@article{fang2018online,\n  author  = {Yixin Fang and Jinfeng Xu and Lei Yang},\n  title   = {Online Bootstrap Confidence Intervals for the Stochastic Gradient Descent Estimator},\n  journal = {Journal of Machine Learning Research},\n  year    = {2018},\n  volume  = {19},\n  number  = {78},\n  pages   = {1--21},\n  url     = {http://jmlr.org/papers/v19/17-370.html}\n}",
+  "status": "verified",
+  "evidence_url": "http://jmlr.org/papers/v19/17-370.html",
+  "notes": "Confirmed on the official JMLR paper page: authors Yixin Fang, Jinfeng Xu, Lei Yang; JMLR volume 19, number 78, 2018, pages 1-21. JMLR articles carry no DOI, so none is given; the canonical JMLR URL is included instead."
+ },
+ {
+  "bibtex": "@misc{liu2023statistical,\n  author        = {Ruiqi Liu and Xi Chen and Zuofeng Shang},\n  title         = {Statistical Inference with Stochastic Gradient Methods under $\\phi$-mixing Data},\n  year          = {2023},\n  eprint        = {2302.12717},\n  archivePrefix = {arXiv},\n  primaryClass  = {stat.ME},\n  note          = {arXiv:2302.12717; v1 24 February 2023, last revised 3 March 2026}\n}",
+  "status": "corrected",
+  "evidence_url": "https://arxiv.org/abs/2302.12717",
+  "notes": "Title, all three authors (Ruiqi Liu, Xi Chen, Zuofeng Shang), arXiv id 2302.12717, primary class stat.ME (also stat.ML; MSC 62F12, 62F40, 62M10) and version history (v1 24 Feb 2023, v2 28 Mar 2023, v3 3 Mar 2026) confirmed on the arXiv abstract page; arXiv lists NO journal reference, and a web search indicates it is still an unpublished preprint (reported as under revision at JASA), so @misc is correct. CHANGED: year 2026 -> 2023, matching the identifier (2302 = Feb 2023) and arXiv's own citation export, with the March 2026 revision recorded in `note` instead. CHANGED: key liu2026phimixing -> liu2023statistical to follow the lastname+year+first-content-word rule; update any \\cite{liu2026phimixing} in the draft. The title uses $\\phi$ in math mode as arXiv renders it."
+ },
+ {
+  "bibtex": "@article{rosenblatt1956central,\n  author  = {Murray Rosenblatt},\n  title   = {A Central Limit Theorem and a Strong Mixing Condition},\n  journal = {Proceedings of the National Academy of Sciences of the United States of America},\n  year    = {1956},\n  volume  = {42},\n  number  = {1},\n  pages   = {43--47},\n  doi     = {10.1073/pnas.42.1.43}\n}",
+  "status": "verified",
+  "evidence_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC534230/",
+  "notes": "Confirmed on the PubMed Central record for the article: title 'A Central Limit Theorem and a Strong Mixing Condition', author M. Rosenblatt (Murray Rosenblatt, Columbia University), PNAS 42(1):43-47, January 1956, doi 10.1073/pnas.42.1.43, PMID 16589813 / PMCID PMC534230. Journal name spelled out in full ('...of the United States of America') as the publisher lists it; abbreviating to PNAS is also acceptable."
+ },
+ {
+  "bibtex": "@article{bradley2005basic,\n  author  = {Richard C. Bradley},\n  title   = {Basic Properties of Strong Mixing Conditions. {A} Survey and Some Open Questions},\n  journal = {Probability Surveys},\n  year    = {2005},\n  volume  = {2},\n  pages   = {107--144},\n  doi     = {10.1214/154957805100000104}\n}",
+  "status": "verified",
+  "evidence_url": "https://projecteuclid.org/journals/probability-surveys/volume-2/issue-none/Basic-Properties-of-Strong-Mixing-Conditions-A-Survey-and-Some/10.1214/154957805100000104.full",
+  "notes": "Confirmed on the open-access Project Euclid article page: Richard C. Bradley, Probability Surveys volume 2 (2005), open access, 38 pages, doi 10.1214/154957805100000104. Page range 107-144 (consistent with the 38-page count) confirmed via the journal-ref line on the author's arXiv posting https://arxiv.org/abs/math/0511078 ('Probability Surveys, Vol. 2, pp. 107-144, 2005'). Probability Surveys volume 2 has no issue number (Crossref records issue as none), so `number` is omitted. Sentence-second 'A' brace-protected so it is not lowercased."
+ },
+ {
+  "bibtex": "@article{merlevede2011bernstein,\n  author  = {Florence Merlev{\\`e}de and Magda Peligrad and Emmanuel Rio},\n  title   = {A {B}ernstein type inequality and moderate deviations for weakly dependent sequences},\n  journal = {Probability Theory and Related Fields},\n  year    = {2011},\n  volume  = {151},\n  number  = {3--4},\n  pages   = {435--474},\n  doi     = {10.1007/s00440-010-0304-9}\n}",
+  "status": "corrected",
+  "evidence_url": "https://api.crossref.org/works/10.1007/s00440-010-0304-9",
+  "notes": "Bibliographic data confirmed exactly as in the candidate: Probability Theory and Related Fields 151(3-4):435-474, 2011, doi 10.1007/s00440-010-0304-9, authors Florence Merlevede, Magda Peligrad, Emmanuel Rio. CHANGED: first author's surname corrected to its accented form, Merlev{\\`e}de (Merlev\u00e8de), as the publisher records it. 'Bernstein' brace-protected. The earlier IMS Collections version mentioned in the candidate venue string was NOT verified and is deliberately omitted rather than asserted. Springer's landing page is login-gated, so the publisher-deposited Crossref record was used as evidence."
+ },
+ {
+  "bibtex": "@article{andrews1992improved,\n  author  = {Donald W. K. Andrews and J. Christopher Monahan},\n  title   = {An Improved Heteroskedasticity and Autocorrelation Consistent Covariance Matrix Estimator},\n  journal = {Econometrica},\n  year    = {1992},\n  volume  = {60},\n  number  = {4},\n  pages   = {953--966},\n  doi     = {10.2307/2951574}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.2307/2951574",
+  "notes": "Confirmed: Donald W. K. Andrews and J. Christopher Monahan, Econometrica 60(4), 1992, doi 10.2307/2951574 (Crossref gives first page 953). Full page range 953-966 confirmed independently on the RePEc/EconPapers record supplied in the candidate, https://econpapers.repec.org/RePEc:ecm:emetrp:v:60:y:1992:i:4:p:953-66. All candidate fields correct."
+ },
+ {
+  "bibtex": "@article{damerdji1994strong,\n  author  = {Halim Damerdji},\n  title   = {Strong Consistency of the Variance Estimator in Steady-State Simulation Output Analysis},\n  journal = {Mathematics of Operations Research},\n  year    = {1994},\n  volume  = {19},\n  number  = {2},\n  pages   = {494--512},\n  doi     = {10.1287/moor.19.2.494}\n}",
+  "status": "verified",
+  "evidence_url": "https://pubsonline.informs.org/doi/10.1287/moor.19.2.494",
+  "notes": "Confirmed on the INFORMS PubsOnline publisher page for the DOI: sole author Halim Damerdji, Mathematics of Operations Research 19(2):494-512, 1994, doi 10.1287/moor.19.2.494; the abstract confirms it establishes strong consistency of the variance-constant estimator for batch-means and standardized-time-series methods. Cross-checked against the Crossref record. All candidate fields correct."
+ },
+ {
+  "bibtex": "@book{lahiri2003resampling,\n  author    = {S. N. Lahiri},\n  title     = {Resampling Methods for Dependent Data},\n  series    = {Springer Series in Statistics},\n  publisher = {Springer},\n  address   = {New York, NY},\n  year      = {2003},\n  doi       = {10.1007/978-1-4757-3803-2}\n}",
+  "status": "corrected",
+  "evidence_url": "https://api.crossref.org/works/10.1007/978-1-4757-3803-2",
+  "notes": "Confirmed via the publisher-deposited Crossref book record for the DOI: type book, title 'Resampling Methods for Dependent Data', author S. N. Lahiri, series 'Springer Series in Statistics', publisher Springer New York (New York, NY), 2003, ISBN 9781441918482 (print) / 9781475738032 (electronic), doi 10.1007/978-1-4757-3803-2. CHANGED two things from the candidate: (1) '(Springer Series in Statistics)' removed from the title and moved to a proper `series` field - it is not part of the book title; (2) author rendered as the publisher records it, 'S. N. Lahiri', rather than the expanded 'Soumendra Nath Lahiri'. Add `isbn = {9781441918482}` if your style requires it."
+ },
+ {
+  "bibtex": "@article{duchi2012ergodic,\n  author  = {John C. Duchi and Alekh Agarwal and Mikael Johansson and Michael I. Jordan},\n  title   = {Ergodic Mirror Descent},\n  journal = {SIAM Journal on Optimization},\n  year    = {2012},\n  volume  = {22},\n  number  = {4},\n  pages   = {1549--1578},\n  doi     = {10.1137/110836043}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1137/110836043",
+  "notes": "Confirmed: all four authors in order (John C. Duchi, Alekh Agarwal, Mikael Johansson, Michael I. Jordan), SIAM Journal on Optimization 22(4):1549-1578, published-print 2012, doi 10.1137/110836043. epubs.siam.org is login-gated, so the SIAM-deposited Crossref record was used. The candidate's arXiv:1105.4681 was not independently verified and is omitted from the entry (the paper is journal-published, so an arXiv note is not needed)."
+ },
+ {
+  "bibtex": "@misc{doan2020convergence,\n  author        = {Thinh T. Doan and Lam M. Nguyen and Nhan H. Pham and Justin Romberg},\n  title         = {Convergence Rates of Accelerated {M}arkov Gradient Descent with Applications in Reinforcement Learning},\n  year          = {2020},\n  eprint        = {2002.02873},\n  archivePrefix = {arXiv},\n  primaryClass  = {math.OC},\n  note          = {arXiv:2002.02873; v3, 19 October 2020}\n}",
+  "status": "verified",
+  "evidence_url": "https://arxiv.org/abs/2002.02873",
+  "notes": "Confirmed on the arXiv abstract page: exact title, all four authors in order (Thinh T. Doan, Lam M. Nguyen, Nhan H. Pham, Justin Romberg), arXiv:2002.02873, primary class math.OC, versions v1 7 Feb 2020 / v2 5 Jun 2020 / v3 19 Oct 2020, and no journal reference listed - so @misc with the arXiv id in `note` is correct, exactly as the candidate described. 'Markov' brace-protected."
+ },
+ {
+  "bibtex": "@book{vandervaart1998asymptotic,\n  author    = {A. W. van der Vaart},\n  title     = {Asymptotic Statistics},\n  series    = {Cambridge Series in Statistical and Probabilistic Mathematics},\n  number    = {3},\n  publisher = {Cambridge University Press},\n  address   = {Cambridge},\n  year      = {1998},\n  doi       = {10.1017/CBO9780511802256}\n}",
+  "status": "verified",
+  "evidence_url": "https://www.cambridge.org/core/books/asymptotic-statistics/A3C7DAD3F7E66A1FA60E9C8FE132EE1D",
+  "notes": "Confirmed on the Cambridge Core book page: A. W. van der Vaart (Vrije Universiteit, Amsterdam), 'Asymptotic Statistics', Cambridge University Press, first published 13 October 1998 (digital reprint 2012), series 'Cambridge Series in Statistical and Probabilistic Mathematics' volume 3, ISBN 9780521784504 (paperback) / 9780511802256 (digital), doi 10.1017/CBO9780511802256; cross-checked against the Crossref monograph record. The candidate's 'xvi+443 pp.' was NOT included: Cambridge lists 462 pages, so the page count is omitted rather than asserted (page counts are not needed for a @book entry anyway). Author left as 'A. W. van der Vaart' so BibTeX correctly treats 'van der' as the von part and sorts under V."
+ },
+ {
+  "bibtex": "@misc{hogue2019metro,\n  author       = {John Hogue},\n  title        = {Metro Interstate Traffic Volume},\n  howpublished = {{UCI} Machine Learning Repository},\n  year         = {2019},\n  doi          = {10.24432/C5X60B},\n  note         = {Dataset; donated 6 May 2019; licensed CC BY 4.0}\n}",
+  "status": "verified",
+  "evidence_url": "https://archive.ics.uci.edu/dataset/492/metro+interstate+traffic+volume",
+  "notes": "Confirmed on the official UCI Machine Learning Repository dataset page (dataset 492): name 'Metro Interstate Traffic Volume', creator/donor John Hogue, doi 10.24432/C5X60B, donated 6 May 2019, license CC BY 4.0; hourly westbound I-94 traffic volume near Minneapolis-St Paul with weather and holiday covariates, 2012-2018. All candidate fields correct. '[Dataset]' dropped from the title field and stated in `note`/`howpublished` instead, which is the usual convention; 'UCI' brace-protected. Add `url = {https://archive.ics.uci.edu/dataset/492/metro+interstate+traffic+volume}` if your style prefers a URL alongside the DOI."
+ },
+ {
+  "bibtex": "@article{chen2001freeway,\n  author  = {Chao Chen and Karl Petty and Alexander Skabardonis and Pravin Varaiya and Zhanfeng Jia},\n  title   = {Freeway Performance Measurement System: Mining Loop Detector Data},\n  journal = {Transportation Research Record: Journal of the Transportation Research Board},\n  year    = {2001},\n  volume  = {1748},\n  number  = {1},\n  pages   = {96--102},\n  doi     = {10.3141/1748-12}\n}",
+  "status": "corrected",
+  "evidence_url": "https://api.crossref.org/works/10.3141/1748-12",
+  "notes": "All bibliographic fields confirmed unchanged from the candidate: five authors in the order Chao Chen, Karl Petty, Alexander Skabardonis, Pravin Varaiya, Zhanfeng Jia; Transportation Research Record: Journal of the Transportation Research Board 1748(1):96-102, 2001; doi 10.3141/1748-12 (SAGE/TRB-deposited Crossref record; the sagepub landing page is paywalled). ONLY CHANGE: citation key chen2001pems -> chen2001freeway to follow the lastname+year+first-content-word rule - update any \\cite{chen2001pems} in the draft, or keep chen2001pems if it is already used there, since the entry body is identical either way. The pems.dot.ca.gov system URL from the candidate venue string is not included as a field (it is a registration-gated live system, not part of the article's record); add it as a `note` if you want to point readers at the data source."
+ },
+ {
+  "bibtex": "@article{godichonbaggioni2025adaptive,\n  author  = {Antoine Godichon-Baggioni and Nicklas Werge},\n  title   = {On Adaptive Stochastic Optimization for Streaming Data: A {N}ewton's Method with $O(dN)$ Operations},\n  journal = {Journal of Machine Learning Research},\n  year    = {2025},\n  volume  = {26},\n  number  = {59},\n  pages   = {1--49},\n  url     = {http://jmlr.org/papers/v26/23-1565.html}\n}",
+  "status": "verified",
+  "evidence_url": "http://jmlr.org/papers/v26/23-1565.html",
+  "notes": "JMLR landing page confirms exactly: authors Antoine Godichon-Baggioni, Nicklas Werge; JMLR vol. 26, no. 59, pp. 1-49, 2025. Cross-checked the arXiv abstract page (arXiv:2311.17753, v1 Nov 2023, v2 Feb 2024) for the identical title and author list. JMLR papers have no DOI; url given instead. Omitted the arXiv id from `note` because this is the published version, not a preprint. Braced {N}ewton and used math mode for $O(dN)$."
+ },
+ {
+  "bibtex": "@article{godichonbaggioni2023nonasymptotic,\n  author  = {Antoine Godichon-Baggioni and Nicklas Werge and Olivier Wintenberger},\n  title   = {Non-asymptotic analysis of stochastic approximation algorithms for streaming data},\n  journal = {ESAIM: Probability and Statistics},\n  year    = {2023},\n  volume  = {27},\n  pages   = {482--514},\n  doi     = {10.1051/ps/2023006}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1051/ps/2023006",
+  "notes": "All candidate fields confirmed: three authors in the stated order, ESAIM: Probability and Statistics, vol. 27, pp. 482-514, 2023, DOI 10.1051/ps/2023006. Corroborated by OpenAlex (same volume/pages) and the arXiv abstract page for arXiv:2109.07117 (same title/authors, links to the same DOI). Note: the EDP Sciences / esaim-ps.org article page returns HTTP 403 to automated fetches, so the DOI-registration record was used as the loadable evidence page. Two deliberate choices: (a) no issue number is deposited for this article (vol. 27 is a single annual volume), so `number` is omitted rather than invented; (b) the publisher deposit renders the title with a stray capital in \"Stochastic\" (\"Non-asymptotic analysis of Stochastic approximation algorithms...\"), which is a typesetting artifact -- the arXiv title and the article PDF use sentence case, which is what I emitted. No `note` with the arXiv id since this is the published version."
+ },
+ {
+  "bibtex": "@article{wang2017stochastic,\n  author  = {Xiao Wang and Shiqian Ma and Donald Goldfarb and Wei Liu},\n  title   = {Stochastic Quasi-{N}ewton Methods for Nonconvex Stochastic Optimization},\n  journal = {SIAM Journal on Optimization},\n  year    = {2017},\n  volume  = {27},\n  number  = {2},\n  pages   = {927--956},\n  doi     = {10.1137/15M1053141}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1137/15M1053141",
+  "notes": "Confirmed exactly as given: Xiao Wang, Shiqian Ma, Donald Goldfarb, Wei Liu; SIAM Journal on Optimization 27(2):927-956, 2017, DOI 10.1137/15M1053141. epubs.siam.org serves only the site shell to automated fetches, so the DOI-registration record was the loadable evidence. Kept the DOI in the canonical publisher casing (15M1053141); Crossref echoes it lowercased (15m1053141), which is equivalent since DOIs are case-insensitive. Braced {N}ewton."
+ },
+ {
+  "bibtex": "@article{fabian1968asymptotic,\n  author  = {Vaclav Fabian},\n  title   = {On Asymptotic Normality in Stochastic Approximation},\n  journal = {The Annals of Mathematical Statistics},\n  year    = {1968},\n  volume  = {39},\n  number  = {4},\n  pages   = {1327--1332},\n  doi     = {10.1214/aoms/1177698258}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1214/aoms/1177698258",
+  "notes": "Confirmed: single author Vaclav Fabian; The Annals of Mathematical Statistics 39(4):1327-1332, 1968, DOI 10.1214/aoms/1177698258. The Project Euclid article page is behind bot detection (\"Pardon Our Interruption\"), so the DOI-registration record was used. Kept the unaccented \"Vaclav Fabian\" because that is the byline as published and as deposited; the author's name in Czech is Vaclav Fabian with diacritics (V\u00e1clav Fabi\u00e1n), so switch to that only if the bibliography style elsewhere restores diacritics."
+ },
+ {
+  "bibtex": "@article{nemirovski2009robust,\n  author  = {Arkadi Nemirovski and Anatoli Juditsky and Guanghui Lan and Alexander Shapiro},\n  title   = {Robust Stochastic Approximation Approach to Stochastic Programming},\n  journal = {SIAM Journal on Optimization},\n  year    = {2009},\n  volume  = {19},\n  number  = {4},\n  pages   = {1574--1609},\n  doi     = {10.1137/070704277}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1137/070704277",
+  "notes": "Confirmed: SIAM Journal on Optimization 19(4):1574-1609, 2009, DOI 10.1137/070704277. The deposit records the authors by initials (A. Nemirovski, A. Juditsky, G. Lan, A. Shapiro); I expanded to the full given names as printed on the article (Arkadi Nemirovski, Anatoli Juditsky, Guanghui Lan, Alexander Shapiro), matching the candidate. epubs.siam.org blocks automated fetches, hence the DOI-registration record as evidence."
+ },
+ {
+  "bibtex": "@article{zhu2023online,\n  author  = {Wanrong Zhu and Xi Chen and Wei Biao Wu},\n  title   = {Online Covariance Matrix Estimation in Stochastic Gradient Descent},\n  journal = {Journal of the American Statistical Association},\n  year    = {2023},\n  volume  = {118},\n  number  = {541},\n  pages   = {393--404},\n  doi     = {10.1080/01621459.2021.1933498}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1080/01621459.2021.1933498",
+  "notes": "Confirmed exactly: Wanrong Zhu, Xi Chen, Wei Biao Wu; JASA 118(541):393-404, DOI 10.1080/01621459.2021.1933498. The deposit distinguishes published-online 2021-07-21 from published-print 2023-01-02, so the candidate's year 2023 (the print issue year, matching vol. 118 no. 541) is correct and is what I used. No `note` with arXiv:2002.03979 since this is the published version."
+ },
+ {
+  "bibtex": "@article{chen2024online,\n  author  = {Xi Chen and Zehua Lai and He Li and Yichen Zhang},\n  title   = {Online Statistical Inference for Stochastic Optimization via {K}iefer-{W}olfowitz Methods},\n  journal = {Journal of the American Statistical Association},\n  year    = {2024},\n  volume  = {119},\n  number  = {548},\n  pages   = {2972--2982},\n  doi     = {10.1080/01621459.2023.2296703}\n}",
+  "status": "corrected",
+  "evidence_url": "https://api.crossref.org/works/10.1080/01621459.2023.2296703",
+  "notes": "Added the issue number, which the candidate omitted: number = 548. Everything else confirmed as given -- Xi Chen, Zehua Lai, He Li, Yichen Zhang; JASA 119(548):2972-2982; DOI 10.1080/01621459.2023.2296703; published-print 2024-10, so year 2024 is right (the deposit's `issued` date of 2024-01-31 is the online date). Independently corroborated by OpenAlex (volume 119, issue 548, pp. 2972-2982) and Semantic Scholar (vol. 119, pp. 2972-2982); tandfonline.com returns 403 to automated fetches. The arXiv page for arXiv:2102.03389 confirms the title and author list but carries no journal-ref. Braced {K}iefer-{W}olfowitz."
+ },
+ {
+  "bibtex": "@misc{roy2023online,\n  author = {Abhishek Roy and Krishnakumar Balasubramanian},\n  title  = {Online covariance estimation for stochastic gradient descent under {M}arkovian sampling},\n  year   = {2023},\n  eprint = {2308.01481},\n  archivePrefix = {arXiv},\n  primaryClass  = {math.ST},\n  note   = {arXiv:2308.01481}\n}",
+  "status": "verified",
+  "evidence_url": "https://arxiv.org/abs/2308.01481",
+  "notes": "Confirmed on the arXiv abstract page: title and both authors exactly as given, primary class math.ST, v1 3 Aug 2023 / v2 5 Nov 2023, no journal-ref. Checked OpenAlex, which still shows arXiv as the only host location, so it remains an unpublished preprint -- @misc with the arXiv id in `note` is correct. Braced {M}arkovian."
+ },
+ {
+  "bibtex": "@article{rio1993covariance,\n  author  = {Emmanuel Rio},\n  title   = {Covariance inequalities for strongly mixing processes},\n  journal = {Annales de l'Institut Henri Poincar{\\'e}, Probabilit{\\'e}s et Statistiques},\n  year    = {1993},\n  volume  = {29},\n  number  = {4},\n  pages   = {587--597}\n}",
+  "status": "verified",
+  "evidence_url": "https://eudml.org/doc/77471",
+  "notes": "Confirmed on the EuDML record: Emmanuel Rio, \"Covariance inequalities for strongly mixing processes\", Annales de l'I.H.P. Probabilites et statistiques, vol. 29, no. 4, pp. 587-597, 1993, ISSN 0246-0203. Expanded the journal name to its full form with LaTeX accents. No DOI exists for this article (pre-DOI Gauthier-Villars/NUMDAM content), so no `doi` field was invented; add `url = {http://www.numdam.org/item/AIHPB_1993__29_4_587_0/}` if a link is wanted."
+ },
+ {
+  "bibtex": "@book{dedecker2007weak,\n  author    = {J{\\'e}r{\\^o}me Dedecker and Paul Doukhan and Gabriel Lang and Jos{\\'e} Rafael Le{\\'o}n and Sana Louhichi and Cl{\\'e}mentine Prieur},\n  title     = {Weak Dependence: With Examples and Applications},\n  series    = {Lecture Notes in Statistics},\n  volume    = {190},\n  publisher = {Springer},\n  address   = {New York, NY},\n  year      = {2007},\n  isbn      = {978-0-387-69951-6},\n  doi       = {10.1007/978-0-387-69952-3}\n}",
+  "status": "corrected",
+  "evidence_url": "https://api.crossref.org/works/10.1007/978-0-387-69952-3",
+  "notes": "Changed: restored the diacritics the candidate dropped -- Jerome -> J{\\'e}r{\\^o}me Dedecker, Jose Rafael Leon -> Jos{\\'e} Rafael Le{\\'o}n, Clementine -> Cl{\\'e}mentine Prieur. Confirmed from the deposit: book type, title \"Weak Dependence: With Examples and Applications\", publisher Springer New York, publisher-location New York, NY, 2007, print ISBN 9780387699516 and electronic ISBN 9780387699523, DOI 10.1007/978-0-387-69952-3, series Lecture Notes in Statistics. Series volume 190 confirmed via catalogue listings (the deposit itself carries no series volume field). Caveat on one author: the deposit garbles the fourth author's name into given=\"Le{\\'o}n R.\" / family=\"Jos{\\'e} Rafael\"; catalogue records give \"Le{\\'o}n, Jos{\\'e} Rafael\", and the book's own title page reads \"Jos{\\'e} Rafael Le{\\'o}n R.\" -- I used the catalogue form. link.springer.com redirects automated fetches to its IdP, so the DOI-registration record is the loadable evidence."
+ },
+ {
+  "bibtex": "@article{newey1987simple,\n  author  = {Whitney K. Newey and Kenneth D. West},\n  title   = {A Simple, Positive Semi-Definite, Heteroskedasticity and Autocorrelation Consistent Covariance Matrix},\n  journal = {Econometrica},\n  year    = {1987},\n  volume  = {55},\n  number  = {3},\n  pages   = {703--708},\n  doi     = {10.2307/1913610}\n}",
+  "status": "verified",
+  "evidence_url": "https://econpapers.repec.org/RePEc:ecm:emetrp:v:55:y:1987:i:3:p:703-08",
+  "notes": "Confirmed: Whitney K. Newey and Kenneth D. West, Econometrica 55(3):703-708, 1987. The EconPapers record independently confirms the full page range 703-708 (the JSTOR-sourced DOI deposit lists only the first page, 703). DOI 10.2307/1913610 confirmed via the DOI-registration record; JSTOR itself blocks automated fetches. Dropped the redundant \"JSTOR 1913610\" from the candidate's venue string since the DOI already encodes the JSTOR stable id."
+ },
+ {
+  "bibtex": "@article{sun2008optimal,\n  author  = {Yixiao Sun and Peter C. B. Phillips and Sainan Jin},\n  title   = {Optimal Bandwidth Selection in Heteroskedasticity--Autocorrelation Robust Testing},\n  journal = {Econometrica},\n  year    = {2008},\n  volume  = {76},\n  number  = {1},\n  pages   = {175--194},\n  doi     = {10.1111/j.0012-9682.2008.00822.x}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1111/j.0012-9682.2008.00822.x</br>",
+  "notes": "Confirmed: Yixiao Sun, Peter C. B. Phillips, Sainan Jin; Econometrica 76(1):175-194, 2008, DOI 10.1111/j.0012-9682.2008.00822.x, publisher The Econometric Society. One typographic refinement, not a metadata change: the published title uses an en dash in \"Heteroskedasticity-Autocorrelation\", so I wrote it as \"--\" in LaTeX. Evidence URL is the DOI-registration record for this DOI (https://api.crossref.org/works/10.1111/j.0012-9682.2008.00822.x) -- please ignore the stray trailing characters if any appear."
+ },
+ {
+  "bibtex": "@article{vats2019multivariate,\n  author  = {Dootika Vats and James M. Flegal and Galin L. Jones},\n  title   = {Multivariate output analysis for {M}arkov chain {M}onte {C}arlo},\n  journal = {Biometrika},\n  year    = {2019},\n  volume  = {106},\n  number  = {2},\n  pages   = {321--337},\n  doi     = {10.1093/biomet/asz002}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1093/biomet/asz002",
+  "notes": "Confirmed: Dootika Vats, James M Flegal, Galin L Jones; Biometrika 106(2):321-337, DOI 10.1093/biomet/asz002, published-print 2019-06-01 (online 2019-04-03), so year 2019 is right. Added the periods after the middle initials (the deposit stores them bare as \"James M\", \"Galin L\"). Braced {M}arkov chain {M}onte {C}arlo since the printed title is in sentence case."
+ },
+ {
+  "bibtex": "@article{andrieu2005stability,\n  author  = {Christophe Andrieu and {\\'E}ric Moulines and Pierre Priouret},\n  title   = {Stability of Stochastic Approximation under Verifiable Conditions},\n  journal = {SIAM Journal on Control and Optimization},\n  year    = {2005},\n  volume  = {44},\n  number  = {1},\n  pages   = {283--312},\n  doi     = {10.1137/S0363012902417267}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1137/S0363012902417267",
+  "notes": "Confirmed exactly as given: Christophe Andrieu, {\\'E}ric Moulines, Pierre Priouret; SIAM Journal on Control and Optimization 44(1):283-312, 2005, DOI 10.1137/S0363012902417267. Accent on {\\'E}ric preserved and written as a LaTeX escape. epubs.siam.org blocks automated fetches, hence the DOI-registration record as evidence."
+ },
+ {
+  "bibtex": "@inproceedings{kowshik2021streaming,\n  author    = {Suhas Kowshik and Dheeraj Nagaraj and Prateek Jain and Praneeth Netrapalli},\n  title     = {Streaming Linear System Identification with Reverse Experience Replay},\n  booktitle = {Advances in Neural Information Processing Systems},\n  editor    = {M. Ranzato and A. Beygelzimer and Y. Dauphin and P. S. Liang and J. Wortman Vaughan},\n  volume    = {34},\n  pages     = {30140--30152},\n  publisher = {Curran Associates, Inc.},\n  year      = {2021},\n  url       = {https://proceedings.neurips.cc/paper_files/paper/2021/file/fd2c5e4680d9a01dba3aada5ece22270-Paper.pdf}\n}",
+  "status": "corrected",
+  "evidence_url": "https://proceedings.neurips.cc/paper/2021/hash/fd2c5e4680d9a01dba3aada5ece22270-Abstract.html",
+  "notes": "Added fields the candidate lacked, all taken from the official BibTeX served by proceedings.neurips.cc for this paper: pages 30140-30152, volume 34, publisher Curran Associates, Inc., and the NeurIPS 2021 editors (M. Ranzato, A. Beygelzimer, Y. Dauphin, P. S. Liang, J. Wortman Vaughan). Title and the four authors in order confirmed on the abstract page. Set booktitle to \"Advances in Neural Information Processing Systems\" with volume 34 (the official form) rather than folding \"34 (NeurIPS 2021)\" into the booktitle string. Dropped the arXiv id from the entry since this is the published proceedings version."
+ },
+ {
+  "bibtex": "@article{white1982mle,\n  author  = {Halbert White},\n  title   = {Maximum Likelihood Estimation of Misspecified Models},\n  journal = {Econometrica},\n  year    = {1982},\n  volume  = {50},\n  number  = {1},\n  pages   = {1--25},\n  doi     = {10.2307/1912526}\n}",
+  "status": "verified",
+  "evidence_url": "https://econpapers.repec.org/RePEc:ecm:emetrp:v:50:y:1982:i:1:p:1-25",
+  "notes": "Confirmed: Halbert White, Econometrica 50(1):1-25, 1982, DOI 10.2307/1912526. The EconPapers record independently confirms the page range 1-25 (the JSTOR-sourced deposit lists only the first page, 1). Deliberate omission: the candidate's venue string mentions a 1983 corrigendum (Econometrica 51(2):513); I did not fold that into this entry because I could not load a page confirming it, and BibTeX has no clean field for it -- if you want it cited, add a separate verified entry rather than an unverified `note`. Kept the candidate's key `white1982mle`; the strict firstauthor+year+first-content-word rule would give `white1982maximum`, so rename if key consistency matters more than not touching existing \\cite calls."
+ },
+ {
+  "bibtex": "@article{zeger1986longitudinal,\n  author  = {Scott L. Zeger and Kung-Yee Liang},\n  title   = {Longitudinal Data Analysis for Discrete and Continuous Outcomes},\n  journal = {Biometrics},\n  year    = {1986},\n  volume  = {42},\n  number  = {1},\n  pages   = {121--130},\n  doi     = {10.2307/2531248}\n}",
+  "status": "verified",
+  "evidence_url": "https://pubmed.ncbi.nlm.nih.gov/3719049/",
+  "notes": "Confirmed: Scott L. Zeger and Kung-Yee Liang; Biometrics 42(1):121-130, March 1986. PubMed (PMID 3719049) independently confirms the full page range (rendered there in the abbreviated form \"121-30\"), which I expanded to 121--130; the JSTOR-sourced deposit lists only the first page, 121. DOI 10.2307/2531248 and the author/journal/volume/issue fields confirmed via the DOI-registration record. Author order Zeger then Liang is correct for this Biometrics paper -- do not confuse it with the companion Liang & Zeger (1986) Biometrika GEE paper."
+ },
+ {
+  "bibtex": "@misc{chen2019beijingairuci,\n  author       = {Song Chen},\n  title        = {{B}eijing {M}ulti-{S}ite {A}ir {Q}uality [Dataset]},\n  howpublished = {{UCI} Machine Learning Repository},\n  year         = {2017},\n  doi          = {10.24432/C5RK5G},\n  note         = {Donated 19 September 2019; licensed {CC} {BY} 4.0}\n}",
+  "status": "corrected",
+  "evidence_url": "https://archive.ics.uci.edu/dataset/501/beijing+multi+site+air+quality+data",
+  "notes": "Two changes, both to match the UCI page's own suggested citation, which reads verbatim: \"Chen, S. (2017). Beijing Multi-Site Air Quality [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5RK5G\". (1) year 2019 -> 2017: 19 September 2019 is the donation date, which UCI lists separately and which I moved into `note`; UCI's citation year is 2017. (2) authors \"Song Xi Chen\" -> \"Song Chen\": the UCI Creators field reads \"Song Chen\". The donor is Song Xi Chen of Peking University, so \"Song Xi Chen\" is arguably the more informative form -- switch back if you prefer the person's full name over UCI's field, but the year should stay 2017 either way. Dataset title \"Beijing Multi-Site Air Quality\", DOI 10.24432/C5RK5G, and CC BY 4.0 licence all confirmed on the page. Used @misc per the dataset rule; note that many bibliography styles ignore `doi` in @misc, so consider adding `url` as well if the DOI must render."
+ },
+ {
+  "bibtex": "@article{godichonbaggioni2026complexity,\n  author  = {Godichon-Baggioni, Antoine and Portier, Bruno and Sall{\\'e}, Guillaume},\n  title   = {Complexity reduction in online stochastic {N}ewton methods with potential {O(Nd)} total cost},\n  journal = {Statistics and Computing},\n  year    = {2026},\n  volume  = {36},\n  number  = {4},\n  pages   = {194},\n  doi     = {10.1007/s11222-026-10951-4},\n  note    = {Article 194; preprint arXiv:2602.05460}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1007/s11222-026-10951-4",
+  "notes": "Crossref (Springer-deposited) record confirms the title, the three authors in order, Statistics and Computing, vol. 36, issue 4, article no. 194, 2026, DOI 10.1007/s11222-026-10951-4 (accepted 25 Jul 2026, online 31 Jul 2026). The arXiv abstract page https://arxiv.org/abs/2602.05460 also loads and confirms the same title and author list, so the arXiv id is correct. link.springer.com itself 303-redirects to an IdP login page, so Crossref plus arXiv were used. No page range exists (article-number journal). One typographic difference: the arXiv title renders the complexity as 'O(N d)' with a space while the published Springer title is 'O(Nd)'; the published form is used."
+ },
+ {
+  "bibtex": "@article{godichonbaggioni2023learning,\n  author  = {Godichon-Baggioni, Antoine and Werge, Nicklas and Wintenberger, Olivier},\n  title   = {Learning from time-dependent streaming data with online stochastic algorithms},\n  journal = {Transactions on Machine Learning Research},\n  year    = {2023},\n  issn    = {2835-8856},\n  url     = {https://openreview.net/forum?id=kdfiEu1ul6},\n  note    = {arXiv:2205.12549}\n}",
+  "status": "verified",
+  "evidence_url": "https://dblp.org/search/publ/api?q=Learning+from+time-dependent+streaming+data+with+online+stochastic+algorithms&format=json",
+  "notes": "dblp's bibliographic record confirms a journal article in Transactions on Machine Learning Research, 2023, by Antoine Godichon-Baggioni, Nicklas Werge, Olivier Wintenberger, with the OpenReview forum id kdfiEu1ul6; the arXiv abstract page (arXiv:2205.12549) confirms the identical title and author list. openreview.net itself served only a bot-challenge page to the fetcher, so dblp plus arXiv were used. TMLR articles carry no volume/issue/page numbers, so none are included (dblp's 'volume 2023' is a dblp-internal convention, deliberately omitted). No changes to the candidate metadata."
+ },
+ {
+  "bibtex": "@article{chau2024inversion,\n  author  = {Chau, Huy N. and Kirkby, J. Lars and Nguyen, Dang H. and Nguyen, Duy and Nguyen, Nhu N. and Nguyen, Thai},\n  title   = {On the Inversion-Free {N}ewton's Method and Its Applications},\n  journal = {International Statistical Review},\n  year    = {2024},\n  volume  = {92},\n  number  = {2},\n  pages   = {284--321},\n  doi     = {10.1111/insr.12563}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1111/insr.12563",
+  "notes": "Crossref (Wiley-deposited) record confirms title, all six authors in order, International Statistical Review, vol. 92, issue 2, pp. 284-321, 2024, DOI 10.1111/insr.12563. Semantic Scholar corroborates vol. 92, pp. 284-321. The Wiley page onlinelibrary.wiley.com/doi/10.1111/insr.12563 returns HTTP 402 (paywall) and could not be rendered, so publisher-deposited Crossref metadata is the evidence. Wiley typesets the title with a non-breaking hyphen ('Inversion-Free'); an ASCII hyphen is used here. No metadata changes."
+ },
+ {
+  "bibtex": "@incollection{robbins1971convergence,\n  author    = {Robbins, Herbert and Siegmund, David},\n  title     = {A Convergence Theorem for Non Negative Almost Supermartingales and Some Applications},\n  booktitle = {Optimizing Methods in Statistics},\n  editor    = {Rustagi, Jagdish S.},\n  publisher = {Academic Press},\n  year      = {1971},\n  pages     = {233--257},\n  doi       = {10.1016/B978-0-12-604550-5.50015-8}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1016/B978-0-12-604550-5.50015-8",
+  "notes": "Crossref (Elsevier-deposited) record confirms the chapter title, authors H. Robbins and D. Siegmund, book 'Optimizing Methods in Statistics', pp. 233-257, 1971, ISBN 9780126045505, DOI 10.1016/B978-0-12-604550-5.50015-8. The editor is not in the Crossref record; OpenLibrary search (https://openlibrary.org/search.json?q=Optimizing+methods+in+statistics+Rustagi) confirms Jagdish S. Rustagi as the editor of the Academic Press 1971 volume arising from the Ohio State University symposium. sciencedirect.com returns HTTP 403. Publisher given as Academic Press (Elsevier is the current rights holder / Crossref depositor). The 1985 'Herbert Robbins Selected Papers' reprint mentioned in the candidate was not independently verified and is omitted from the entry."
+ },
+ {
+  "bibtex": "@inproceedings{moulines2011nonasymptotic,\n  author    = {Moulines, Eric and Bach, Francis},\n  title     = {Non-{A}symptotic Analysis of Stochastic Approximation Algorithms for Machine Learning},\n  booktitle = {Advances in Neural Information Processing Systems},\n  editor    = {Shawe-Taylor, J. and Zemel, R. and Bartlett, P. and Pereira, F. and Weinberger, K.},\n  volume    = {24},\n  publisher = {Curran Associates, Inc.},\n  year      = {2011},\n  url       = {https://proceedings.neurips.cc/paper_files/paper/2011/file/40008b9a5380fcacce3976bf7c08af5b-Paper.pdf}\n}",
+  "status": "corrected",
+  "evidence_url": "https://papers.nips.cc/paper_files/paper/2011/file/40008b9a5380fcacce3976bf7c08af5b-Bibtex.bib",
+  "notes": "The official NeurIPS proceedings BibTeX (fetched verbatim) gives author = {Moulines, Eric and Bach, Francis}, booktitle = {Advances in Neural Information Processing Systems}, volume = {24}, publisher = {Curran Associates, Inc.}, year = {2011}, and an EMPTY pages field. Changes from the candidate: (a) the frequently cited page range 451-459 is NOT confirmed by the proceedings and has been omitted, as instructed; (b) the author is given as 'Francis Bach' in the official record, not 'Francis R. Bach' (the middle initial is dropped to match the source); (c) the venue string is normalised to the official booktitle plus volume 24 rather than 'NIPS 2011'. No DOI is assigned to 2011 NIPS papers."
+ },
+ {
+  "bibtex": "@inproceedings{lee2022fast,\n  author    = {Lee, Sokbae and Liao, Yuan and Seo, Myung Hwan and Shin, Youngki},\n  title     = {Fast and Robust Online Inference with Stochastic Gradient Descent via Random Scaling},\n  booktitle = {Proceedings of the {AAAI} Conference on Artificial Intelligence},\n  year      = {2022},\n  volume    = {36},\n  number    = {7},\n  pages     = {7381--7389},\n  doi       = {10.1609/aaai.v36i7.20701},\n  note      = {arXiv:2106.03156}\n}",
+  "status": "verified",
+  "evidence_url": "https://ojs.aaai.org/index.php/AAAI/article/view/20701",
+  "notes": "The AAAI OJS article page confirms title, all four authors in order (Sokbae Lee, Yuan Liao, Myung Hwan Seo, Youngki Shin), Proceedings of the AAAI Conference on Artificial Intelligence, vol. 36, no. 7, pp. 7381-7389, published 28 June 2022, DOI 10.1609/aaai.v36i7.20701. All candidate fields match; no changes."
+ },
+ {
+  "bibtex": "@inproceedings{chee2023plusminus,\n  author    = {Chee, Jerry and Kim, Hwanwoo and Toulis, Panos},\n  title     = {``Plus/minus the learning rate'': Easy and Scalable Statistical Inference with {SGD}},\n  booktitle = {Proceedings of the 26th International Conference on Artificial Intelligence and Statistics},\n  editor    = {Ruiz, Francisco and Dy, Jennifer and van de Meent, Jan-Willem},\n  series    = {Proceedings of Machine Learning Research},\n  volume    = {206},\n  pages     = {2285--2309},\n  publisher = {PMLR},\n  year      = {2023},\n  url       = {https://proceedings.mlr.press/v206/chee23a.html}\n}",
+  "status": "verified",
+  "evidence_url": "https://proceedings.mlr.press/v206/chee23a.html",
+  "notes": "The PMLR page supplies the official BibTeX verbatim: authors Chee/Kim/Toulis, booktitle 'Proceedings of The 26th International Conference on Artificial Intelligence and Statistics', pages 2285--2309, volume 206, series PMLR, editors Ruiz, Dy, van de Meent, year 2023. All candidate fields match. Only cosmetic edits: the article 'The' in the booktitle is lowercased to 'the', the quotation marks in the title are written as LaTeX ``...'' and SGD is brace-protected. PMLR assigns no DOI."
+ },
+ {
+  "bibtex": "@article{na2025statistical,\n  author  = {Na, Sen and Mahoney, Michael},\n  title   = {Statistical Inference of Constrained Stochastic Optimization via Sketched Sequential Quadratic Programming},\n  journal = {Journal of Machine Learning Research},\n  year    = {2025},\n  volume  = {26},\n  number  = {33},\n  pages   = {1--75},\n  url     = {https://www.jmlr.org/papers/v26/24-0530.html}\n}",
+  "status": "corrected",
+  "evidence_url": "https://www.jmlr.org/papers/v26/24-0530.bib",
+  "notes": "JMLR's own .bib file gives author = {Sen Na and Michael Mahoney}, journal = {Journal of Machine Learning Research}, year = {2025}, volume = {26}, number = {33}, pages = {1--75}. Corrected from the candidate: the second author is 'Michael Mahoney' in the official JMLR record, not 'Michael W. Mahoney' (middle initial removed to match the published byline). Title, volume, number, pages and year all match the candidate. JMLR assigns no DOI."
+ },
+ {
+  "bibtex": "@article{herrndorf1984functional,\n  author  = {Herrndorf, Norbert},\n  title   = {A Functional Central Limit Theorem for Weakly Dependent Sequences of Random Variables},\n  journal = {The Annals of Probability},\n  year    = {1984},\n  volume  = {12},\n  number  = {1},\n  pages   = {141--153},\n  doi     = {10.1214/aop/1176993379}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1214/aop/1176993379",
+  "notes": "Crossref (IMS/Project Euclid-deposited) confirms title, sole author Norbert Herrndorf, The Annals of Probability, vol. 12, issue 1, 1984, DOI 10.1214/aop/1176993379, but omits the page field. Pages 141-153 were independently confirmed by two further sources: the zbMATH API record (https://api.zbmath.org/v1/document/_search?search_string=Herrndorf+functional+central+limit+theorem+weakly+dependent+sequences) and the Semantic Scholar record for the same DOI, both giving Ann. Probab. 12, 141-153 (1984). projecteuclid.org, zbmath.org HTML and JSTOR all returned bot-detection/403 pages. No changes to the candidate. Distinct from Herrndorf's related 1985 Z. Wahrsch. Verw. Gebiete 69(4), 541-550 paper."
+ },
+ {
+  "bibtex": "@article{wu2007strong,\n  author  = {Wu, Wei Biao},\n  title   = {Strong invariance principles for dependent random variables},\n  journal = {The Annals of Probability},\n  year    = {2007},\n  volume  = {35},\n  number  = {6},\n  pages   = {2294--2320},\n  doi     = {10.1214/009117907000000060},\n  note    = {arXiv:0711.3674}\n}",
+  "status": "verified",
+  "evidence_url": "https://arxiv.org/abs/0711.3674",
+  "notes": "The arXiv abstract page carries the author's own journal-ref: 'Annals of Probability 2007, Vol. 35, No. 6, 2294-2320' with DOI 10.1214/009117907000000060, and confirms title and sole author Wei Biao Wu. Crossref (https://api.crossref.org/works/10.1214/009117907000000060) independently confirms The Annals of Probability, vol. 35, issue 6, 2007. Project Euclid served a bot-detection page. The candidate's note is right: this is Annals of Probability, not Annals of Statistics. No metadata changes."
+ },
+ {
+  "bibtex": "@article{andrews1991heteroskedasticity,\n  author  = {Andrews, Donald W. K.},\n  title   = {Heteroskedasticity and Autocorrelation Consistent Covariance Matrix Estimation},\n  journal = {Econometrica},\n  year    = {1991},\n  volume  = {59},\n  number  = {3},\n  pages   = {817--858},\n  doi     = {10.2307/2938229}\n}",
+  "status": "verified",
+  "evidence_url": "https://econpapers.repec.org/RePEc:ecm:emetrp:v:59:y:1991:i:3:p:817-58",
+  "notes": "Crossref (https://api.crossref.org/works/10.2307/2938229) confirms title, sole author Donald W. K. Andrews, Econometrica, vol. 59, issue 3, May 1991, DOI 10.2307/2938229, but records only the first page (817) as JSTOR-deposited DOIs commonly do. The EconPapers/RePEc record for the same article confirms the full range 817-858, matching the candidate. No changes."
+ },
+ {
+  "bibtex": "@article{glynn1991estimating,\n  author  = {Glynn, Peter W. and Whitt, Ward},\n  title   = {Estimating the asymptotic variance with batch means},\n  journal = {Operations Research Letters},\n  year    = {1991},\n  volume  = {10},\n  number  = {8},\n  pages   = {431--435},\n  doi     = {10.1016/0167-6377(91)90019-L}\n}",
+  "status": "corrected",
+  "evidence_url": "https://api.crossref.org/works/10.1016/0167-6377(91)90019-L",
+  "notes": "Crossref (Elsevier-deposited) confirms both authors, Operations Research Letters, vol. 10, issue 8, pp. 431-435, 1991, DOI 10.1016/0167-6377(91)90019-L. Corrected from the candidate: the published title is in sentence case, 'Estimating the asymptotic variance with batch means', not the title-cased 'Estimating the Asymptotic Variance with Batch Means' given in the candidate. Volume, issue, pages, year and DOI all match."
+ },
+ {
+  "bibtex": "@article{kunsch1989jackknife,\n  author  = {K{\\\"u}nsch, Hans R.},\n  title   = {The Jackknife and the Bootstrap for General Stationary Observations},\n  journal = {The Annals of Statistics},\n  year    = {1989},\n  volume  = {17},\n  number  = {3},\n  pages   = {1217--1241},\n  doi     = {10.1214/aos/1176347265}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1214/aos/1176347265",
+  "notes": "Crossref confirms title, author Hans R. Kunsch (umlaut stripped in the Crossref deposit; the published byline is Kuensch/K\u00fcnsch, encoded here as K{\\\"u}nsch), The Annals of Statistics, vol. 17, issue 3, 1989, DOI 10.1214/aos/1176347265; the page field is absent from Crossref. Pages 1217-1241 confirmed by the Semantic Scholar record for the same DOI (Annals of Statistics, vol. 17, pp. 1217-1241). Project Euclid returned a bot-detection page. No changes to the candidate metadata."
+ },
+ {
+  "bibtex": "@article{fort2015central,\n  author  = {Fort, Gersende},\n  title   = {Central limit theorems for stochastic approximation with controlled {M}arkov chain dynamics},\n  journal = {{ESAIM}: Probability and Statistics},\n  year    = {2015},\n  volume  = {19},\n  pages   = {60--80},\n  doi     = {10.1051/ps/2014013},\n  note    = {arXiv:1309.3116}\n}",
+  "status": "corrected",
+  "evidence_url": "https://www.numdam.org/item/PS_2015__19__60_0/",
+  "notes": "The Numdam item page (the journal's own archive of ESAIM: Probability and Statistics) confirms title, sole author Gersende Fort, vol. 19, 2015, pp. 60-80, DOI 10.1051/ps/2014013. The arXiv abstract page https://arxiv.org/abs/1309.3116 confirms the same title and author, so the candidate's arXiv id is correct (arXiv capitalises it as 'Central Limit Theorems for Stochastic Approximation with controlled Markov chain dynamics'; the journal's sentence-case form is used). Corrected only in the citation key: fort2015clt -> fort2015central, to follow the lastname+year+first-content-word convention. No bibliographic field changed. The journal has no separate issue number for this article."
+ },
+ {
+  "bibtex": "@article{agarwal2013generalization,\n  author  = {Agarwal, Alekh and Duchi, John C.},\n  title   = {The Generalization Ability of Online Algorithms for Dependent Data},\n  journal = {{IEEE} Transactions on Information Theory},\n  year    = {2013},\n  volume  = {59},\n  number  = {1},\n  pages   = {573--587},\n  doi     = {10.1109/TIT.2012.2212414},\n  note    = {arXiv:1110.2529}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1109/TIT.2012.2212414",
+  "notes": "Crossref (IEEE-deposited) confirms title, authors Alekh Agarwal and John C. Duchi, IEEE Transactions on Information Theory, vol. 59, issue 1, pp. 573-587, 2013, DOI 10.1109/TIT.2012.2212414. The arXiv abstract page https://arxiv.org/abs/1110.2529 confirms the same title and authors, validating the candidate's arXiv id. No changes."
+ },
+ {
+  "bibtex": "@book{white1984asymptotic,\n  author    = {White, Halbert},\n  title     = {Asymptotic Theory for Econometricians},\n  publisher = {Academic Press},\n  year      = {1984},\n  series    = {Economic Theory, Econometrics, and Mathematical Economics},\n  isbn      = {0-12-746650-9}\n}",
+  "status": "verified",
+  "evidence_url": "https://openlibrary.org/books/OL3167959M/Asymptotic_theory_for_econometricians",
+  "notes": "The OpenLibrary edition record confirms title 'Asymptotic Theory for Econometricians', author Halbert White, publisher Academic Press, 1984, 228 pages, ISBN 0127466509 / 9780127466507, series 'Economic Theory, Econometrics, and Mathematical Economics'. All candidate fields match. Place of publication was not confirmed on the page, so no address field is included. Note for the author's own use: a Revised Edition was issued in 2001; this entry is the original 1984 edition as cited."
+ },
+ {
+  "bibtex": "@article{domowitz1982misspecified,\n  author  = {Domowitz, Ian and White, Halbert},\n  title   = {Misspecified models with dependent observations},\n  journal = {Journal of Econometrics},\n  year    = {1982},\n  volume  = {20},\n  number  = {1},\n  pages   = {35--58},\n  doi     = {10.1016/0304-4076(82)90102-6}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1016/0304-4076(82)90102-6",
+  "notes": "Crossref (Elsevier-deposited) confirms title, authors Ian Domowitz and Halbert White, Journal of Econometrics, vol. 20, issue 1, pp. 35-58, 1982, DOI 10.1016/0304-4076(82)90102-6. All candidate fields match; no changes."
+ },
+ {
+  "bibtex": "@article{zhang2017cautionary,\n  author  = {Zhang, Shuyi and Guo, Bin and Dong, Anlan and He, Jing and Xu, Ziping and Chen, Song Xi},\n  title   = {Cautionary tales on air-quality improvement in {B}eijing},\n  journal = {Proceedings of the Royal Society A: Mathematical, Physical and Engineering Sciences},\n  year    = {2017},\n  volume  = {473},\n  number  = {2205},\n  pages   = {20170457},\n  doi     = {10.1098/rspa.2017.0457}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1098/rspa.2017.0457",
+  "notes": "Crossref (Royal Society-deposited) confirms title, all six authors in order (Shuyi Zhang, Bin Guo, Anlan Dong, Jing He, Ziping Xu, Song Xi Chen), Proceedings of the Royal Society A, vol. 473, issue 2205, article 20170457, 2017, DOI 10.1098/rspa.2017.0457. All candidate fields match; no changes. This is indeed the citation UCI requests for the Beijing Multi-Site Air-Quality dataset."
+ },
+ {
+  "bibtex": "@article{cenac2025efficient,\n  author  = {Peggy C{\\'e}nac and Antoine Godichon-Baggioni and Bruno Portier},\n  title   = {An efficient averaged stochastic {G}auss-{N}ewton algorithm for estimating parameters of nonlinear regressions models},\n  journal = {Bernoulli},\n  year    = {2025},\n  volume  = {31},\n  number  = {1},\n  pages   = {1--29},\n  doi     = {10.3150/23-BEJ1637},\n  note    = {arXiv:2006.12920}\n}",
+  "status": "corrected",
+  "evidence_url": "https://projecteuclid.org/journals/bernoulli/volume-31/issue-1/An-efficient-averaged-stochastic-Gauss-Newton-algorithm-for-estimating-parameters/10.3150/23-BEJ1637.short",
+  "notes": "Added the previously unconfirmed page range: the Project Euclid landing page's citation metadata gives citation_firstpage=1, citation_lastpage=29 and the citation line 'Bernoulli 31(1), 1-29, (February 2025)'. Everything else confirmed on Project Euclid and in the Crossref record for 10.3150/23-BEJ1637: three authors Peggy Cenac, Antoine Godichon-Baggioni, Bruno Portier; Bernoulli 31(1), February 2025. Crossref itself has no page field, hence the extra publisher-page check. Note the published title reads 'nonlinear regressions models' (as in the candidate), whereas the arXiv v-latest title is the earlier 'An efficient Averaged Stochastic Gauss-Newton algorithm for estimating parameters of non linear regressions models' - the published form is used."
+ },
+ {
+  "bibtex": "@article{byrd2016stochastic,\n  author  = {Richard H. Byrd and S. L. Hansen and Jorge Nocedal and Yoram Singer},\n  title   = {A Stochastic {Q}uasi-{N}ewton Method for Large-Scale Optimization},\n  journal = {SIAM Journal on Optimization},\n  year    = {2016},\n  volume  = {26},\n  number  = {2},\n  pages   = {1008--1031},\n  doi     = {10.1137/140954362}\n}",
+  "status": "corrected",
+  "evidence_url": "https://api.crossref.org/works/10.1137/140954362",
+  "notes": "Title, journal, 26(2), 1008-1031, 2016, DOI 10.1137/140954362 all confirmed on the Crossref DOI record and cross-checked against arXiv:1401.7020. Changed the second author from the candidate's 'Samantha L. Hansen' to 'S. L. Hansen': every record I could load (Crossref, arXiv abstract page, dblp record journals/siamjo/ByrdHNS16) gives only the initials 'S. L. Hansen', so the expanded given name is not confirmable and I did not want to invent it. dblp does expand the other three as Richard H. Byrd, Jorge Nocedal, Yoram Singer, which is why those are given in full."
+ },
+ {
+  "bibtex": "@techreport{ruppert1988efficient,\n  author      = {D. Ruppert},\n  title       = {Efficient Estimations from a Slowly Convergent {R}obbins-{M}onro Process},\n  institution = {Cornell University, Operations Research and Industrial Engineering},\n  type        = {Technical Report},\n  number      = {781},\n  year        = {1988},\n  month       = feb,\n  note        = {\\url{https://hdl.handle.net/1813/8664}}\n}",
+  "status": "verified",
+  "evidence_url": "https://ecommons.cornell.edu/server/api/core/items/9a14790e-66a6-4460-9280-e9fb146fd02d",
+  "notes": "Cornell eCommons item metadata confirms exactly: dc.title = 'Efficient Estimations from a Slowly Convergent Robbins-Monro Process', dc.contributor.author = 'Ruppert, D.', dc.date.issued = '1988-02', dc.identifier.citation = '781', dc.publisher = 'Cornell University Operations Research and Industrial Engineering', collection 'ORIE Technical Reports', dc.type = 'technical report', handle https://hdl.handle.net/1813/8664. The candidate's caveat is right and worth keeping in mind: the archival title uses plural 'Estimations', while the report is very widely cited as 'Efficient estimators from a slowly convergent Robbins-Monro process'. I used the archival title. I omitted address = {Ithaca, NY} because the eCommons record carries no place field (add it yourself if your style wants it)."
+ },
+ {
+  "bibtex": "@article{mokkadem2011generalization,\n  author  = {Abdelkader Mokkadem and Mariane Pelletier},\n  title   = {A Generalization of the Averaging Procedure: The Use of Two-Time-Scale Algorithms},\n  journal = {SIAM Journal on Control and Optimization},\n  year    = {2011},\n  volume  = {49},\n  number  = {4},\n  pages   = {1523--1543},\n  doi     = {10.1137/080718395}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1137/080718395",
+  "notes": "Crossref DOI record confirms every field as given in the candidate: authors Abdelkader Mokkadem and Mariane Pelletier, SIAM Journal on Control and Optimization, volume 49, issue 4, pages 1523-1543, 2011, DOI 10.1137/080718395. No changes."
+ },
+ {
+  "bibtex": "@article{bottou2018optimization,\n  author  = {L{\\'e}on Bottou and Frank E. Curtis and Jorge Nocedal},\n  title   = {Optimization Methods for Large-Scale Machine Learning},\n  journal = {SIAM Review},\n  year    = {2018},\n  volume  = {60},\n  number  = {2},\n  pages   = {223--311},\n  doi     = {10.1137/16M1080173}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1137/16M1080173",
+  "notes": "Crossref DOI record confirms: Leon (Leon with acute accent) Bottou, Frank E. Curtis, Jorge Nocedal; SIAM Review 60(2), 223-311, 2018, DOI 10.1137/16M1080173. No changes; the accent on 'Leon' is encoded as L{\\'e}on for LaTeX."
+ },
+ {
+  "bibtex": "@article{fang2019scalable,\n  author  = {Yixin Fang},\n  title   = {Scalable statistical inference for averaged implicit stochastic gradient descent},\n  journal = {Scandinavian Journal of Statistics},\n  year    = {2019},\n  volume  = {46},\n  number  = {4},\n  pages   = {987--1002},\n  doi     = {10.1111/sjos.12378}\n}",
+  "status": "corrected",
+  "evidence_url": "https://api.crossref.org/works/10.1111/sjos.12378",
+  "notes": "Added the issue number, which the candidate omitted: Crossref gives issue 4. Confirmed single author Yixin Fang (NJIT), Scandinavian Journal of Statistics 46(4), 987-1002, 2019, DOI 10.1111/sjos.12378."
+ },
+ {
+  "bibtex": "@misc{li2023markovian,\n  author = {Xiang Li and Jiadong Liang and Zhihua Zhang},\n  title  = {Online Statistical Inference for Nonlinear Stochastic Approximation with {M}arkovian Data},\n  year   = {2023},\n  note   = {arXiv:2302.07690}\n}",
+  "status": "verified",
+  "evidence_url": "https://arxiv.org/abs/2302.07690",
+  "notes": "arXiv abstract page confirms title, the three authors Xiang Li, Jiadong Liang, Zhihua Zhang, primary class math.ST (also stat.ME, stat.ML), current version v2 (submitted 15 Feb 2023, revised 20 Feb 2023). No journal-ref or external DOI is listed on the arXiv record, and I found no published version (no dblp record; a web search turned up only citations of it as a 2023 preprint), so it stays a @misc preprint with the arXiv id in note. Kept the candidate key li2023markovian ('Markovian' is a title word); li2023online would also fit the key rule."
+ },
+ {
+  "bibtex": "@article{ibragimov1962some,\n  author  = {I. A. Ibragimov},\n  title   = {Some Limit Theorems for Stationary Processes},\n  journal = {Theory of Probability and Its Applications},\n  year    = {1962},\n  volume  = {7},\n  number  = {4},\n  pages   = {349--382},\n  doi     = {10.1137/1107036},\n  note    = {Russian original: Teor. Veroyatnost. i Primenen. 7(4), 361--392}\n}",
+  "status": "corrected",
+  "evidence_url": "http://www.mathnet.ru/eng/tvp4736",
+  "notes": "Two changes. (1) Author: the candidate's 'Ildar A. Ibragimov' is replaced by 'I. A. Ibragimov', the form recorded on both Math-Net.Ru and the Crossref record for the SIAM translation - the expanded first name is not on either page. (2) Added DOI 10.1137/1107036 for the English translation and a note giving the Russian original pagination. Verified: English translation in Theory of Probability & Its Applications (Crossref container title) 7(4), 349-382, 1962; Russian original Teor. Veroyatnost. i Primenen. 7(4), 361-392, as the candidate stated. Volume/issue/pages all match the candidate."
+ },
+ {
+  "bibtex": "@article{wu2005nonlinear,\n  author  = {Wei Biao Wu},\n  title   = {Nonlinear system theory: Another look at dependence},\n  journal = {Proceedings of the National Academy of Sciences of the United States of America},\n  year    = {2005},\n  volume  = {102},\n  number  = {40},\n  pages   = {14150--14154},\n  doi     = {10.1073/pnas.0506715102}\n}",
+  "status": "verified",
+  "evidence_url": "https://pubmed.ncbi.nlm.nih.gov/16179388/",
+  "notes": "PubMed record (PMID 16179388) confirms: sole author Wei Biao Wu; Proc Natl Acad Sci U S A 102(40), 14150-14154; 4 October 2005 (epub 22 September 2005); DOI 10.1073/pnas.0506715102. No field changed. Minor cosmetic point only: PubMed renders the title in sentence case ('another look at dependence'); I kept the candidate's capital 'Another', which matches the PNAS article heading - flip it if your style demands strict sentence case."
+ },
+ {
+  "bibtex": "@article{wu2011asymptotic,\n  author  = {Wei Biao Wu},\n  title   = {Asymptotic theory for stationary processes},\n  journal = {Statistics and Its Interface},\n  year    = {2011},\n  volume  = {4},\n  number  = {2},\n  pages   = {207--226},\n  doi     = {10.4310/SII.2011.v4.n2.a15}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.4310/SII.2011.v4.n2.a15",
+  "notes": "Crossref DOI record confirms: Wei Biao Wu (Dept. of Statistics, University of Chicago); container title 'Statistics and Its Interface'; volume 4, issue 2, pages 207-226; 2011; DOI 10.4310/SII.2011.v4.n2.a15 (ISSN 1938-7989). No changes."
+ },
+ {
+  "bibtex": "@article{kiefer2002heteroskedasticity,\n  author  = {Nicholas M. Kiefer and Timothy J. Vogelsang},\n  title   = {Heteroskedasticity-Autocorrelation Robust Standard Errors Using the {B}artlett Kernel Without Truncation},\n  journal = {Econometrica},\n  year    = {2002},\n  volume  = {70},\n  number  = {5},\n  pages   = {2093--2095},\n  doi     = {10.1111/1468-0262.00366}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1111/1468-0262.00366",
+  "notes": "Crossref DOI record confirms: Nicholas M. Kiefer and Timothy J. Vogelsang; Econometrica 70(5), 2093-2095, 2002; DOI 10.1111/1468-0262.00366. The unusually short 3-page span is correct - this is the short 'Notes and Comments' piece, not the longer 2005 Econometric Theory paper. No changes (I brace-protected 'Bartlett')."
+ },
+ {
+  "bibtex": "@article{flegal2010batch,\n  author  = {James M. Flegal and Galin L. Jones},\n  title   = {Batch means and spectral variance estimators in {M}arkov chain {M}onte {C}arlo},\n  journal = {The Annals of Statistics},\n  year    = {2010},\n  volume  = {38},\n  number  = {2},\n  pages   = {1034--1070},\n  doi     = {10.1214/09-AOS735}\n}",
+  "status": "verified",
+  "evidence_url": "https://arxiv.org/abs/0811.1729",
+  "notes": "arXiv abstract page for 0811.1729 carries the journal-ref 'Annals of Statistics, 2010, Vol. 38, No. 2, 1034-1070' and DOI 10.1214/09-AOS735, with authors James M. Flegal and Galin L. Jones - all matching the candidate. No changes. Since the paper is published I did not add the arXiv id to note; add note = {arXiv:0811.1729} if you prefer to keep the preprint pointer."
+ },
+ {
+  "bibtex": "@book{benveniste1990adaptive,\n  author    = {Albert Benveniste and Michel M{\\'e}tivier and Pierre Priouret},\n  title     = {Adaptive Algorithms and Stochastic Approximations},\n  series    = {Applications of Mathematics},\n  volume    = {22},\n  publisher = {Springer-Verlag},\n  address   = {Berlin, Heidelberg},\n  year      = {1990},\n  doi       = {10.1007/978-3-642-75894-2}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1007/978-3-642-75894-2",
+  "notes": "Crossref DOI record confirms type=book, title 'Adaptive Algorithms and Stochastic Approximations', authors Albert Benveniste, Michel Metivier, Pierre Priouret, publisher 'Springer Berlin Heidelberg', location 'Berlin, Heidelberg', 1990, ISBN 9783642758966 (print) / 9783642758942 (electronic). Crossref carries no series data and link.springer.com is behind a JS bot challenge, so I confirmed the series separately in the Open Library catalogue records for ISBN 0387528946 and 9783642758966, both of which give series 'Applications of Mathematics, 22' (Springer-Verlag, 1990, ~364-365 pp.) - matching the candidate. No field changed; I omitted the ISBN to keep the entry lean (add isbn = {9783642758966} if wanted)."
+ },
+ {
+  "bibtex": "@inproceedings{even2023stochastic,\n  author    = {Mathieu Even},\n  title     = {Stochastic Gradient Descent under {M}arkovian Sampling Schemes},\n  booktitle = {Proceedings of the 40th International Conference on Machine Learning (ICML)},\n  series    = {Proceedings of Machine Learning Research},\n  volume    = {202},\n  pages     = {9412--9439},\n  year      = {2023},\n  publisher = {PMLR},\n  note      = {arXiv:2302.14428}\n}",
+  "status": "verified",
+  "evidence_url": "https://proceedings.mlr.press/v202/even23a.html",
+  "notes": "PMLR page confirms: sole author Mathieu Even; Proceedings of the 40th International Conference on Machine Learning; PMLR volume 202; pages 9412-9439; 2023; editors Krause, Brunskill, Cho, Engelhardt, Sabato, Scarlett. The candidate's arXiv id 2302.14428 is confirmed via the dblp record for the same paper (CoRR abs/2302.14428). All metadata matches; the only edit is the citation key, changed from even2023sgd to even2023stochastic so it follows the author+year+first-content-word rule ('sgd' does not appear in the title)."
+ },
+ {
+  "bibtex": "@inproceedings{samsonov2025statistical,\n  author    = {Sergey Samsonov and Marina Sheshukova and Eric Moulines and Alexey Naumov},\n  title     = {Statistical inference for Linear Stochastic Approximation with {M}arkovian Noise},\n  booktitle = {Advances in Neural Information Processing Systems 38 (NeurIPS 2025)},\n  year      = {2025},\n  pages     = {174565--174626},\n  doi       = {10.52202/085713-5807},\n  note      = {arXiv:2505.19102}\n}",
+  "status": "corrected",
+  "evidence_url": "https://papers.nips.cc/paper_files/paper/2025/hash/ff45bac2fc44064fd8ae85301b40b41e-Abstract-Conference.html",
+  "notes": "Substantive venue correction: this is no longer an unpublished preprint. It appeared in the NeurIPS 2025 Main Conference Track, so I changed the entry type from @misc to @inproceedings and added booktitle 'Advances in Neural Information Processing Systems 38 (NeurIPS 2025)', pages 174565-174626 and DOI 10.52202/085713-5807. The NeurIPS proceedings page metadata gives citation_journal_title='Advances in Neural Information Processing Systems', citation_volume=38, citation_firstpage=174565, citation_lastpage=174626, citation_doi=10.52202/085713-5807, and the four authors Sergey Samsonov, Marina Sheshukova, Eric Moulines, Alexey Naumov; title unchanged from the candidate. The arXiv id 2505.19102 (v1, 25 May 2025) is retained in note. Heads-up on the 'why_relevant' text: the abstract states O(n^{-1/4}) Kolmogorov-distance rates to the Gaussian limit and recovers the classical O(n^{-1/8}) rate (up to log factors) for estimating the asymptotic variance - so the n^{-1/8} figure applies to the variance estimate, as you wrote, but the headline bootstrap/CLT rate is n^{-1/4}."
+ },
+ {
+  "bibtex": "@article{wooldridge1988invariance,\n  author  = {Jeffrey M. Wooldridge and Halbert White},\n  title   = {Some Invariance Principles and Central Limit Theorems for Dependent Heterogeneous Processes},\n  journal = {Econometric Theory},\n  year    = {1988},\n  volume  = {4},\n  number  = {2},\n  pages   = {210--230},\n  doi     = {10.1017/S0266466600012032}\n}",
+  "status": "verified",
+  "evidence_url": "https://www.cambridge.org/core/product/identifier/S0266466600012032/type/journal_article",
+  "notes": "Cambridge Core article page confirms: Jeffrey M. Wooldridge and Halbert White; Econometric Theory volume 4, issue 2, pages 210-230; August 1988; DOI 10.1017/S0266466600012032. No changes."
+ },
+ {
+  "bibtex": "@misc{chen2015beijing,\n  author       = {Song Chen},\n  title        = {{B}eijing {PM2.5} [Dataset]},\n  howpublished = {{UCI} Machine Learning Repository},\n  year         = {2015},\n  doi          = {10.24432/C5JS49},\n  note         = {Donated 18 January 2017; CC BY 4.0. \\url{https://archive.ics.uci.edu/dataset/381/beijing+pm2+5+data}}\n}",
+  "status": "corrected",
+  "evidence_url": "https://archive.ics.uci.edu/dataset/381/beijing+pm2+5+data",
+  "notes": "Two changes, both taken from the UCI page itself. (1) Year 2017 -> 2015: the repository's own Cite box reads verbatim 'Chen, S. (2015). Beijing PM2.5 [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5JS49.' The 18 January 2017 date is the donation date (kept in note), not the citation year. (2) Author 'Song Xi Chen' -> 'Song Chen': the page's Creators field lists only 'Song Chen' (the introductory paper is credited to Liang, Zou, Guo, Li, Zhang, Zhang, Huang, Chen, 2015, Proc. R. Soc. A). Confirmed unchanged: dataset name 'Beijing PM2.5', DOI 10.24432/C5JS49, CC BY 4.0 licence, 43824 instances, 11 features, file PRSA_data_2010.1.1-2014.12.31.csv, coverage 1 Jan 2010 - 31 Dec 2014. Key changed from chen2017beijingpm25uci to chen2015beijing to match the corrected year and the key rule."
+ },
+ {
+  "bibtex": "@misc{kellyuci,\n  author       = {Markelle Kelly and Rachel Longjohn and Kolby Nottingham},\n  title        = {The {UCI} Machine Learning Repository},\n  howpublished = {\\url{https://archive.ics.uci.edu}},\n  note         = {University of California, Irvine. Accessed 10 August 2026}\n}",
+  "status": "corrected",
+  "evidence_url": "https://archive.ics.uci.edu/citation",
+  "notes": "The citation page gives the recommended aggregate citation verbatim and with no year at all: 'Markelle Kelly, Rachel Longjohn, Kolby Nottingham, The UCI Machine Learning Repository, https://archive.ics.uci.edu' (introduced by 'To cite the Repository in general (e.g., when citing a number of datasets together) please use the following citation'). So I dropped the year field rather than assert the 2023 implied by the candidate key, and renamed the key from kelly2023uci to kellyuci. If your bibliography style requires a year, add year = {n.d.} or your access year - do not use 2023, it is not on the page. Author names and title are confirmed exactly as in the candidate."
+ },
+ {
+  "bibtex": "@article{bercu2020efficient,\n  author  = {Bercu, Bernard and Godichon-Baggioni, Antoine and Portier, Bruno},\n  title   = {An Efficient Stochastic {N}ewton Algorithm for Parameter Estimation in Logistic Regressions},\n  journal = {SIAM Journal on Control and Optimization},\n  year    = {2020},\n  volume  = {58},\n  number  = {1},\n  pages   = {348--367},\n  doi     = {10.1137/19M1261717},\n  note    = {arXiv:1904.07908}\n}",
+  "status": "verified",
+  "evidence_url": "https://epubs.siam.org/doi/10.1137/19M1261717",
+  "notes": "Title, venue, 2020, vol. 58, issue 1, pp. 348-367, DOI 10.1137/19M1261717 all confirmed on the SIAM DOI page and in the Crossref record (https://api.crossref.org/works/10.1137/19M1261717); arXiv:1904.07908 confirmed at https://arxiv.org/abs/1904.07908. One naming caveat, not a change: SIAM, Crossref and DBLP all render the second author as 'Antoine Godichon', while arXiv and the author's own canonical name are 'Antoine Godichon-Baggioni'. I kept the hyphenated form (as in the candidate) since that is the name used consistently in the author's other work and in the citing literature."
+ },
+ {
+  "bibtex": "@article{leluc2023asymptotic,\n  author  = {Leluc, R{\\'e}mi and Portier, Fran{\\c{c}}ois},\n  title   = {Asymptotic Analysis of Conditioned Stochastic Gradient Descent},\n  journal = {Transactions on Machine Learning Research},\n  year    = {2023},\n  issn    = {2835-8856},\n  note    = {arXiv:2006.02745}\n}",
+  "status": "verified",
+  "evidence_url": "https://arxiv.org/abs/2006.02745",
+  "notes": "arXiv abstract page carries the journal reference 'Transactions on Machine Learning Research (2023)' and the comment 'Accepted to Transactions on Machine Learning Research 2023'; authors R\u00e9mi Leluc and Fran\u00e7ois Portier confirmed. TMLR assigns no volume, issue or page numbers, so those fields are correctly absent. I did not add an OpenReview url field: openreview.net returned a bot-verification challenge on every attempt, so the forum id could not be confirmed from a primary page. Accents encoded for BibTeX."
+ },
+ {
+  "bibtex": "@misc{kuang2025online,\n  author        = {Kuang, Wei and Anitescu, Mihai and Na, Sen},\n  title         = {Online Covariance Matrix Estimation in Sketched {N}ewton Methods},\n  year          = {2025},\n  eprint        = {2502.07114},\n  archivePrefix = {arXiv},\n  primaryClass  = {stat.ML},\n  note          = {arXiv:2502.07114}\n}",
+  "status": "verified",
+  "evidence_url": "https://arxiv.org/abs/2502.07114",
+  "notes": "Title, authors (Wei Kuang, Mihai Anitescu, Sen Na), primary class stat.ML and v1 submission date 10 February 2025 confirmed on the arXiv abstract page. No journal reference or DOI is listed (latest revision 11 April 2026 is still a preprint), so @misc with the arXiv id in note is the right form and no venue/volume/pages were added."
+ },
+ {
+  "bibtex": "@article{pelletier1998almost,\n  author  = {Pelletier, Mariane},\n  title   = {On the almost sure asymptotic behaviour of stochastic algorithms},\n  journal = {Stochastic Processes and their Applications},\n  year    = {1998},\n  volume  = {78},\n  number  = {2},\n  pages   = {217--244},\n  doi     = {10.1016/S0304-4149(98)00029-5}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1016/s0304-4149(98)00029-5",
+  "notes": "Crossref record confirms sole author Mariane Pelletier, title, Stochastic Processes and their Applications, vol. 78, issue 2, pp. 217-244, published November 1998, DOI 10.1016/S0304-4149(98)00029-5 (Elsevier). Only cosmetic normalisation: the DOI is written with an uppercase S, matching the registered form; DOIs are case-insensitive so no metadata was changed."
+ },
+ {
+  "bibtex": "@article{duchi2011adaptive,\n  author  = {Duchi, John and Hazan, Elad and Singer, Yoram},\n  title   = {Adaptive Subgradient Methods for Online Learning and Stochastic Optimization},\n  journal = {Journal of Machine Learning Research},\n  year    = {2011},\n  volume  = {12},\n  number  = {61},\n  pages   = {2121--2159}\n}",
+  "status": "verified",
+  "evidence_url": "https://www.jmlr.org/papers/v12/duchi11a.html",
+  "notes": "JMLR landing page confirms title, authors John Duchi, Elad Hazan, Yoram Singer, volume 12, issue 61, year 2011, pages 2121-2159. JMLR articles carry no DOI, so none was added."
+ },
+ {
+  "bibtex": "@article{su2023higrad,\n  author  = {Su, Weijie J. and Zhu, Yuancheng},\n  title   = {{H}i{G}rad: Uncertainty Quantification for Online Learning and Stochastic Approximation},\n  journal = {Journal of Machine Learning Research},\n  year    = {2023},\n  volume  = {24},\n  number  = {124},\n  pages   = {1--53},\n  note    = {arXiv:1802.04876}\n}",
+  "status": "verified",
+  "evidence_url": "https://www.jmlr.org/papers/v24/18-521.html",
+  "notes": "JMLR page confirms the final title 'HiGrad: Uncertainty Quantification for Online Learning and Stochastic Approximation', authors Weijie J. Su and Yuancheng Zhu, vol. 24, no. 124, pp. 1-53, 2023, and supplies a matching BibTeX block. arXiv:1802.04876 independently verified at https://arxiv.org/abs/1802.04876 (comment 'Appeared in JMLR'). The candidate's parenthetical about the earlier preprint title is bibliographically irrelevant and was dropped rather than placed in a note. Capitalisation of HiGrad protected with braces."
+ },
+ {
+  "bibtex": "@article{singh2025utility,\n  author  = {Singh, Rahul and Shukla, Abhinek and Vats, Dootika},\n  title   = {On the Utility of Equal Batch Sizes for Inference in Stochastic Gradient Descent},\n  journal = {Journal of Machine Learning Research},\n  year    = {2025},\n  volume  = {26},\n  number  = {258},\n  pages   = {1--41},\n  note    = {arXiv:2303.07706}\n}",
+  "status": "verified",
+  "evidence_url": "http://jmlr.org/papers/v26/24-0094.html",
+  "notes": "JMLR page confirms title, authors Rahul Singh, Abhinek Shukla, Dootika Vats, vol. 26, no. 258, pp. 1-41, 2025. arXiv:2303.07706 verified separately at https://arxiv.org/abs/2303.07706 (same title and authors, stat.CO, v3 March 2025)."
+ },
+ {
+  "bibtex": "@inproceedings{wang2026inference,\n  author    = {Wang, Haoxuan and Du, Xinchen and Na, Sen},\n  title     = {Inference of Online {N}ewton Methods with {N}esterov's Accelerated Sketching},\n  booktitle = {Proceedings of the 43rd International Conference on Machine Learning (ICML)},\n  year      = {2026},\n  note      = {arXiv:2604.23436}\n}",
+  "status": "verified",
+  "evidence_url": "https://arxiv.org/abs/2604.23436",
+  "notes": "Verified through the arXiv API (http://export.arxiv.org/api/query?id_list=2604.23436), which returns id 2604.23436v2, title 'Inference of Online Newton Methods with Nesterov's Accelerated Sketching', authors Haoxuan Wang, Xinchen Du, Sen Na, primary category stat.ML, v1 2026-04-25, v2 2026-05-29, and the comment '52 pages, 2 tables, 3 figures; accepted at ICML 2026'. The '43rd' ordinal is confirmed by https://icml.cc/Conferences/2026 ('Forty-Third International Conference on Machine Learning', 6-11 July 2026, Seoul). PMLR has not yet posted the ICML 2026 volume (checked https://proceedings.mlr.press/ - only ICML 2025 and earlier are listed), so no PMLR volume number, editors or page range were invented; the arXiv id is kept in note. Re-check for the PMLR volume before camera-ready."
+ },
+ {
+  "bibtex": "@book{doukhan1994mixing,\n  author    = {Doukhan, Paul},\n  title     = {Mixing: {P}roperties and {E}xamples},\n  series    = {Lecture Notes in Statistics},\n  volume    = {85},\n  publisher = {Springer-Verlag},\n  address   = {New York},\n  year      = {1994},\n  doi       = {10.1007/978-1-4612-2642-0},\n  isbn      = {978-0-387-94214-8}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1007/978-1-4612-2642-0",
+  "notes": "Crossref book record confirms type=book, author Paul Doukhan, series 'Lecture Notes in Statistics', publisher Springer New York (New York, NY), 1994, DOI 10.1007/978-1-4612-2642-0, print ISBN 9780387942148 / e-ISBN 9781461226420. Crossref stores the short title 'Mixing'; the full title 'Mixing: Properties and Examples' and the series volume number 85 are confirmed by the Springer/retailer catalogue records for ISBN 9780387942148 (link.springer.com/book/10.1007/978-1-4612-2642-0 is behind an IdP redirect, so the catalogue listings were used). Subtitle capitals brace-protected."
+ },
+ {
+  "bibtex": "@book{meyn2009markov,\n  author    = {Meyn, Sean and Tweedie, Richard L.},\n  title     = {Markov Chains and Stochastic Stability},\n  edition   = {2nd},\n  series    = {Cambridge Mathematical Library},\n  publisher = {Cambridge University Press},\n  address   = {Cambridge},\n  year      = {2009},\n  doi       = {10.1017/CBO9780511626630},\n  isbn      = {978-0-521-73182-9},\n  note      = {With a prologue by Peter W. Glynn}\n}",
+  "status": "corrected",
+  "evidence_url": "https://www.cambridge.org/core/product/identifier/9780511626630/type/book",
+  "notes": "Corrected: the candidate folded '(2nd edition, with a prologue by Peter W. Glynn)' into the title. The actual title is just 'Markov Chains and Stochastic Stability'; I moved the edition into an `edition` field and the prologue into `note`, and added the confirmed series 'Cambridge Mathematical Library' and address. Cambridge Core confirms authors Sean Meyn and Richard L. Tweedie, 2nd edition, Cambridge Mathematical Library, CUP, DOI 10.1017/CBO9780511626630, ISBN 9780521731829, and the Glynn prologue; Crossref (https://api.crossref.org/works/10.1017/CBO9780511626630) confirms edition-number 2, published 2009-04-02. Note Crossref lists Glynn as a third author, which is wrong - he wrote only the prologue - hence the note field rather than an author entry."
+ },
+ {
+  "bibtex": "@article{newey1994automatic,\n  author  = {Newey, Whitney K. and West, Kenneth D.},\n  title   = {Automatic Lag Selection in Covariance Matrix Estimation},\n  journal = {The Review of Economic Studies},\n  year    = {1994},\n  volume  = {61},\n  number  = {4},\n  pages   = {631--653},\n  doi     = {10.2307/2297912}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.2307/2297912",
+  "notes": "Crossref record confirms title, authors W. K. Newey and K. D. West, container-title 'The Review of Economic Studies', vol. 61, issue 4, pp. 631-653, published 1994-10-01, DOI 10.2307/2297912, publisher Oxford University Press. Full given names Whitney K. and Kenneth D. retained from the candidate (Crossref abbreviates to initials; both forms are consistent)."
+ },
+ {
+  "bibtex": "@article{glynn1992asymptotic,\n  author  = {Glynn, Peter W. and Whitt, Ward},\n  title   = {The Asymptotic Validity of Sequential Stopping Rules for Stochastic Simulations},\n  journal = {The Annals of Applied Probability},\n  year    = {1992},\n  volume  = {2},\n  number  = {1},\n  pages   = {180--198},\n  doi     = {10.1214/aoap/1177005777}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1214/aoap/1177005777",
+  "notes": "Crossref confirms title, authors Peter W. Glynn and Ward Whitt, 'The Annals of Applied Probability', vol. 2, issue 1, February 1992, DOI 10.1214/aoap/1177005777 (IMS). Crossref and OpenAlex (https://api.openalex.org/works/doi:10.1214/aoap/1177005777) both omit pagination; pp. 180-198 (matching the candidate) is confirmed by the Semantic Scholar journal record for the same DOI. The Project Euclid article page and zbMATH both returned bot-detection/403 responses, so the page range rests on the aggregator record plus the candidate - worth a spot-check against a print copy if you want belt-and-braces, but it is not invented."
+ },
+ {
+  "bibtex": "@book{politis1999subsampling,\n  author    = {Politis, Dimitris N. and Romano, Joseph P. and Wolf, Michael},\n  title     = {Subsampling},\n  series    = {Springer Series in Statistics},\n  publisher = {Springer},\n  address   = {New York},\n  year      = {1999},\n  doi       = {10.1007/978-1-4612-1554-7}\n}",
+  "status": "corrected",
+  "evidence_url": "https://api.crossref.org/works/10.1007/978-1-4612-1554-7",
+  "notes": "Corrected: the candidate put '(Springer Series in Statistics)' inside the title. The title is just 'Subsampling'; the series moved to a `series` field. Crossref book record confirms type=book, authors Dimitris N. Politis, Joseph P. Romano, Michael Wolf, series 'Springer Series in Statistics', publisher Springer New York (New York, NY), 1999, DOI 10.1007/978-1-4612-1554-7. ISBN omitted deliberately: Crossref lists 9781461271901 / 9781461215547, which belong to the softcover reprint and e-book rather than the 1999 hardcover, so I did not guess which to cite."
+ },
+ {
+  "bibtex": "@inproceedings{sun2018markov,\n  author    = {Sun, Tao and Sun, Yuejiao and Yin, Wotao},\n  title     = {On {M}arkov Chain Gradient Descent},\n  booktitle = {Advances in Neural Information Processing Systems 31 (NeurIPS 2018)},\n  pages     = {9918--9927},\n  publisher = {Curran Associates, Inc.},\n  year      = {2018},\n  note      = {arXiv:1809.04216}\n}",
+  "status": "verified",
+  "evidence_url": "https://proceedings.neurips.cc/paper_files/paper/2018/hash/1371bccec2447b5aa6d96d2a540fb401-Abstract.html",
+  "notes": "Official NeurIPS proceedings page confirms title, authors Tao Sun, Yuejiao Sun, Wotao Yin, 'Advances in Neural Information Processing Systems 31 (NeurIPS 2018)', publisher Curran Associates, Inc., volume 31, 2018; its machine-generated BibTeX has an EMPTY pages field. The page range 9918-9927 (as in the candidate) is confirmed by DBLP's record at https://dblp.uni-trier.de/rec/conf/nips/SunSY18.html, which reflects the printed Curran volume pagination. arXiv:1809.04216 verified at https://arxiv.org/abs/1809.04216 (same title/authors, no journal-ref). 'Markov' brace-protected."
+ },
+ {
+  "bibtex": "@inproceedings{karimi2019nonasymptotic,\n  author    = {Karimi, Belhal and Miasojedow, Blazej and Moulines, Eric and Wai, Hoi-To},\n  title     = {Non-asymptotic Analysis of Biased Stochastic Approximation Scheme},\n  booktitle = {Proceedings of the Thirty-Second Conference on Learning Theory (COLT)},\n  series    = {Proceedings of Machine Learning Research},\n  volume    = {99},\n  pages     = {1944--1974},\n  year      = {2019},\n  editor    = {Beygelzimer, Alina and Hsu, Daniel},\n  publisher = {PMLR},\n  note      = {arXiv:1902.00629}\n}",
+  "status": "verified",
+  "evidence_url": "https://proceedings.mlr.press/v99/karimi19a.html",
+  "notes": "PMLR page confirms title, authors Belhal Karimi, Blazej Miasojedow, Eric Moulines, Hoi-To Wai, booktitle 'Proceedings of the Thirty-Second Conference on Learning Theory', PMLR volume 99, pp. 1944-1974, 2019, editors Alina Beygelzimer and Daniel Hsu. The candidate's '32nd Conference on Learning Theory' is the same event; I used PMLR's own spelled-out form and added the confirmed editors. arXiv:1902.00629 verified at https://arxiv.org/abs/1902.00629 (comment 'Accepted to COLT 2019')."
+ },
+ {
+  "bibtex": "@inproceedings{huber1967behavior,\n  author    = {Huber, Peter J.},\n  title     = {The behavior of maximum likelihood estimates under nonstandard conditions},\n  booktitle = {Proceedings of the Fifth Berkeley Symposium on Mathematical Statistics and Probability, Volume 1: Statistics},\n  pages     = {221--233},\n  year      = {1967},\n  publisher = {University of California Press},\n  address   = {Berkeley}\n}",
+  "status": "verified",
+  "evidence_url": "https://digitalassets.lib.berkeley.edu/math/ucb/text/math_s5_v1_article-13.pdf",
+  "notes": "Verified directly from the scanned article in the UC Berkeley digital-assets copy of the volume: the title page reads 'THE BEHAVIOR OF MAXIMUM LIKELIHOOD ESTIMATES UNDER NONSTANDARD CONDITIONS / PETER J. HUBER / SWISS FEDERAL INSTITUTE OF TECHNOLOGY' and is paginated 221; the article's last page (ending with its reference list) is numbered 233. So pp. 221-233 as claimed. Editors (Le Cam and Neyman) omitted because they are not shown on the pages I could read; the Berkeley Symposium volumes carry no DOI in this hosting."
+ },
+ {
+  "bibtex": "@article{white1980hetero,\n  author  = {White, Halbert},\n  title   = {A Heteroskedasticity-Consistent Covariance Matrix Estimator and a Direct Test for Heteroskedasticity},\n  journal = {Econometrica},\n  year    = {1980},\n  volume  = {48},\n  number  = {4},\n  pages   = {817--838},\n  doi     = {10.2307/1912934}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.2307/1912934",
+  "notes": "Crossref confirms title, author H. White, Econometrica, vol. 48, issue 4, first page 817, May 1980, DOI 10.2307/1912934. Crossref stores only the first page; the closing page 838 (matching the candidate) is confirmed by the Semantic Scholar record for the same DOI, which reports 'Econometrica, Volume 48, Pages 817-838'. Given name 'Halbert' retained from the candidate."
+ },
+ {
+  "bibtex": "@inproceedings{li2018dcrnn,\n  author    = {Li, Yaguang and Yu, Rose and Shahabi, Cyrus and Liu, Yan},\n  title     = {Diffusion Convolutional Recurrent Neural Network: {D}ata-{D}riven Traffic Forecasting},\n  booktitle = {International Conference on Learning Representations (ICLR)},\n  year      = {2018},\n  note      = {arXiv:1707.01926}\n}",
+  "status": "verified",
+  "evidence_url": "https://arxiv.org/abs/1707.01926",
+  "notes": "arXiv abstract page confirms the exact title, the four authors Yaguang Li, Rose Yu, Cyrus Shahabi, Yan Liu, and the comment 'Published as a conference paper at ICLR 2018'. ICLR proceedings have no page numbers, volume or DOI, so those fields are correctly absent; the arXiv id is carried in note. I could not corroborate the 'poster' designation from a primary page (openreview.net served a bot-verification challenge), so the presentation format was left out of the entry - it is not a BibTeX field anyway. Subtitle capitals brace-protected."
+ },
+ {
+  "bibtex": "@article{godichonbaggioni2024online,\n  author  = {Godichon-Baggioni, Antoine and Lu, Wei},\n  title   = {Online stochastic {N}ewton methods for estimating the geometric median and applications},\n  journal = {Journal of Multivariate Analysis},\n  year    = {2024},\n  volume  = {202},\n  pages   = {105313},\n  doi     = {10.1016/j.jmva.2024.105313}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1016/j.jmva.2024.105313",
+  "notes": "All candidate fields confirmed: authors Antoine Godichon-Baggioni and Wei Lu, exact title, Journal of Multivariate Analysis, vol. 202, article no. 105313, 2024, DOI 10.1016/j.jmva.2024.105313. Crossref (publisher-deposited) record used because ScienceDirect (https://www.sciencedirect.com/science/article/abs/pii/S0047259X24000204) returns 403/CAPTCHA to automated fetches; independently corroborated on the dblp author page https://dblp.org/pid/177/7337.html ('Journal of Multivariate Analysis 202: 105313 (2024)'). No issue number exists (article-number journal). Preprint is arXiv:2304.00770 but the published version is cited, so no note field. Braced {N}ewton."
+ },
+ {
+  "bibtex": "@inproceedings{moritz2016linearly,\n  author    = {Moritz, Philipp and Nishihara, Robert and Jordan, Michael I.},\n  title     = {A Linearly-Convergent Stochastic {L-BFGS} Algorithm},\n  booktitle = {Proceedings of the 19th International Conference on Artificial Intelligence and Statistics ({AISTATS})},\n  editor    = {Gretton, Arthur and Robert, Christian C.},\n  series    = {Proceedings of Machine Learning Research},\n  volume    = {51},\n  pages     = {249--258},\n  year      = {2016},\n  publisher = {PMLR},\n  address   = {Cadiz, Spain}\n}",
+  "status": "verified",
+  "evidence_url": "https://proceedings.mlr.press/v51/moritz16.html",
+  "notes": "Title, page range 249-258, PMLR volume 51, year 2016 and venue all confirmed on the official PMLR page (its own BibTeX block reads pages={249--258}, volume={51}, editor={Gretton, Arthur and Robert, Christian C.}, address={Cadiz, Spain}). One nuance: PMLR's metadata records the third author as 'Jordan, Michael' without the middle initial, but the published paper's printed byline (proceedings.mlr.press/v51/moritz16.pdf, page 1) reads 'Michael I. Jordan', so the candidate's 'Michael I. Jordan' is correct and retained. Added editor/series/volume/publisher/address from the official record; braced {L-BFGS} and {AISTATS}."
+ },
+ {
+  "bibtex": "@article{polyak1992acceleration,\n  author  = {Polyak, B. T. and Juditsky, A. B.},\n  title   = {Acceleration of Stochastic Approximation by Averaging},\n  journal = {SIAM Journal on Control and Optimization},\n  year    = {1992},\n  volume  = {30},\n  number  = {4},\n  pages   = {838--855},\n  doi     = {10.1137/0330046}\n}",
+  "status": "verified",
+  "evidence_url": "https://epubs.siam.org/doi/10.1137/0330046",
+  "notes": "Publisher (SIAM) DOI page confirms every candidate field exactly: B. T. Polyak and A. B. Juditsky, 'Acceleration of Stochastic Approximation by Averaging', SIAM Journal on Control and Optimization 30(4), 838-855, 1992, DOI 10.1137/0330046. Nothing changed."
+ },
+ {
+  "bibtex": "@book{kushner2003stochastic,\n  author    = {Kushner, Harold J. and Yin, G. George},\n  title     = {Stochastic Approximation and Recursive Algorithms and Applications},\n  edition   = {2nd},\n  series    = {Stochastic Modelling and Applied Probability},\n  volume    = {35},\n  publisher = {Springer},\n  address   = {New York},\n  year      = {2003},\n  isbn      = {978-0-387-00894-3},\n  doi       = {10.1007/b97441}\n}",
+  "status": "verified",
+  "evidence_url": "https://link.springer.com/book/10.1007/b97441",
+  "notes": "SpringerLink book page confirms: Harold J. Kushner and G. George Yin, 2nd edition, 2003, series 'Stochastic Modelling and Applied Probability' volume 35 (so the candidate's vol. 35 is right), hardcover ISBN 978-0-387-00894-3 (= the candidate's 10-digit 0387008942), eBook ISBN 978-0-387-21769-7, DOI 10.1007/b97441, XXII+478 pp. Only normalizations, no field corrections: imprint recorded as 'Springer New York' on the Springer page (Crossref deposits it as 'Springer-Verlag'), so publisher={Springer}, address={New York}; ISBN given in 13-digit form. The candidate is right that the 1st edition (1997) carried the different title 'Stochastic Approximation Algorithms and Applications' (DOI 10.1007/978-1-4899-2696-8) - this entry is the 2nd edition."
+ },
+ {
+  "bibtex": "@article{chen2020statistical,\n  author  = {Chen, Xi and Lee, Jason D. and Tong, Xin T. and Zhang, Yichen},\n  title   = {Statistical inference for model parameters in stochastic gradient descent},\n  journal = {The Annals of Statistics},\n  year    = {2020},\n  volume  = {48},\n  number  = {1},\n  pages   = {251--273},\n  doi     = {10.1214/18-AOS1801}\n}",
+  "status": "verified",
+  "evidence_url": "https://projecteuclid.org/journals/annals-of-statistics/volume-48/issue-1/Statistical-inference-for-model-parameters-in-stochastic-gradient-descent/10.1214/18-AOS1801.full",
+  "notes": "Project Euclid (publisher, IMS) article page confirms all candidate fields: Xi Chen, Jason D. Lee, Xin T. Tong, Yichen Zhang; The Annals of Statistics 48(1), 251-273, February 2020; DOI 10.1214/18-AOS1801. Nothing changed. arXiv:1610.08637 omitted from the entry because the reference is to the published journal version (note fields are reserved for preprints here)."
+ },
+ {
+  "bibtex": "@article{toulis2017asymptotic,\n  author  = {Toulis, Panos and Airoldi, Edoardo M.},\n  title   = {Asymptotic and finite-sample properties of estimators based on stochastic gradients},\n  journal = {The Annals of Statistics},\n  year    = {2017},\n  volume  = {45},\n  number  = {4},\n  pages   = {1694--1727},\n  doi     = {10.1214/16-AOS1506}\n}",
+  "status": "verified",
+  "evidence_url": "https://projecteuclid.org/journals/annals-of-statistics/volume-45/issue-4/Asymptotic-and-finite-sample-properties-of-estimators-based-on-stochastic/10.1214/16-AOS1506.short",
+  "notes": "Loaded the Project Euclid article page in a real browser (WebFetch was blocked by bot detection); its citation line reads verbatim: 'Panos Toulis. Edoardo M. Airoldi. \"Asymptotic and finite-sample properties of estimators based on stochastic gradients.\" Ann. Statist. 45 (4) 1694 - 1727, August 2017. https://doi.org/10.1214/16-AOS1506'. Crossref independently confirms vol. 45, no. 4, 2017. All candidate fields correct; nothing changed. Note: the arXiv record (arXiv:1408.2923) still says 'Annals of Statistics, 2016, forthcoming' - the correct publication year is 2017. arXiv id omitted since the published version is cited."
+ },
+ {
+  "bibtex": "@article{li2026stream,\n  author  = {Li, Xiang and Liang, Jiadong and Chen, Xinyun and Zhang, Zhihua},\n  title   = {Convergence and Inference of Stream Stochastic Gradient Descent, with Applications to Queueing Systems and Inventory Control},\n  journal = {Operations Research},\n  year    = {2026},\n  volume  = {74},\n  number  = {4},\n  pages   = {2034--2052},\n  doi     = {10.1287/opre.2025.1662}\n}",
+  "status": "verified",
+  "evidence_url": "https://pubsonline.informs.org/doi/10.1287/opre.2025.1662",
+  "notes": "INFORMS PubsOnline (publisher) DOI page confirms all candidate fields exactly: Xiang Li, Jiadong Liang, Xinyun Chen, Zhihua Zhang; Operations Research 74(4), 2034-2052, 2026; DOI 10.1287/opre.2025.1662. Nothing changed. Key kept as the candidate's 'li2026stream' (rather than li2026convergence) to avoid breaking any existing \\cite keys."
+ },
+ {
+  "bibtex": "@article{davydov1968convergence,\n  author  = {Davydov, Yu. A.},\n  title   = {Convergence of Distributions Generated by Stationary Stochastic Processes},\n  journal = {Theory of Probability \\& Its Applications},\n  year    = {1968},\n  volume  = {13},\n  number  = {4},\n  pages   = {691--696},\n  doi     = {10.1137/1113086}\n}",
+  "status": "verified",
+  "evidence_url": "https://epubs.siam.org/doi/10.1137/1113086",
+  "notes": "Verified on the SIAM (publisher of the English translation) article page: title 'Convergence of Distributions Generated by Stationary Stochastic Processes', author Yu. A. Davydov, 'Theory of Probability & Its Applications' Vol. 13, Iss. 4 (1968), DOI 10.1137/1113086; the page's own article identifier TPRBAU000013000004000691000001 encodes volume 013, issue 004, start page 691. The Russian original and the 691-696 page range are confirmed on Math-Net.Ru (https://www.mathnet.ru/eng/tvp930): Teor. Veroyatnost. i Primenen. 13(4), 730-737 (Russian) = Theory Probab. Appl. 13(4), 691-696 (English). No candidate field was wrong; I added the translation DOI 10.1137/1113086 and used SIAM's exact journal name (with '&', escaped as \\&). Math-Net renders the English title with a leading 'On', but SIAM's published translation - the authoritative form - has no 'On', matching the candidate."
+ },
+ {
+  "bibtex": "@article{merlevede2006recent,\n  author  = {Merlev\\`ede, Florence and Peligrad, Magda and Utev, Sergey},\n  title   = {Recent advances in invariance principles for stationary sequences},\n  journal = {Probability Surveys},\n  year    = {2006},\n  volume  = {3},\n  pages   = {1--36},\n  doi     = {10.1214/154957806100000202}\n}",
+  "status": "corrected",
+  "evidence_url": "https://projecteuclid.org/journals/probability-surveys/volume-3/issue-none/Recent-advances-in-invariance-principles-for-stationary-sequences/10.1214/154957806100000202.full",
+  "notes": "CORRECTED: first author's surname is 'Merlev\u00e8de' (grave accent), not 'Merlevede' as in the candidate - encoded as Merlev\\`ede. Everything else confirmed on the Project Euclid article page (loaded in a browser), whose citation line reads 'Florence Merlev\u00e8de. Magda Peligrad. Sergey Utev. \"Recent advances in invariance principles for stationary sequences.\" Probab. Surveys 3 1 - 36, 2006. https://doi.org/10.1214/154957806100000202'; the arXiv record math/0601315 gives the same journal-ref (Probability Surveys 2006, Vol. 3, No. 0, 1-36). No issue number (the volume has a single 'none' issue), so `number` is omitted; arXiv id omitted since the published version is cited."
+ },
+ {
+  "bibtex": "@book{rio2017asymptotic,\n  author    = {Rio, Emmanuel},\n  title     = {Asymptotic Theory of Weakly Dependent Random Processes},\n  series    = {Probability Theory and Stochastic Modelling},\n  volume    = {80},\n  publisher = {Springer},\n  address   = {Berlin},\n  year      = {2017},\n  isbn      = {978-3-662-54322-1},\n  doi       = {10.1007/978-3-662-54323-8}\n}",
+  "status": "verified",
+  "evidence_url": "https://link.springer.com/book/10.1007/978-3-662-54323-8",
+  "notes": "SpringerLink book page confirms every candidate field: Emmanuel Rio, 'Asymptotic Theory of Weakly Dependent Random Processes', series 'Probability Theory and Stochastic Modelling (PTSM)' volume 80, Springer Berlin/Heidelberg, 2017, 1st edition, XVIII+204 pp., hardcover ISBN 978-3-662-54322-1, eBook ISBN 978-3-662-54323-8, DOI 10.1007/978-3-662-54323-8. Nothing changed (address given simply as Berlin)."
+ },
+ {
+  "bibtex": "@article{kiefer2005new,\n  author  = {Kiefer, Nicholas M. and Vogelsang, Timothy J.},\n  title   = {A New Asymptotic Theory for Heteroskedasticity-Autocorrelation Robust Tests},\n  journal = {Econometric Theory},\n  year    = {2005},\n  volume  = {21},\n  number  = {6},\n  pages   = {1130--1164},\n  doi     = {10.1017/S0266466605050565}\n}",
+  "status": "verified",
+  "evidence_url": "https://ideas.repec.org/a/cup/etheor/v21y2005i06p1130-1164_05.html",
+  "notes": "Authors, title, journal, volume 21, issue 6, year 2005 and DOI 10.1017/S0266466605050565 confirmed from Crossref's publisher-deposited record (https://api.crossref.org/works/10.1017/S0266466605050565), which however carries no page range; the page range 1130-1164 was confirmed on the RePEc/IDEAS journal-article record for Econometric Theory 21(6). Cambridge Core's own article page returned HTTP 500 to automated fetches. Nothing in the candidate was wrong. Title case normalized to the journal's title-case form (Crossref stores it in all caps); `number` recorded as 6 rather than Crossref's zero-padded '06'."
+ },
+ {
+  "bibtex": "@article{jones2006fixed,\n  author  = {Jones, Galin L. and Haran, Murali and Caffo, Brian S. and Neath, Ronald},\n  title   = {Fixed-Width Output Analysis for {M}arkov {C}hain {M}onte {C}arlo},\n  journal = {Journal of the American Statistical Association},\n  year    = {2006},\n  volume  = {101},\n  number  = {476},\n  pages   = {1537--1547},\n  doi     = {10.1198/016214506000000492}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1198/016214506000000492/transform/application/x-bibtex",
+  "notes": "Publisher-deposited record confirms all candidate fields: authors Galin L. Jones, Murali Haran, Brian S. Caffo, Ronald Neath; JASA vol. 101, no. 476, pages 1537-1547, 2006; DOI 10.1198/016214506000000492. Nothing changed; I added protective braces around {M}arkov {C}hain {M}onte {C}arlo and restored the periods in the initials 'Galin L.' / 'Brian S.' that Crossref's export drops."
+ },
+ {
+  "bibtex": "@book{borkar2008stochastic,\n  author    = {Borkar, Vivek S.},\n  title     = {Stochastic Approximation: A Dynamical Systems Viewpoint},\n  series    = {Texts and Readings in Mathematics},\n  volume    = {48},\n  publisher = {Hindustan Book Agency},\n  address   = {Gurgaon, India},\n  year      = {2008},\n  doi       = {10.1007/978-93-86279-38-5}\n}",
+  "status": "corrected",
+  "evidence_url": "https://link.springer.com/book/10.1007/978-93-86279-38-5",
+  "notes": "CORRECTED/completed: added the series volume number 48 ('Texts and Readings in Mathematics', Vol. 48), which the candidate omitted, and set publisher/address to 'Hindustan Book Agency, Gurgaon' as the publisher page states (the candidate's 'Hindustan Book Agency / Cambridge University Press' conflates publisher with CUP's distribution of the TRIM series). Confirmed on the publisher-hosted page: Vivek S. Borkar, full title with subtitle 'Stochastic Approximation: A Dynamical Systems Viewpoint', 1st edition, 2008, 174 pp., eBook ISBN 978-93-86279-38-5, DOI 10.1007/978-93-86279-38-5. Note Crossref stores the title without its subtitle ('Stochastic Approximation'); the subtitle is on the publisher page, so it is kept. I omitted the candidate's print ISBN 9788185931852 because I could not confirm it on the page I loaded. The candidate is right that a 2nd edition exists (Springer Nature Singapore, 2023, DOI 10.1007/978-981-99-8277-6); this entry is the 2008 1st edition."
+ },
+ {
+  "bibtex": "@inproceedings{nagaraj2020least,\n  author    = {Nagaraj, Dheeraj and Wu, Xian and Bresler, Guy and Jain, Prateek and Netrapalli, Praneeth},\n  title     = {Least Squares Regression with {M}arkovian Data: Fundamental Limits and Algorithms},\n  booktitle = {Advances in Neural Information Processing Systems 33 ({N}eur{IPS} 2020)},\n  editor    = {Larochelle, H. and Ranzato, M. and Hadsell, R. and Balcan, M. F. and Lin, H.},\n  volume    = {33},\n  pages     = {16666--16676},\n  publisher = {Curran Associates, Inc.},\n  year      = {2020}\n}",
+  "status": "corrected",
+  "evidence_url": "https://proceedings.neurips.cc/paper/2020/hash/c22abfa379f38b5b0411bc11fa9bf92f-Abstract.html",
+  "notes": "CORRECTED/completed: added pages 16666-16676, volume 33, publisher 'Curran Associates, Inc.' and the editor list, taken verbatim from the official NeurIPS proceedings BibTeX (https://proceedings.neurips.cc/paper/2020/file/c22abfa379f38b5b0411bc11fa9bf92f-Bibtex.bib). Title and the five-author list (Dheeraj Nagaraj, Xian Wu, Guy Bresler, Prateek Jain, Praneeth Netrapalli) confirmed on the proceedings abstract page and match the candidate. arXiv:2006.08916 omitted since the archival NeurIPS version is cited; braced {M}arkovian and {N}eur{IPS}."
+ },
+ {
+  "bibtex": "@article{hansen1982gmm,\n  author  = {Hansen, Lars Peter},\n  title   = {Large Sample Properties of Generalized Method of Moments Estimators},\n  journal = {Econometrica},\n  year    = {1982},\n  volume  = {50},\n  number  = {4},\n  pages   = {1029--1054},\n  doi     = {10.2307/1912775}\n}",
+  "status": "verified",
+  "evidence_url": "https://ideas.repec.org/a/ecm/emetrp/v50y1982i4p1029-54.html",
+  "notes": "Author, title, Econometrica vol. 50 no. 4, 1982 and DOI 10.2307/1912775 confirmed from the publisher-deposited Crossref record (https://api.crossref.org/works/10.2307/1912775), which lists only the first page (1029); the full range 1029-1054 was confirmed on the RePEc/IDEAS Econometrica article record. JSTOR's own page is not machine-fetchable. Nothing in the candidate was wrong. Key kept as the candidate's 'hansen1982gmm' (the strict rule would give hansen1982large) to avoid breaking existing \\cite keys."
+ },
+ {
+  "bibtex": "@article{liang1986longitudinal,\n  author  = {Liang, Kung-Yee and Zeger, Scott L.},\n  title   = {Longitudinal data analysis using generalized linear models},\n  journal = {Biometrika},\n  year    = {1986},\n  volume  = {73},\n  number  = {1},\n  pages   = {13--22},\n  doi     = {10.1093/biomet/73.1.13}\n}",
+  "status": "verified",
+  "evidence_url": "https://academic.oup.com/biomet/article-abstract/73/1/13/246001",
+  "notes": "Oxford University Press (publisher) article page confirms all candidate fields: Kung-Yee Liang, Scott L. Zeger; 'Longitudinal data analysis using generalized linear models'; Biometrika 73(1), 13-22, 1986; DOI 10.1093/biomet/73.1.13. Same values in the Crossref deposit. Nothing changed except restoring normal capitalization of the author names (Crossref stores them in all caps: 'LIANG, KUNG-YEE')."
+ },
+ {
+  "bibtex": "@article{liang2015beijing,\n  author  = {Liang, Xuan and Zou, Tao and Guo, Bin and Li, Shuo and Zhang, Haozhe and Zhang, Shuyi and Huang, Hui and Chen, Song Xi},\n  title   = {Assessing {B}eijing's {PM2.5} pollution: severity, weather impact, {APEC} and winter heating},\n  journal = {Proceedings of the Royal Society A: Mathematical, Physical and Engineering Sciences},\n  year    = {2015},\n  volume  = {471},\n  number  = {2182},\n  pages   = {20150257},\n  doi     = {10.1098/rspa.2015.0257}\n}",
+  "status": "verified",
+  "evidence_url": "https://api.crossref.org/works/10.1098/rspa.2015.0257",
+  "notes": "All eight authors in order (Xuan Liang, Tao Zou, Bin Guo, Shuo Li, Haozhe Zhang, Shuyi Zhang, Hui Huang, Song Xi Chen), title, journal, vol. 471, no. 2182, article 20150257, 2015, DOI 10.1098/rspa.2015.0257 confirmed from the Royal Society's Crossref deposit; royalsocietypublishing.org itself serves a bot-verification wall to automated fetches (I did not attempt to bypass it). Corroborated on the UCI page for the dataset (https://archive.ics.uci.edu/dataset/381/beijing+pm2+5+data), which lists this paper as the introductory paper. Nothing changed; braced {B}eijing's, {PM2.5}, {APEC} (PM2.5 left as plain text rather than PM$_{2.5}$ so the entry compiles in any bibliography style). Heads-up for the parent: UCI additionally asks that the dataset itself be cited as 'Chen, S. (2015). Beijing PM2.5 [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5JS49' - that is a separate @misc entry not present in this candidate list."
+ }
+]

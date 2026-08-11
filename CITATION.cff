@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+title: "Streaming inversion-free quasi-Newton estimation and inference on dependent data"
+message: "If you use this software, please cite the accompanying paper."
+type: software
+abstract: >-
+  Reference implementation of BGSN (blocked-gapped streaming Newton): a single-pass,
+  O(dN)-time, O(d^2)-memory quasi-Newton estimator whose confidence intervals remain
+  valid on temporally dependent data streams, together with the full experimental
+  pipeline of the accompanying paper.
+license: MIT
+keywords:
+  - stochastic approximation
+  - streaming inference
+  - quasi-Newton
+  - long-run variance
+  - HAC covariance
+  - mixing processes

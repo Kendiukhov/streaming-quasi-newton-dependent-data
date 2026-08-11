@@ -1,0 +1,79 @@
+We list the boundaries of the result plainly, because several of them are load-bearing.
+
+\paragraph{Memory is $O(d^2)$, not $O(d)$.}
+The $O(dN)$ claim is about \emph{time}. The method stores a $d\times d$ inverse curvature
+estimate and two $d\times d$ covariance accumulators, so memory is $O(d^2)$; this is
+inherited from the independent-data method we extend and is not something we improve. For
+$d$ in the thousands this is the binding constraint, and a sketched or diagonal-plus-low-rank
+curvature representation---as in \citet{kuang2026online,wang2026inference,godichonbaggioni2026complexity}---%
+would be the natural remedy. Whether the block-gradient long-run covariance estimator
+survives such a compression is open.
+
+\paragraph{Geometric mixing is a real restriction, and the block length has to respect it.}
+\Cref{thm:lrv} buys $b\asymp\log N$ from the geometric decay in
+\Cref{lem:davydov}. Under algebraic mixing the flat-top bias is polynomial rather than
+exponential and the admissible $b$ grows accordingly; long-memory streams are outside the
+theory altogether. This is not merely formal: our air-quality stream has a residual lag-one
+autocorrelation of $0.92$ and a variance-inflation factor around $20$, and there the
+block length needed for calibrated intervals is an order of magnitude larger than for the
+traffic stream (\Cref{tab:real}). The free diagnostic
+$r_j=|u_j^{\!\top}(\Sft-\Sbm)u_j|/(u_j^{\!\top}\Sft u_j)$ detects the problem---it estimates
+the relative block-length bias of plain batch means---but it does not remove it. It could be
+turned into an automatic rule by maintaining covariance accumulators at several block scales
+$b,2b,4b,\dots$ at once (one extra $O(d^2)$ update per block per scale, all from the same
+block gradients) and reporting from the smallest scale at which $r_j$ falls below a
+tolerance; we did not implement this, and we do not claim an automatic rule for $b$.
+
+\paragraph{$\Sft$ need not be positive semidefinite.}
+This is intrinsic to flat-top and lugsail estimators \citep[Remark~5]{singh2025utility}.
+Marginal intervals need only positive scalars $u_j^{\!\top}\Sft u_j$, and the documented
+fallback to $\Sbm$ never triggered in any of our runs, but a user who needs the full matrix
+(for a joint test, say) must project it.
+
+\paragraph{The curvature form is required.}
+Everything rests on
+$\nabla^2F(\theta)=\E[\alpha\,\Psi\Psi^{\!\top}]$, which holds for generalised linear
+models, ridge and softmax regression, the geometric median and Gauss--Newton problems, but
+not for a general objective. Without it there is no rank-one recursion and no
+inversion-free update.
+
+\paragraph{Warm-up is a real requirement, not an implementation detail.}
+The $1/t$ schedule with a poor preconditioner leaves a slowly decaying component that
+dominates the sampling error at realistic $N$: with a negligible warm-up, coverage of
+nominal $95\%$ intervals fell to $\CovNoWarmup$ in our autoregressive design even though the
+variance estimate stayed accurate (\Cref{tab:ablation}(c)). We give a scaling rule
+($c_{\mathrm w}d$ curvature updates, with $c_{\mathrm w}=50$ throughout) and show
+insensitivity above it, but this is a tuning constant, and the asymptotic theory is silent
+about it. It also has a cost consequence we state rather than bury: the warm-up performs
+$c_{\mathrm w}d$ rank-one updates at $O(d^2)$ each, so the total time is
+$O(dN+c_{\mathrm w}d^3)$ and the advertised $O(dN)$ only bites once $N\gtrsim c_{\mathrm w}d^2$
+(with $c_{\mathrm w}=50$ and $d=80$ that means $N\gtrsim3\times10^5$; at the $N=2\times10^5$ of
+\Cref{tab:cost} the warm-up is comparable to the streaming pass).
+
+\paragraph{Rates and what we do not prove.}
+We give an almost sure rate and a central limit theorem, not a Berry--Esseen bound; the
+first-order Markovian literature has the latter for linear stochastic approximation
+\citep{samsonov2025statistical}, and we do not match it. We attain the semiparametric
+efficiency bound of \citet{li2023markovian} rather than establishing it. Our
+$\widetilde O(N^{-1/2})$ rate for $\Sft$ is not comparable to the minimax rate for
+Hessian-free covariance estimation from an iterate path \citep{ni2026online}, because we use
+more information (block gradients and a maintained curvature estimate); we make no claim
+about optimality within our own information set.
+
+\paragraph{Scope of the empirical evidence.}
+All designs are convex $M$-estimation with $d\le160$ and $N\le4\times10^5$; there is no
+deep-learning experiment and the theory would not support one. The dependence in the
+simulated designs is stationary and geometrically decaying by construction. On the real
+streams we do not know the truth, which is why we run two protocols; the semi-synthetic
+protocol has an exact target but a synthetic (autoregressive) error process, and the fully
+real protocol has a real error process but a target that is itself estimated---we correct
+the nominal level for that exactly, but the correction assumes the segments are
+approximately exchangeable, which non-stationarity would violate. Neither protocol alone
+would be convincing; together they bracket the honest answer.
+
+\paragraph{One thing we deliberately do not claim.}
+Gapping improves the curvature estimate at matched cost (\Cref{prop:gap}, \Cref{fig:gap}),
+but the curvature estimate enters the limit distribution only through a rate, so the
+end-to-end effect on the point estimate and on coverage is second order and we could not
+measure it reliably. The case for gapping is that it is free, deterministic, and provably
+better than the randomised alternative---not that it changes the headline numbers.

@@ -1,0 +1,159 @@
+[blocking] paper/main.tex, abstract (l. 92–94) and Contribution 2 (l. 183–189); the reported interval is defined at main.
+     CLAIM: The headline wedge — "the resulting estimator of $S$ converges at $\widetilde{O}(N^{-1/2})$, against $N^{-1/8}$ for iterate-based batch means under dependence" — compares an estimator of $S$ with estimators of the whole sandwich $\Sigma=H^{-1}SH^{-1}$, and the paper never states a rate for the object it actually reports.
+     FIX:   Either (a) prove a rate for the sandwich $\opnorm{\Hb^{-1}\Sft\Hb^{-1}-\Sigma}=O_p(N^{-\nu_H}+\sqrt{\log N/N})$ and quote *that* number when comparing with iterate-based estimators (sharpening thm:curv, e.g. letting $\varrho\uparrow1/2$ or switching off the ridge asymptotically, so the composite is $\widetilde O(N^{-1/2})$), or 
+
+[blocking] paper/sec_appendix.tex, Lemma lem:series (l.33-46) and its three applications: proof of thm:as (l.128-133), te
+     CLAIM: lem:series is stated for "a bounded **deterministic** sequence" (a_t) of weights and centred stationary summands, but in every place where it is invoked to replace the martingale argument the weights are random, data-dependent and correlated with the summand, so the lemma does not apply and the claimed remainder orders are unproved.
+     FIX:   Either (i) prove a conditionally-weighted version of lem:series for F_{t-1}-measurable weights under mixing (e.g. via the Poisson-equation/martingale-plus-remainder route the paper explicitly declines at main.tex l.397-400), or (ii) bound term (A) by exploiting the structure the crude bound throws away: P_{t-1}-H^{-1} ~ -H^{-1}(
+
+[blocking] paper/sec_appendix.tex, proof of lem:series, l.51-56 (the cited Bernstein inequality)
+     CLAIM: The Merlevede–Peligrad–Rio inequality is cited in a form that is false under the lemma's hypotheses: their Theorem 1 requires uniformly **bounded** summands (||X_i||_inf <= M) and its denominator carries M*lambda*(log n)^2, whereas lem:series assumes only E||zeta_1||^{2+nu} < infinity and the paper writes "lambda a_max log T_0".
+     FIX:   Replace the MPR citation by a maximal inequality / a.s. invariance principle for strongly mixing sequences under finite (2+nu)-moments — e.g. Rio's maximal inequality (Rio 2017, Thm 6.3 / 6.4) or the Oodaira–Yoshihara LIL for alpha-mixing sequences — and re-derive eq:maximal from it; if MPR Thm 1 is kept, add a truncation argume
+
+[blocking] /Volumes/Crucial X6/MacBook/Code/ml_papers/streaming_qn_dependent/paper/main.tex:643-644 (Fig. 2 caption) vs :
+     CLAIM: The paper simultaneously claims the block length "need not grow with $N$" and assumes $b=b_N\to\infty$; and the two results the interval rests on are stated for incompatible $b$ regimes.
+     FIX:   (1) Restate Theorems 2 and 3 for $b=b_N$ with the constants uniform over $b_N=o(\sqrt N)$ (the proofs appear to be uniform in $b$ — say so explicitly, e.g. "all bounds below hold uniformly over $b\le\sqrt N$"). (2) Delete "need not grow with $N$" from the Fig. 2 caption and from any similar phrasing; write instead "this is why $
+
+[blocking] src/bgsn/realdata.py:131-159 (`conditional_oracle`) + src/bgsn/streams.py:50-54 (`sandwich_true`) + experiment
+     CLAIM: Four of the ten metro segments used by Protocols A and B have an exactly rank-deficient design, so the "exact conditional oracle" is the inverse of a singular matrix.
+     FIX:   Detect and drop (or ridge/pseudo-invert with a reported rank) degenerate columns per segment, or choose segment boundaries/features so every segment has full rank; report per-segment cond(H) in the appendix and re-run Protocol A and B for metro. Do not average coverage/rmse over segments whose oracle is singular.
+
+[blocking] src/bgsn/_core.py:244-250 (plug-in accumulation) sits *before* the `if warm: ... continue` at :259-273; used b
+     CLAIM: The i.i.d. plug-in $\Gz$ — the variance of the dependence-blind competitor that the whole paper is benchmarked against — accumulates scores over the curvature warm-up blocks, where $\theta$ is still $\theta_0=0$, so on real data it is inflated by three orders of magnitude.
+     FIX:   Move the `want_plugin` accumulation after the `if warm: ... continue` (or, better, evaluate $\Gz$ at the final iterate, as is already done for `empirical_hessian`/`offline_hac`), state in \Cref{app:hyper} at which $\theta$ $\Gz$ is evaluated, and re-run every table that contains a `-plugin` or `SN-iid` row.
+
+[major   ] paper/sec_related.tex l. 18–20 ("none of it estimates an asymptotic variance"); refs.bib (116 entries, no Godi
+     CLAIM: The sentence "All of this work assumes independent observations, and none of it estimates an asymptotic variance: these papers prove central limit theorems but stop there" is false, and the counterexample is an uncited paper by the author of the base method.
+     FIX:   Cite Godichon-Baggioni (2019) in the intro's "What we do not claim" list and in sec_related, and replace the absolute sentence with the accurate one: recursive/online estimation of the *instantaneous* sandwich for averaged first-order and Newton-type streaming methods exists under i.i.d. data (Godichon-Baggioni 2019; Chen et al.
+
+[major   ] paper/main.tex Contribution 3, l. 194–202 ("The mechanism is not ours; the bias order under mixing is"); proof
+     CLAIM: The one thing Contribution 3 claims as new — the $O(\rho^b)$ bias order of the flat-top/lugsail correction under geometric mixing — is the standard tail-sum property of flat-top windows, and the paper never confronts the closest prior statement of it.
+     FIX:   Demote Contribution 3: credit the tail-sum bias order to the flat-top literature explicitly ("for a stationary sequence with geometrically decaying autocovariances this is the classical flat-top tail bound; see Politis & Romano 1995, Politis 2011"), and claim instead the two things that are genuinely yours: that block *gradients
+
+[major   ] paper/main.tex Contribution 2, l. 185–189 ("forces $b\asymp N^{3/4}$ and caps the rate at $N^{-1/8}$"); cf. pa
+     CLAIM: "Caps the rate at $N^{-1/8}$" for iterate-path batch means is contradicted by the paper's own related-work section and by its own displayed formula in rem:whyfast.
+     FIX:   Replace "caps the rate at $N^{-1/8}$" with "the best published rates under dependent sampling are $N^{-1/8}$ (Roy & Balasubramanian; Samsonov et al.), and the minimax ceiling for the whole Hessian-free trajectory class is $\Theta(N^{-(1-a)/2})$, i.e. no better than $N^{-1/4}$". State the comparison against that ceiling, not agai
+
+[major   ] paper/main.tex rem:whyfast, l. 567–569; contradicted by paper/sec_experiments.tex l. 19–27 ("Methods compared"
+     CLAIM: The exclusivity claim "it is available only to an algorithm that forms block gradients and keeps a curvature estimate" is contradicted by the paper's own experiments, and it mislocates the novelty wedge.
+     FIX:   Reword to "available to any algorithm that observes the individual gradients and can supply a curvature estimate; the quasi-Newton recursion is what makes the curvature estimate free", and add one sentence in Contribution 2 and sec_related placing the construction in the plug-in family (Chen et al. 2020; Godichon-Baggioni 2019) 
+
+[major   ] paper/main.tex Contribution 2 l. 189–191 and rem:whyfast l. 569–571; paper/sec_limits.tex l. 49–53
+     CLAIM: The stated reason the Ni & Huo minimax bound does not apply — "a quasi-Newton method is not in that class, because it already maintains curvature" — is inaccurate: their own minimax-optimal estimator builds a Hessian estimate.
+     FIX:   State the escape in information terms only: "their lower bound is over estimators measurable with respect to the iterate path; our estimator uses the per-observation gradients and the curvature oracle $\alpha\Phi\Phi^{\top}$, so it is outside that class — note their own optimal estimator does form a Hessian estimate, by regressi
+
+[major   ] paper/main.tex thm:curv (l.373-386) vs paper/sec_appendix.tex proof of thm:as (l.118-119) and proof of thm:rat
+     CLAIM: The theorem dependency graph is circular as written and the induction is never stated: thm:curv *hypothesises* the rate ||theta_t-theta*|| = O(t^{-1/2}log^c t); thm:as's proof uses thm:curv ("gamma_t^2||P_{t-1}||^2 = O(t^{2varrho-2}) by thm:curv"); thm:rate then derives that very rate by "Bootstrapping from ||delta_t||=o(1) (thm:as) through eq:decomp", whose terms (A),(B) are bounded using thm:cur
+     FIX:   Split thm:curv into (a) an unconditional lemma giving lambda_min(Hbar_t) >= c n_t^{-varrho} and ||Hbar_t^{-1}|| = O(t^{varrho}) (with the constant allowed to be random, and honest about which part is 'for all t' and which is eventual), and (b) a conditional rate statement; then state the bootstrap ladder explicitly as a numbered
+
+[major   ] paper/sec_appendix.tex, proof of prop:gap, l.288-297 (and prop:gap statement, main.tex l.568-579)
+     CLAIM: The Bernoulli-thinning variance is computed as if Y were centred: the diagonal term is written "sum_i p Gamma_0^H", but Var(Z_i Y_i) = p Gamma_0^H + p(1-p) vec(H) vec(H)^T because E[Y_i] = H != 0. The omitted term is Theta(1) and therefore swamps the claimed O(1/m) excess, so the stated formula is false for the estimator defined in the proof.
+     FIX:   Define Hhat^Bern with the realised normaliser, Hhat^Bern = (sum_i Z_i)^{-1} sum_i Z_i Y_i, as the algorithm does, and redo the variance by the delta method for a ratio (the mean-induced term then enters only at second order, restoring Gamma_0^H + m^{-1}(S^H-Gamma_0^H) + o(1)); state the normalisation in the proposition. If the (
+
+[major   ] paper/main.tex thm:lrv (l.517-538, esp. l.531-535) and paper/sec_appendix.tex drift paragraph, l.244-267; cf. 
+     CLAIM: thm:lrv's drift term tau_{b,N} rests on E||delta_{t-1}||^2 = O(log t/(bt)), a *moment* bound that is nowhere established (thm:rate is a purely almost-sure statement with an unspecified random constant), and it is invoked in a regime (b = b_N -> infinity) in which thm:rate/thm:curv are not proved at all.
+     FIX:   Add an L^2 rate theorem (E||delta_t||^2 = O(log N_t / N_t)) alongside the a.s. rate — this is what the drift analysis needs — and restate thm:as/thm:rate/thm:curv/thm:clt uniformly in b over the range b <= C log N (triangular-array form, with every remainder bound carrying its b-dependence explicitly, e.g. (A),(B) = O(b^{-1/2}T^
+
+[major   ] paper/main.tex thm:lrv (iii)-(iv), l.524-529; proof in paper/sec_appendix.tex l.239-242 and l.269-272; cf. ter
+     CLAIM: The operator-norm rate in (iv) does not follow from the entrywise variance in (iii) — the conversion costs a factor d, and the theorem's own side condition betrays this — and the variance bound invokes fourth moments that no assumption provides.
+     FIX:   State (iv) as ||Shat^FT-S||_op = O_p(d sqrt(b/N) + rho^b + tau_{b,N}) (or prove a matrix-Bernstein version giving sqrt(db/N) under an explicit sub-exponential condition) and keep the rate claim to fixed d, or add the d factor to the abstract's Otilde(N^{-1/2}). Add an explicit fourth-moment assumption (E||g(theta)||^4 <= C(1+F(t
+
+[major   ] paper/sec_appendix.tex, proof of thm:as, l.128-137 (final three lines) and l.130 ("on the event {sup_t ||theta
+     CLAIM: thm:as claims global almost-sure convergence theta_t -> theta*, but the assumptions contain no convexity or unique-stationary-point condition, the Robbins–Siegmund step is over-read, the justification given for the divergence condition is the wrong inequality, and the boundedness event is assumed rather than proved.
+     FIX:   Add an assumption making theta* the unique stationary point (F convex, or inf_{||theta-theta*||>=eps} <grad F(theta), theta-theta*> > 0), and cite it where 'local strong convexity' is invoked; the experiments are all convex M-estimation (sec_limits l.56) so this costs nothing. Replace the 'ridge bound' justification with an expl
+
+[major   ] /Volumes/Crucial X6/MacBook/Code/ml_papers/streaming_qn_dependent/paper/main.tex:388-397 (Thm 1) with /…/paper
+     CLAIM: The theorem chain is circular as written: Theorem 1 assumes the conclusion of Theorem 3, Theorem 2's proof invokes Theorem 1, and Theorem 3's proof invokes both — and the paper never states the proof order.
+     FIX:   Split Theorem 1 into (1a) an unconditional statement: $\lambda_{\min}(\Hb_t)\ge c_1n_t^{-\varrho}$ and $\opnorm{\Hb_t^{-1}}=O(t^{\varrho})$ for all $t$ a.s., proved from the ridge alone; and (1b) the conditional rate $\opnorm{\Hb_t-H}=O(t^{-\nu_H})$ given a preliminary rate. Then add one sentence at the head of Appendix A: "The 
+
+[major   ] /Volumes/Crucial X6/MacBook/Code/ml_papers/streaming_qn_dependent/paper/main.tex:359-361 (Assumption 4), abstr
+     CLAIM: The paper's one new assumption rests on an undefined quantity, and roughly a dozen terms are used well before (or never) being defined — the abstract alone uses five.
+     FIX:   Add a short "Terminology" paragraph at the end of §2 defining, in one line each: $\alpha_{\mathrm{mix}}(k)=\sup\{|\Prob(A\cap B)-\Prob(A)\Prob(B)|\}$ over $A\in\sigma(\xi_i,i\le0)$, $B\in\sigma(\xi_i,i\ge k)$; score; sandwich (instantaneous vs long-run); batch means; $M$-estimator. In the abstract, write "Hessian $H=\nabla^2F$ a
+
+[major   ] /Volumes/Crucial X6/MacBook/Code/ml_papers/streaming_qn_dependent/paper/main.tex:285, :360, :375, :392; /…/pap
+     CLAIM: Six symbols carry two or three unrelated meanings, including three that appear in theorem statements: $\varrho/\varrho_0/\rho$, $\eps$, $\Phi$, $M$, $s$, $W$.
+     FIX:   Rename the ridge exponent (e.g. $q\in(0,1/2)$) and drop the vacuous $\min\{\cdot,1/2\}$ and the dead $\nu_H>1/2$ branch; use $\zeta$/$\varsigma$ for design innovations and reserve $\eps_t$ for the block score; rename the AR coefficient matrix ($A_\phi$) and the orthogonal matrix ($Q$); use $g_i$ for the score in sec_appendix_exp
+
+[major   ] /Volumes/Crucial X6/MacBook/Code/ml_papers/streaming_qn_dependent/paper/main.tex:645-654 (Fig. 3), :639 vs /…/
+     CLAIM: Figure 3 — the only measurement of the headline rate — is never referenced and its caption states no number; and several captions are not self-contained (no axes, a term that exists nowhere else, panel letters the reader cannot resolve).
+     FIX:   Cite Figure 3 in §5.2 and put the fitted exponent in its caption as a macro; make Fig. 2's caption and §5.2 use the same wording for the drift term ($\tau_{b,N}=(b+d)\log^2N/N$); in each caption name the axes, units and scale ("wall-clock seconds vs $d$, log-log"); write "the diagnostic $r_j$ of §5.6" instead of "block-adequacy 
+
+[major   ] /Volumes/Crucial X6/MacBook/Code/ml_papers/streaming_qn_dependent/paper/sec_experiments.tex:123-126 (and /…/pa
+     CLAIM: The corrected nominal level for Protocol B is stated in terms of an undefined symbol $R$, which also collides with the Markov design's $R$, and its derivation appears nowhere.
+     FIX:   Define $R$ at first use (e.g. "$R=N_{\text{full}}/N_{\text{segment}}$, the number of segments the full-stream target is built from") and give the one-line derivation, $\Var(\hat\theta_{\text{seg}}-\hat\theta_{\text{full}})=(1-1/R)\Var(\hat\theta_{\text{seg}})$ under the stated exchangeability, in a footnote or Appendix B; rename
+
+[major   ] paper/sec_experiments.tex:51-56 vs results/exp3_lrv.json rows b=5
+     CLAIM: The paper's own saved results contradict both bias claims at the small-$b$ end: "Plain batch means track the closed-form prediction $1-\Delta/(bS)$ over the whole range" and "the two-scale estimator is unbiased at every $b$".
+     FIX:   Plot the exact expectation $\sum_{|k|<b}(1-|k|/b)\Gamma_k$ as the theory curve (it is closed form for this design), restrict the "tracks/unbiased" wording to $b\ge10$, and state explicitly that the residual at $b=5$ is the $O(\rho^b)$ term. Rephrase the drift sentence as "is of order $b/N$ and grows with $b$".
+
+[major   ] paper/main.tex:104-106 (abstract) vs paper/sec_experiments.tex:41-43
+     CLAIM: The abstract's width factor is wrong and inconsistent with the paper's own exact prediction; and the abstract is the one place where numbers are hardcoded rather than macro-injected.
+     FIX:   Replace the abstract's literals with macros derived from `facts.json` (e.g. a min/max over designs of `width_ratio` and `time_ratio`) and re-check that the quoted range equals $\sqrt{\kappa}$ over the four designs.
+
+[major   ] paper/sec_experiments.tex:123-126 and experiments/exp6_real.py:17-21,144-149 (`nominal_corrected`)
+     CLAIM: The Protocol B target-uncertainty correction $\Var(\theta_{\text{seg}}-\theta_{\text{full}})=\Var(\theta_{\text{seg}})(1-1/R)$ is not exact and its three assumptions are never stated.
+     FIX:   State the three assumptions in \Cref{app:dgps}; either use the exact weighted formula $\Var(\theta_k-\theta_{\text{full}})=(I-W_k)V_k(I-W_k)^\top+\sum_{l\neq k}W_lV_lW_l^\top$ per coordinate, or make the target a *held-out* estimator computed from segments other than $k$ (then the correction is $1+1/(R-1)$ and needs no equal-wei
+
+[major   ] experiments/exp6_real.py:99-104 and :138-143 (`coverage_se`); paper/sec_experiments.tex:113-122
+     CLAIM: The real-data coverage summaries treat clustered, conditional-on-covariate-path replicates as independent, and the quoted "about a third" prediction is not the quantity the table measures.
+     FIX:   Report a cluster-robust (segment-level) MC standard error; say explicitly that Protocol A coverage is conditional on the realised covariate segments; and compare the measured pooled coverage to the pooled prediction $d^{-1}\sum_j\{2\Phi(z/\sqrt{\kappa_j})-1\}$, or report per-coordinate min/max as \Cref{tab:main} does.
+
+[major   ] experiments/exp6_real.py:175-190 vs paper/sec_appendix_exp.tex:74-78
+     CLAIM: On real data the first-order baselines are not tuned as the appendix claims: one grid search on metro's first 8000 rows — which are evaluation segments 0 and 1 — supplies the step constants for all twelve air-quality streams as well.
+     FIX:   Tune per dataset on a leading hold-out block that is excluded from the evaluation segments, report the selected constants and the grid (as is done for the simulated designs in `results/exp1_main.json`), and confirm the optimum is interior for each stream.
+
+[major   ] /Volumes/Crucial X6/MacBook/Code/ml_papers/streaming_qn_dependent/experiments/exp8_lrv_rate.py:48 (guard) + pa
+     CLAIM: The `b ~ N^{3/4}` arm of the rate experiment is skipped at *every* N, so the series the Figure-7 caption explicitly describes cannot appear; and `exp8_lrv_rate.json` is not a prerequisite of the Makefile `exp` target, so `make all` never produces Figure 7 at all.
+     FIX:   Relax the guard so the N^{3/4} arm survives (e.g. cap `b = min(sched(N), N // 8)` and record the cap, or drop the floor to `N // 8`), add `$(RES)/exp8_lrv_rate.json` to the Makefile `exp` prerequisites, and if the arm is genuinely infeasible delete the sentence about it from the caption rather than letting the figure silently om
+
+[major   ] /Volumes/Crucial X6/MacBook/Code/ml_papers/streaming_qn_dependent/experiments/exp0_critical_values.py:22-31 an
+     CLAIM: The verification script publishes 8.154 as "the two-sided 95% critical value used throughout" — it is the 0.975 quantile of an already-absolute-valued statistic — while the code actually uses 6.811 (common.py:45) / 6.747 (estimators.py:126), and its cross-check against the published table is misaligned by one quantile level so it disagrees at every row even though the sampler is correct.
+     FIX:   Use `q[0.95]` (and `published[0.975]`) as the two-sided 95% value in exp0; relabel the `published` dict as signed-statistic quantiles and compare `q[level]` against `published[(1+level)/2]`; and either add the E/Var(int B^2) moment checks the appendix advertises or delete that parenthesis.
+
+[major   ] /Volumes/Crucial X6/MacBook/Code/ml_papers/streaming_qn_dependent/src/bgsn/_core.py:244-250 (plug-in accumulat
+     CLAIM: Gamma0_hat is accumulated over the warm-up blocks, where theta is still frozen at theta_0 = 0, whereas S_bm/S_ft explicitly exclude those blocks — so the dependence-blind competitor's variance is inflated by ~1.7% for purely implementational reasons, shifting the coverage-law check by ~+0.004.
+     FIX:   Guard the plug-in accumulator with the warm-up flag (move it inside the non-warm branch, or `if want_plugin == 1 and not warm:`) so Gamma0_hat and S_ft are computed on the same observations; then re-run exp2 and re-quote \CovLawMaxErr.
+
+[minor   ] paper/main.tex fig:lrvrate caption, l. 640–648; paper/sec_experiments.tex l. 19–27
+     CLAIM: The rate wedge is never measured against an actual iterate-based batch-means estimator; the "$b\asymp N^{3/4}$ schedule that iterate-based batch means require" is the paper's own estimator run at a bad block length, which is a straw man.
+     FIX:   Implement the actual comparator — recursive overlapping batch means on the iterate path (Zhu et al. 2023 / Roy & Balasubramanian 2023 recursion) on at least the AR-hom design — and plot its $\opnorm{\widehat\Sigma-\Sigma}$ against the composite $\opnorm{\Hb^{-1}\Sft\Hb^{-1}-\Sigma}$. Retitle the third curve in fig:lrvrate as "ou
+
+[minor   ] paper/main.tex fig:lrv caption l. 634–635 ("our block length need not grow with $N$") versus Thm. thm:lrv hypo
+     CLAIM: Two small credit/consistency slips in the claim statements: the figure caption asserts a stronger result than the theorem allows, and Contribution 4 credits prior art anonymously.
+     FIX:   Change the caption to "which is why our block length need only grow like $\log N$". Attach \citep{liu2026statistical} inside Contribution 4 ("the qualitative failure was reported by ...; we give the exact limit and verify it to three decimals").
+
+[minor   ] paper/main.tex l.520 and l.187/496-497; paper/sec_appendix.tex eq:bmbias l.211-216 and l.236-237
+     CLAIM: Two bookkeeping errors in the long-run-variance algebra: Delta = 2 sum_{k>=1} k Gamma_k is the wrong (asymmetric) object for the batch-means bias, and Shat^FT as defined in eq:Sft is *not* algebraically identical to 2 Shat^BM(2b) - Shat^BM(b).
+     FIX:   Define Delta = sum_{k>=1} k (Gamma_k + Gamma_k^T) (and fix the docstring). Change "algebraically identical" to "equal in expectation to 2 Shat^BM(2b) - Shat^BM(b), and identical to it if the disjoint-pair version of Lambdahat_1 is used", or switch eq:Sft and the code to disjoint pairs. Absorb the b factor by stating remainders a
+
+[minor   ] /Volumes/Crucial X6/MacBook/Code/ml_papers/streaming_qn_dependent/paper/main.tex:412-415, :555-558, :311-315, 
+     CLAIM: Five sentences will force a competent non-specialist to re-read; two of them also introduce an undefined symbol or a notational error.
+     FIX:   (1) "Under dependence $\E[\eps_t\mid\Fil_{t-1}]\neq0$, so the martingale argument used under independence is unavailable. One could remove the conditional bias via a Poisson equation; we instead bound the weighted sum $\sum_t\gamma_t\Hb_{t-1}^{-1}\eps_t$ directly with a maximal inequality for mixing sums (Lemma 10), which gives 
+
+[minor   ] /Volumes/Crucial X6/MacBook/Code/ml_papers/streaming_qn_dependent/paper/main.tex:63-91 (abstract), :160-209 (c
+     CLAIM: The thesis arrives at word 118 of a 327-word abstract, the contribution list sprawls to six items of which the paper itself downgrades two, and the same disclaimer is made three times; the abstract's numbers also sit outside the anti-drift mechanism the paper advertises.
+     FIX:   Compress the abstract's opening to one sentence and state the thesis by word 40 ("Streaming quasi-Newton estimators are asymptotically efficient at first-order cost, but on dependent streams their stated uncertainty is wrong by a fixed factor; we show one structural change fixes both the estimate and the interval within the same
+
+[minor   ] experiments/exp0_critical_values.py:27-31 + results/exp0_critical_values.json (`used_two_sided_95: 8.154`) vs 
+     CLAIM: The two repository artefacts the paper offers as verification are both wrong: the random-scaling critical-value script records a value that is neither correct nor the one used, and the test that validates the streaming covariance accumulator fails.
+     FIX:   Save `used_two_sided_95 = q[0.95]`, compare row $q_{1-\alpha}$ of the absolute pivot against the KVB value for level $1-\alpha/2$ of the signed statistic, and reconcile the printed number with `RS_CRIT95`. Fix the test's block offset to `X[nw*b:(nw+T)*b]` and add it to CI. While there: \Cref{rem:psd} promises a fallback to $u_j^
+
+[minor   ] /Volumes/Crucial X6/MacBook/Code/ml_papers/streaming_qn_dependent/experiments/make_tables.py:250 (`emit_macros
+     CLAIM: Five kappa macros are emitted with a capital K but used with a lowercase k, so they are undefined control sequences and the kappa values are blank in the compiled paper.
+     FIX:   Either rename the three uses in sec_experiments.tex to \KappaLoArhom / \KappaLoArhet / \KappaHiArhet / \KappaLoLogistic / \KappaHiLogistic, or special-case the macro-name builder; and stop redirecting pdflatex output to /dev/null so undefined-control-sequence errors are not silently absorbed.
+
+[minor   ] /Volumes/Crucial X6/MacBook/Code/ml_papers/streaming_qn_dependent/paper/main.tex:511 (eq. \eqref{eq:Sft}) vs s
+     CLAIM: Equation (eq:Sft) defines hat-Lambda_1 with denominator T'-1 over pairs with t, t+1 both in the retained window, but the code divides by T' and includes the pair that straddles the window's left edge (its first block has already been discarded from the batch-means accumulator).
+     FIX:   Change eq.(eq:Sft) to `hat-Lambda_1 = (1/T') sum_{t: t+1 in T} gbar_t gbar_{t+1}^T` and add half a sentence that the pair straddling the window's left edge is retained (it is stationary, so the expectation is unchanged), or move the roll after the pair accumulation and divide by T'-1.
+
+[minor   ] /Volumes/Crucial X6/MacBook/Code/ml_papers/streaming_qn_dependent/experiments/exp6_real.py:66
+     CLAIM: Protocol A's synthetic error paths are seeded from `hash((name, i0, rep))`, which is salted per process, so every number in Table 3's Protocol A columns and in Fig. 6(c) is irreproducible across runs.
+     FIX:   Replace with a deterministic seed, e.g. `zlib.crc32(f"{name}|{i0}|{rep}".encode()) % 2**31` or an explicit integer index over (stream, segment, rep).
+
+[minor   ] /Volumes/Crucial X6/MacBook/Code/ml_papers/streaming_qn_dependent/src/bgsn/estimators.py:191-218 (`andrews_ban
+     CLAIM: `andrews_bandwidth` mixes Andrews' alpha(2) numerator with the Bartlett (q=1) constant 1.1447, inflating the bandwidth by up to ~7x; and the function is dead code whose docstring advertises a bandwidth-sensitivity experiment the paper does not contain.
+     FIX:   Fix the exponent to `(1 - rho) ** 6 * (1 + rho) ** 2`, and either wire the automatic bandwidth into the offline-HAC reference (reporting the selected L, which `extras["lag"]` already carries) or delete the function and the sensitivity claim from its docstring.
+
+[minor   ] /Volumes/Crucial X6/MacBook/Code/ml_papers/streaming_qn_dependent/experiments/exp6_real.py:236-250 (block-leng
+     CLAIM: The real-data block-length sweep holds the segment length fixed at 4000, so increasing b simultaneously collapses the number of blocks; at the top of the sweep the estimator is built from 5 block gradients and 8 parameter steps, which confounds "b exceeds the dependence horizon" with "T is too small".
+     FIX:   Hold the number of retained blocks roughly fixed while sweeping b (scale n_seg with b, e.g. n_seg = 200*b), or restrict the sweep to b where nkeep is above some floor (say 50) and state the floor; alternatively report nkeep and T alongside each point so the confound is visible.

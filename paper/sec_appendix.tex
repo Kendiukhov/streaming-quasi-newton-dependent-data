@@ -1,0 +1,504 @@
+\section{Proofs}
+\label{app:proofs}
+
+Throughout, $C$ denotes a finite constant that may change from line to line,
+$\delta_t=\theta_t-\ts$, $\eps_t=\gb_t(\ts)$, $\gamma_t=1/t$, $P_t=\Hb_t^{-1}$, and
+$\Lambda_k=\E[\eps_0\eps_k^{\!\top}]$. We write $n_t$ for the number of rank-one curvature
+updates completed by the end of block $t$; with gap $m$ and no Bernoulli thinning,
+$n_t=\lfloor tb/m\rfloor$, so $n_t\asymp t$.
+
+\paragraph{Order of the argument.} The results are proved in the order of
+\Cref{rem:ladder}: \Cref{lem:ridge} (from the ridge alone, no assumption on the iterates);
+\Cref{thm:as} (uses \Cref{lem:ridge} only); the preliminary rate
+$\norm{\delta_t}=O(t^{-1/2}\log^{c}t)$ (uses \Cref{thm:as} and consistency of $\Hb$, not its
+rate); \Cref{thm:curv}; and then \Cref{thm:rate,thm:clt,thm:l2,thm:lrv}. Every remainder bound
+below is uniform over $b\le C\log N$, which is the only regime in which \Cref{thm:lrv} uses
+them, and the $b$-dependence is displayed wherever it is not $O(1)$.
+
+\subsection{Preliminaries on dependence}
+
+\begin{lemma}[Geometric decay of the score autocovariances]
+\label{lem:davydov}
+Under \Cref{as:mix}, $\opnorm{\Gamma_k}\le C\rho^{|k|}$ with $\rho=\cmix^{\nu/(2+\nu)}$,
+and $\opnorm{\Lambda_k}\le C b^{-1}\rho^{(|k|-1)b}$ for $|k|\ge1$ while
+$\opnorm{\Lambda_0}\le C/b$. Consequently $\sum_{k\in\mathbb Z}\opnorm{\Lambda_k}\le C/b$
+and $S=\sum_k\Gamma_k$ converges absolutely.
+\end{lemma}
+
+\begin{proof}
+Davydov's inequality \citep{davydov1968convergence}, in the form of
+\citet[Cor.~1.1]{rio1993covariance}, gives for random variables $U\in\sigma(\xi_i,i\le0)$,
+$V\in\sigma(\xi_i,i\ge k)$ with $2+\nu$ moments,
+$|\Cov(U,V)|\le 8\,\alpha_{\mathrm{mix}}(k)^{\nu/(2+\nu)}\norm{U}_{2+\nu}\norm{V}_{2+\nu}$.
+Applying it coordinatewise to $g_0$ and $g_k$ and using \Cref{as:mix} gives the first
+claim. For the second, $\Lambda_k=b^{-2}\sum_{i\in B_0}\sum_{j\in B_k}\Gamma_{j-i}$; for
+$k\ge1$ every lag $j-i$ is at least $(k-1)b+1$, so
+$\opnorm{\Lambda_k}\le b^{-2}\cdot b^2\cdot C\rho^{(k-1)b}$, and for $k=0$,
+$\opnorm{\Lambda_0}\le b^{-2}\sum_{|l|<b}(b-|l|)C\rho^{|l|}\le Cb^{-1}$.
+Summing the geometric series gives $\sum_k\opnorm{\Lambda_k}\le C/b$.
+\end{proof}
+
+\begin{lemma}[Martingale--coboundary decomposition]
+\label{lem:gordin}
+Let $(\zeta_t)_{t\ge1}$ be stationary, centred, $\R^{q}$-valued, $\Fil_t$-measurable with
+$\Fil_t=\sigma(\xi_i:i\le tb)$, and let $\E\norm{\zeta_1}^{2+\nu}<\infty$ under
+\Cref{as:mix}. Then $\sum_{n\ge0}\norm{\E[\zeta_{n}\mid\Fil_0]}_{2}<\infty$, the series
+$z_t=\sum_{n\ge0}\E[\zeta_{t+n}\mid\Fil_t]$ converges in $L^2$, and
+\begin{equation}
+\zeta_t \;=\; m_{t+1}+z_t-z_{t+1},
+\qquad m_{t+1}=z_{t+1}-\E[z_{t+1}\mid\Fil_t],
+\label{eq:gordin}
+\end{equation}
+where $(m_t)$ is a stationary martingale difference sequence with respect to $(\Fil_t)$ and
+$\E\norm{m_1}^2<\infty$, $\E\norm{z_1}^2<\infty$. Moreover
+$\E[m_1m_1^{\!\top}]=b^{-1}S$ when $\zeta_t=\eps_t$.
+\end{lemma}
+
+\begin{proof}
+For $U$ that is $\sigma(\xi_i:i\ge n)$-measurable with $2+\nu$ moments, the standard
+consequence of strong mixing (see \citealt[Ch.~1]{rio2017asymptotic}) is
+$\norm{\E[U\mid\Fil_0]}_2\le C\,\alpha_{\mathrm{mix}}(n)^{\nu/(2(2+\nu))}\norm{U}_{2+\nu}$,
+which under \Cref{as:mix} decays geometrically in $n$ and is therefore summable; this is
+Gordin's condition, and \eqref{eq:gordin} together with the stated moment bounds is Gordin's
+decomposition; see \citet[Ch.~5]{hall1980martingale}. Summing \eqref{eq:gordin} telescopes
+the coboundary, so $\sum_{t\le T}\zeta_t=\sum_{t\le T}m_{t+1}+z_1-z_{T+1}$; dividing by
+$\sqrt T$ and using $z_{T+1}/\sqrt T\to0$ in probability identifies
+$\lim T^{-1}\Var(\sum_{t\le T}\zeta_t)=\E[m_1m_1^{\!\top}]$, which for $\zeta_t=\eps_t$ is
+$b^{-1}S$ by \eqref{eq:S}.
+\end{proof}
+
+\begin{lemma}[Weighted sums with adapted weights: convergence and rate]
+\label{lem:series}
+Let $(\zeta_t)$ be as in \Cref{lem:gordin}, let $(A_t)$ be $\Fil_{t-1}$-measurable random
+matrices, and let $(\gamma_t)$ be deterministic and non-increasing. Suppose there are
+deterministic $(c_t)$, $(u_t)$ and a finite random $\Lambda$ with, almost surely for all $t$,
+\begin{equation}
+\opnorm{A_t}\le\Lambda c_t
+\qquad\text{and}\qquad
+\opnorm{\gamma_{t+1}A_{t+1}-\gamma_tA_t}\le\Lambda u_t ,
+\label{eq:weightcond}
+\end{equation}
+and write $V_T=\sum_{t\le T}\gamma_t^2c_t^2$ and $U_T=\sum_{t\le T}u_t$. Then for every
+$\varpi>0$, almost surely,
+\begin{equation}
+\Big\lVert\sum_{t\le T}\gamma_tA_t\zeta_t\Big\rVert
+=O\big(V_T^{1/2}\log^{1/2+\varpi}T\big)
++O\big(U_T\log^{1+\varpi}T\big)
++O\big(\gamma_Tc_T\,T^{1/2+\varpi}\big).
+\label{eq:lemrate}
+\end{equation}
+If moreover $V_\infty<\infty$, $U_\infty<\infty$ and $\gamma_Tc_TT^{1/2+\varpi}\to0$ for some
+$\varpi>0$, then $\sum_t\gamma_tA_t\zeta_t$ converges almost surely.
+\end{lemma}
+
+\begin{proof}
+\emph{Localisation.} For $K\in\mathbb N$ replace $A_t$ by
+$A_t\ind\{\sup_{s\le t}\max(\opnorm{A_s}/c_s,\;
+\opnorm{\gamma_{s+1}A_{s+1}-\gamma_sA_s}/u_s)\le K\}$, which is still
+$\Fil_{t-1}$-measurable (the indicator is decreasing in $t$ and $\Fil_{t-1}$-measurable at
+each $t$ because it involves $A_s$ only for $s\le t$, and $A_{s+1}$ enters only through
+$s+1\le t$). On $\{\Lambda\le K\}$ the two processes agree and
+$\Prob(\bigcup_K\{\Lambda\le K\})=1$, so it suffices to prove the claims under the
+\emph{deterministic} envelopes $\opnorm{A_t}\le Kc_t$,
+$\opnorm{\gamma_{t+1}A_{t+1}-\gamma_tA_t}\le Ku_t$. Fix $K$ and drop it.
+
+\emph{Martingale part.} Insert \eqref{eq:gordin}: $M_T=\sum_{t\le T}\gamma_tA_tm_{t+1}$ is a
+martingale, because $A_t$ is $\Fil_t$-measurable and $\E[m_{t+1}\mid\Fil_t]=0$ --- this is
+the exact cancellation the decomposition buys, and it holds whatever $A_t$ does. Its
+predictable quadratic variation obeys
+\[
+\langle M\rangle_T=\sum_{t\le T}\gamma_t^2\,\E\!\left[\norm{A_tm_{t+1}}^2\;\middle|\;\Fil_t\right]
+\le K^2\sum_{t\le T}\gamma_t^2c_t^2\,v_t,
+\qquad v_t:=\E\!\left[\norm{m_{t+1}}^2\mid\Fil_t\right],
+\]
+with $(v_t)$ stationary, non-negative and $\E v_t=\E\norm{m_1}^2<\infty$. By Tonelli
+$\E\big[\sum_{t\le T}\gamma_t^2c_t^2v_t\big]=\E\norm{m_1}^2V_T$, so Markov's inequality along
+$T=2^j$ and Borel--Cantelli give $\langle M\rangle_T=O(V_T\log^{\varpi}T)$ a.s.\ (and
+$\langle M\rangle_\infty<\infty$ a.s.\ if $V_\infty<\infty$). The martingale law of the
+iterated logarithm then gives $\norm{M_T}=O(V_T^{1/2}\log^{1/2+\varpi}T)$ a.s., and if
+$\langle M\rangle_\infty<\infty$ a locally square-integrable martingale converges a.s.
+
+\emph{Coboundary part.} Abel summation gives
+\[
+\sum_{t\le T}\gamma_tA_t(z_t-z_{t+1})
+=\gamma_1A_1z_1-\gamma_TA_Tz_{T+1}
++\sum_{t<T}\big(\gamma_{t+1}A_{t+1}-\gamma_tA_t\big)z_{t+1}.
+\]
+The last sum is at most $K\sum_{t<T}u_t\norm{z_{t+1}}$, a non-negative sum with expectation
+$K\E\norm{z_1}U_T$, hence $O(U_T\log^{1+\varpi}T)$ a.s.\ by Markov and Borel--Cantelli along
+dyadic blocks; if $U_\infty<\infty$ its expectation is finite and it converges a.s. Finally
+$\norm{\gamma_TA_Tz_{T+1}}\le K\gamma_Tc_T\norm{z_{T+1}}=O(\gamma_Tc_TT^{1/2+\varpi})$ a.s.,
+because $\E\norm{z_1}^2<\infty$ and Borel--Cantelli give
+$\norm{z_T}=o(T^{1/2+\varpi})$.
+\end{proof}
+
+\begin{remark}[Why the lemma is stated this way]
+Three features are load-bearing and each corresponds to a place where a naive argument fails.
+(i) The weights are \emph{random and adapted}: they contain $\Hb_{t-1}^{-1}$, so a lemma for
+deterministic weights would not apply. Note that adaptedness is essential and not cosmetic:
+for bounded adapted weights and a mixing, centred, stationary $\zeta$ the sum
+$\sum_ta_t\zeta_t$ can grow like $T$ if $a_t$ is allowed to correlate with $\zeta_t$ --- take
+$\zeta_t=u_t+u_{t-1}$ with $u_t$ i.i.d.\ signs and $a_t=\zeta_{t-1}$ --- which is exactly the
+non-martingale obstruction. The decomposition \eqref{eq:gordin} removes it because
+$\E[m_{t+1}\mid\Fil_t]=0$ \emph{exactly}, whatever $A_t$ does.
+(ii) The envelope is deterministic only up to a finite random factor, which is all that is
+available for weights built from the iterates; the localisation handles it.
+(iii) We use a martingale law of the iterated logarithm rather than a Bernstein inequality for
+mixing sums. The Bernstein inequality of \citet{merlevede2011bernstein} is stated for
+uniformly \emph{bounded} summands, which \Cref{as:mix} does not provide; after
+\eqref{eq:gordin} the summands form a martingale difference sequence and no such inequality
+is needed. (iv) The three terms of \eqref{eq:lemrate} are needed separately: the applications
+below use $\gamma_t\equiv1$, for which $U_T$ can diverge logarithmically, so a hypothesis
+$U_\infty<\infty$ would be too strong.
+\end{remark}
+
+\Cref{lem:gordin,lem:series} are the technical substitute for the martingale argument used
+in the independent-data analysis. Two features matter. First, the weights may be
+\emph{random and adapted}, which is what we need because they involve $\Hb_{t-1}^{-1}$.
+Second, the conditions \eqref{eq:weightcond} are of the form already familiar from the
+independent-data theory. The vanishing ridge supplies the deterministic envelope: it forces
+$\lambda_{\min}(A_{n})\ge c\,n^{1-q_{\mathrm r}}$, hence
+$\opnorm{\Hb_t^{-1}}=W_{n_t}\opnorm{A_{n_t}^{-1}}\le c^{-1}n_t^{q_{\mathrm r}}=:c_t$ with
+$q_{\mathrm r}<1/2$, so with $\gamma_t=1/t$ the first half of \eqref{eq:weightcond} is
+$\sum_tO(t^{2q_{\mathrm r}-2})<\infty$. The second half holds because a single rank-one Riccati
+update changes the preconditioner by only $O(1/t)$:
+
+\begin{lemma}[Increments of the preconditioner]
+\label{lem:incr}
+Under the assumptions of \Cref{thm:curv},
+$\opnorm{\Hb_{t}^{-1}-\Hb_{t-1}^{-1}}=O(1/t)$ a.s., hence with $\gamma_t=1/t$ and
+$A_t=\Hb_{t-1}^{-1}$ we have $\opnorm{\gamma_{t+1}A_{t+1}-\gamma_tA_t}=O(t^{-2})$ a.s.\ and
+the second half of \eqref{eq:weightcond} holds for every $\delta<1/2$.
+\end{lemma}
+
+\begin{proof}
+$\Hb_t^{-1}=W_{n_t}A_{n_t}^{-1}$ and, from block $t-1$ to block $t$, $W$ increases by
+$O(1)$ and $A^{-1}$ changes by $O(1)$ rank-one Sherman--Morrison steps
+$A^{-1}\mapsto A^{-1}-cA^{-1}uu^{\!\top}A^{-1}/(1+cu^{\!\top}A^{-1}u)$, each of operator norm
+at most $\opnorm{A^{-1}}$ times $c\opnorm{A^{-1}}\norm{u}^2/(1+c u^{\!\top}A^{-1}u)\le 1$,
+and in fact at most $\opnorm{A^{-1}}^2c\norm{u}^2=O(t^{-2})$ once
+$\lambda_{\min}(A_{n_t})\ge c't$ (which holds a.s.\ for large $t$ because
+$A_{n_t}/n_t\to H\succ0$). Multiplying by $W_{n_t}=O(t)$ gives $O(1/t)$; the extra factor
+$\gamma_t=1/t$ and $\gamma_{t+1}-\gamma_t=O(t^{-2})$ give the second claim.
+\end{proof}
+
+\subsection{The ridge bound (\texorpdfstring{\Cref{lem:ridge}}{Lemma})}
+
+Each curvature update adds $\iota_n e_{k_n}e_{k_n}^{\!\top}\succeq0$ along a cycling basis
+direction, so after $n$ updates every basis direction has received at least
+$\lfloor n/d\rfloor$ of them and
+$A_n\succeq\lambda_0\varsigma_0I+\big(d^{-1}\sum_{k\le n}\iota_k\big)I$. With
+$\iota_k=c_\iota\varsigma_k k^{-\qr}$ and $\varsigma_k\ge\varsigma_\ast>0$ almost surely
+(finite because $\varsigma_k=d/\tr(\Hb_k^{-1})$ and $\Hb_k$ is bounded above, being an
+average of terms with $\eta'>2$ moments), $\sum_{k\le n}\iota_k\ge c\,n^{1-\qr}$, hence
+$\lambda_{\min}(A_n)\ge c'n^{1-\qr}$ and
+$\opnorm{\Hb_t^{-1}}=W_{n_t}\opnorm{A_{n_t}^{-1}}\le (1+n_t)/(c'n_t^{1-\qr})=O(n_t^{\qr})$.
+The random constant is $c_1=c'\varsigma_\ast$; nothing about the iterates is used.
+\hfill$\square$
+
+\subsection{The curvature rate (\texorpdfstring{\Cref{thm:curv}}{Theorem})}
+
+Write $Y_n=\alpha(\ts;\xi_{i_n})\Psi(\ts;\xi_{i_n})\Psi(\ts;\xi_{i_n})^{\!\top}$ and
+$\tilde Y_n=\alpha(\theta_{t(n)-1};\xi_{i_n})\Psi\Psi^{\!\top}$ for the term actually
+accumulated, where $t(n)$ is the block containing $i_n$. Then, by \eqref{eq:curv} and
+\eqref{eq:Hbar},
+\begin{equation}
+\Hb_t-H
+=\underbrace{\frac{\lambda_0\varsigma_0 I}{W_{n_t}}}_{(\mathrm i)}
++\underbrace{\frac{1}{W_{n_t}}\sum_{n\le n_t}\iota_n e_{k_n}e_{k_n}^{\!\top}}_{(\mathrm{ii})}
++\underbrace{\frac{1}{W_{n_t}}\sum_{n\le n_t}(Y_n-H)}_{(\mathrm{iii})}
++\underbrace{\frac{1}{W_{n_t}}\sum_{n\le n_t}(\tilde Y_n-Y_n)}_{(\mathrm{iv})}.
+\label{eq:Hdecomp}
+\end{equation}
+Since $W_{n_t}=1+n_t\asymp t$, term (i) is $O(1/t)$. For (ii),
+$\opnorm{\cdot}\le n_t^{-1}\sum_{n\le n_t}\iota_n\le C n_t^{-q_{\mathrm r}}$ because
+$\iota_n\le C n^{-q_{\mathrm r}}$ and $q_{\mathrm r}<1$; the same bound from below along each basis
+direction gives, together with $H\succ0$,
+$\lambda_{\min}(\Hb_t)\ge c\,n_t^{-q_{\mathrm r}}$ for all $t$ (this is the only place the ridge
+is used, and it is what bounds $\opnorm{\Hb_t^{-1}}$ for \emph{every} $t$ rather than
+eventually). Term (iv) is bounded, by the local Lipschitz property in \Cref{as:curv} and
+Cauchy--Schwarz, by
+$Cn_t^{-1}\sum_{n\le n_t}\norm{\theta_{t(n)-1}-\ts}\cdot\opnorm{\Psi\Psi^{\!\top}}$, which
+under the assumed preliminary rate is $O(n_t^{-1}\sum_{n\le n_t}n^{-1/2}\log^{c}n)
+=O(n_t^{-1/2}\log^{c}n_t)$ a.s.
+
+The new content is term (iii). The array $(Y_n)_{n\ge1}$ is the subsequence of a stationary
+geometrically mixing sequence at spacing $m$, hence itself stationary with mixing
+coefficients $\alpha_{\mathrm{mix}}(jm)\le K\cmix^{jm}$, and has $\eta'>2$ moments by
+\Cref{as:curv}. Applying \Cref{lem:series} with $a_n\equiv1$ (i.e.\ its maximal-inequality
+half, which does not need square-summability) gives
+$\opnorm{\sum_{n\le n_t}(Y_n-H)}=O(n_t^{1/2}\log^{1/2+\varpi}n_t)$ a.s., so
+$(\mathrm{iii})=O(t^{-1/2}\log^{1/2+\varpi}t)$ a.s.
+Collecting the four terms, $\opnorm{\Hb_t-H}=O(t^{-\min\{q_{\mathrm r},1/2\}}\log^{c'}t)$ a.s.,
+which is $O(t^{-\nu_H})$ for every $\nu_H<\min\{q_{\mathrm r},1/2\}$. Finally, on the event
+$\opnorm{\Hb_t-H}\le\lambda_{\min}(H)/2$ (which holds for all large $t$ a.s.),
+$\opnorm{\Hb_t^{-1}-H^{-1}}\le\opnorm{\Hb_t^{-1}}\opnorm{\Hb_t-H}\opnorm{H^{-1}}
+\le 2\lambda_{\min}(H)^{-2}\opnorm{\Hb_t-H}$. \hfill$\square$
+
+\subsection{Consistency (\texorpdfstring{\Cref{thm:as}}{Theorem})}
+
+Substituting $\gb_t(\theta_{t-1})=\nabla F(\theta_{t-1})+\zeta_t$ into \eqref{eq:step},
+where $\zeta_t=\gb_t(\theta_{t-1})-\nabla F(\theta_{t-1})$, and expanding
+$F(\theta_t)-F(\ts)$ to second order using \Cref{as:reg},
+\begin{align}
+F(\theta_t)-F(\ts)&\le F(\theta_{t-1})-F(\ts)
+-\gamma_t\nabla F(\theta_{t-1})^{\!\top}P_{t-1}\nabla F(\theta_{t-1})\nonumber\\
+&\quad-\gamma_t\nabla F(\theta_{t-1})^{\!\top}P_{t-1}\zeta_t
++\tfrac{L}{2}\gamma_t^2\opnorm{P_{t-1}}^2\norm{\gb_t(\theta_{t-1})}^2 .
+\label{eq:desc}
+\end{align}
+The last term is summable: $\gamma_t^2\opnorm{P_{t-1}}^2=O(t^{2q_{\mathrm r}-2})$ by
+\Cref{thm:curv} with $q_{\mathrm r}<1/2$, and $\E\norm{\gb_t(\theta_{t-1})}^2\le
+C+C'(F(\theta_{t-1})-F(\ts))$ by \Cref{as:mom} and Jensen. The cross term is the one that
+would be handled by a martingale argument under independence. Instead, decompose
+$\zeta_t=\eps_t+r_t$ with $r_t=\gb_t(\theta_{t-1})-\nabla F(\theta_{t-1})-\eps_t$, so that
+$\norm{r_t}\le\opnorm{\widehat H_t-H}\norm{\delta_{t-1}}+L_\delta\norm{\delta_{t-1}}^2$
+where $\widehat H_t$ is the block curvature; $r_t$ is dominated by
+$\norm{\delta_{t-1}}$ times an $L^2$-bounded factor, and its contribution to
+\eqref{eq:desc} is absorbed by the Robbins--Siegmund argument
+\citep{robbins1971convergence}. The remaining term
+$-\sum_t\gamma_t\nabla F(\theta_{t-1})^{\!\top}P_{t-1}\eps_t$ is handled by
+\Cref{lem:series} with $A_t=\nabla F(\theta_{t-1})^{\!\top}P_{t-1}$, which is
+$\Fil_{t-1}$-measurable as required. Its first condition holds because
+$\opnorm{P_{t-1}}=O(t^{q_{\mathrm r}})$ with $q_{\mathrm r}<1/2$ (\Cref{thm:curv}) and
+$\E\norm{\nabla F(\theta_{t-1})}^2$ is bounded on the events
+$\{\sup_{s\le t}\norm{\theta_s}\le K\}$, over which we localise and then let $K\to\infty$;
+its second condition holds by \Cref{lem:incr} together with
+$\opnorm{\nabla F(\theta_t)-\nabla F(\theta_{t-1})}\le L\norm{\theta_t-\theta_{t-1}}
+=O(\gamma_t t^{q_{\mathrm r}})$. Robbins--Siegmund then gives $F(\theta_t)\to F(\ts)$ a.s.\ and
+$\sum_t\gamma_t\nabla F(\theta_{t-1})^{\!\top}P_{t-1}\nabla F(\theta_{t-1})<\infty$ a.s.;
+and since $\gamma_t\lambda_{\min}(P_{t-1})\ge \gamma_t/\opnorm{\Hb_{t-1}}\ge c\,t^{-1}$
+(because $\opnorm{\Hb_t}$ is bounded above a.s., $\Hb_t$ being an average of terms with
+$\eta'>2$ moments) we have $\sum_t\gamma_t\lambda_{\min}(P_{t-1})=\infty$; \Cref{as:ident}
+then forces $\theta_t\to\ts$ a.s. \hfill$\square$
+
+\subsection{Proof of \texorpdfstring{\Cref{thm:rate}}{the result} (rate) and
+\texorpdfstring{\Cref{prop:blockfree,thm:clt}}{Proposition 1 and Theorem 4} (CLT)}
+
+Write \eqref{eq:step} as
+$\delta_t=\delta_{t-1}-\gamma_tP_{t-1}\{H\delta_{t-1}+\eps_t+r_t\}$ with $r_t$ as above.
+Multiplying by $t$ and using $\gamma_t=1/t$,
+\begin{equation}
+t\,\delta_t=(t-1)\delta_{t-1}+(I-P_{t-1}H)\delta_{t-1}-P_{t-1}\eps_t-P_{t-1}r_t ,
+\label{eq:abel}
+\end{equation}
+so that, summing from $t=1$ to $T$ (Abel summation) and dividing by $T$,
+\begin{equation}
+\delta_T=-\frac1T H^{-1}\sum_{t\le T}\eps_t
+\;+\;\underbrace{\frac1T\sum_{t\le T}(H^{-1}-P_{t-1})\eps_t}_{(\mathrm A)}
+\;+\;\underbrace{\frac1T\sum_{t\le T}(I-P_{t-1}H)\delta_{t-1}}_{(\mathrm B)}
+\;-\;\underbrace{\frac1T\sum_{t\le T}P_{t-1}r_t}_{(\mathrm C)} .
+\label{eq:decomp}
+\end{equation}
+The leading term is \emph{exactly}
+$-N_T^{-1}H^{-1}\sum_{i\le N_T}g_i$, because $\sum_{t\le T}\eps_t=b^{-1}\sum_{i\le N_T}g_i$
+and $N_T=bT$. This identity is \Cref{prop:blockfree}: the leading term does not depend on
+$b$.
+
+\emph{Term (A).} Apply \eqref{eq:lemrate} with $\gamma_t\equiv1$, $\zeta_t=\eps_t$ and the
+$\Fil_{t-1}$-measurable weights $A_t=H^{-1}-P_{t-1}$: by \Cref{thm:curv} the envelope is
+$c_t=t^{-\nu_H}$, and by \Cref{lem:incr} the increments are $u_t=O(t^{-1})$. Hence
+$V_T=O(T^{1-2\nu_H})$ (as $\nu_H<1/2$), $U_T=O(\log T)$, and
+$\gamma_Tc_TT^{1/2+\varpi}=O(T^{1/2-\nu_H+\varpi})$, so
+\[
+\Big\lVert\sum_{t\le T}(H^{-1}-P_{t-1})\eps_t\Big\rVert
+=O\big(T^{1/2-\nu_H}\log^{1/2+\varpi}T\big)+O\big(\log^{2+\varpi}T\big)
++O\big(T^{1/2-\nu_H+\varpi}\big)
+=O\big(T^{1/2-\nu_H+\varpi}\big)\ \text{a.s.}
+\]
+Choosing $\varpi<\nu_H$ gives $(\mathrm A)=O(T^{-1/2-\nu_H+\varpi})=o(T^{-1/2})$ a.s.
+It is worth seeing what does the work. The only bound available without \eqref{eq:gordin} is
+$\norm{\E[(H^{-1}-P_{t-1})\eps_t]}\le\opnorm{H^{-1}-P_{t-1}}\norm{\eps_t}_2
+=O(t^{-\nu_H}b^{-1/2})$ --- Davydov gives no decay across a one-block gap, since the weight
+and the summand are only one block apart --- and averaging that over $t\le T$ leaves
+$O(b^{-1/2}T^{-\nu_H})$, which is \emph{not} $o(T^{-1/2})$ for any admissible $\nu_H<1/2$.
+The extra $T^{-1/2}$ comes entirely from the exact cancellation
+$\E[A_tm_{t+1}\mid\Fil_t]=0$.
+
+\emph{Term (B).} $\norm{(\mathrm B)}\le T^{-1}\sum_{t\le T}\opnorm{I-P_{t-1}H}\norm{\delta_{t-1}}
+=T^{-1}\sum_{t\le T}O(t^{-\nu_H})\norm{\delta_{t-1}}$, which is a pathwise bound needing no
+lemma. With the rung-(iii) preliminary rate $\norm{\delta_t}=O(t^{-1/2}\log^{c}t)$ this is
+$O(T^{-1}\cdot T^{1/2-\nu_H}\log^{c}T)=o(T^{-1/2})$ a.s.
+
+\emph{Term (C).} $r_t=(\widehat H_t-H)\delta_{t-1}+O(\norm{\delta_{t-1}}^2)$, where
+$\widehat H_t$ is the block curvature. The quadratic part contributes
+$O(T^{-1}\sum_t\log t/t)=O(\log^2T/T)=o(T^{-1/2})$. For the first part take
+$\zeta_t=\widehat H_t-H$, which is stationary, centred and square integrable under
+\Cref{as:curv} (it is the block average of the terms appearing in \eqref{eq:Hdecomp}
+evaluated at $\ts$, plus a Lipschitz remainder in $\theta_{t-1}$ bounded exactly as term
+(iv) there), and apply \eqref{eq:lemrate} with $\gamma_t\equiv1$ and the
+$\Fil_{t-1}$-measurable weights acting by $A_t\zeta_t=P_{t-1}\zeta_t\delta_{t-1}$. By
+\Cref{lem:ridge} and the rung-(iii) rate the envelope is
+$c_t=O(t^{\qr}\cdot t^{-1/2}\log^{c}t)$ and the increments are $u_t=O(t^{-1}c_t)$, so
+\[
+V_T=O\Big(\sum_{t\le T}t^{2\qr-1}\log^{2c}t\Big)=O(T^{2\qr}\log^{2c}T),
+\qquad
+U_T=O\Big(\sum_t t^{\qr-3/2}\log^{c}t\Big)=O(1)\ \ (\qr<1/2),
+\]
+and $\gamma_Tc_TT^{1/2+\varpi}=O(T^{\qr+\varpi}\log^{c}T)$. Hence the sum is
+$O(T^{\qr+\varpi}\log^{c+1/2+\varpi}T)$ and
+$(\mathrm C)=O(T^{\qr-1+\varpi}\log^{c'}T)=o(T^{-1/2})$ a.s.\ because $\qr<1/2$.
+No independence between $\widehat H_t$ and $\delta_{t-1}$ is used or needed: adjacent blocks
+are only $O(1/b)$ apart in the sense of \Cref{lem:davydov}, not $O(\rho^b)$, and an earlier
+version of this proof wrongly appealed to the latter.
+
+Substituting into \eqref{eq:decomp} gives $\norm{\delta_T}^2=O(\log N_T/N_T)$ a.s.\
+(\Cref{thm:rate}) and
+$\sqrt{N_T}\delta_T=-N_T^{-1/2}H^{-1}\sum_{i\le N_T}g_i+o_p(1)$. The central limit theorem
+for strongly mixing stationary sequences with geometric coefficients and $2+\nu$ moments
+\citep{ibragimov1962some,herrndorf1984functional} gives
+$N^{-1/2}\sum_{i\le N}g_i\rightsquigarrow\mathcal N(0,S)$, and Slutsky completes
+\Cref{thm:clt}. The averaged variant follows from the same decomposition with
+$\gamma_t=c t^{-a}$ and the standard Abel argument for weighted averages
+\citep{mokkadem2011generalization,pelletier2000asymptotic}. \hfill$\square$
+
+\subsection{The $L^2$ rate (\texorpdfstring{\Cref{thm:l2}}{Theorem})}
+
+Take expectations in \eqref{eq:decomp}. The leading term has
+$\E\norm{N^{-1}H^{-1}\sum_{i\le N}g_i}^2=\tr(H^{-1}SH^{-1})/N+o(1/N)$ by
+\Cref{lem:davydov}, uniformly in $b$ because it does not involve $b$ at all. For the
+remainders, replace each almost sure bound above by its $L^2$ counterpart: the martingale
+parts are bounded in $L^2$ by their predictable variations, which were already computed in
+expectation in the proof of \Cref{lem:series}, and the coboundary parts by
+$\E\norm{z_1}\sum_tu_t$. On the descent side, iterating \eqref{eq:desc} in expectation with
+$\E\norm{\gb_t(\theta_{t-1})}^2\le C+C'\E[F(\theta_{t-1})-F(\ts)]$ (\Cref{as:mom}) and
+$\gamma_t^2\opnorm{P_{t-1}}^2=O(t^{2\qr-2})$ (\Cref{lem:ridge}) gives
+$\E[F(\theta_t)-F(\ts)]=O(\log t/t)$ by the standard Chung-type recursion, and local strong
+convexity converts this to $\E\norm{\delta_t}^2=O(\log t/t)=O(\log N_t/N_t)\cdot b$; the extra
+factor $b$ is absorbed because $N_t=bt$ and the leading term is $b$-free. All constants depend
+on $b$ only through $\E\norm{\gb_t}^2\le\E\norm{g_1}^2$, which is monotone in $b$, so the
+bound is uniform over $b\le C\log N$. \hfill$\square$
+
+\subsection{Coverage of dependence-blind intervals (\texorpdfstring{\Cref{prop:coverage}}{Proposition})}
+
+By \Cref{thm:clt} and \Cref{thm:curv},
+$\sqrt N(\theta_{T,j}-\ts_j)\rightsquigarrow\mathcal N(0,V_{jj})$ with
+$V=H^{-1}SH^{-1}$, while
+$[\Hb^{-1}\Gz\Hb^{-1}]_{jj}\to_p[H^{-1}\Gamma_0H^{-1}]_{jj}=V_{jj}/\kappa_j$. Hence the
+studentised statistic converges to $\mathcal N(0,\kappa_j)$ and
+$\Prob(|\mathcal N(0,\kappa_j)|\le z_{\alpha/2})=2\Phi(z_{\alpha/2}/\sqrt{\kappa_j})-1$.
+For the homogeneous AR design, $\Gamma_k=\sigma_u^2(\phi\psi)^{|k|}\Sigma_x$ gives
+$S=\sigma_u^2\Sigma_x\sum_k(\phi\psi)^{|k|}
+=\sigma_u^2\Sigma_x(1+\phi\psi)/(1-\phi\psi)$ and $H=\Gamma_0/\sigma_u^2=\Sigma_x$, so
+$V=\kappa\,\sigma_u^2\Sigma_x^{-1}$ with $\kappa=(1+\phi\psi)/(1-\phi\psi)$ and the
+inflation is the same in every coordinate. \hfill$\square$
+
+\subsection{Long-run covariance estimation (\texorpdfstring{\Cref{thm:lrv}}{Theorem})}
+
+\emph{(i) Bias of batch means.} For the idealised estimator built from $\eps_t=\gb_t(\ts)$,
+stationarity gives $\E[b\,\eps_t\eps_t^{\!\top}]
+=b\Lambda_0=\sum_{|k|<b}(1-|k|/b)\Gamma_k$. Splitting,
+\begin{equation}
+b\Lambda_0=S-\sum_{|k|\ge b}\Gamma_k-\frac1b\Big(\Delta-\sum_{|k|\ge b}|k|\Gamma_k\Big),
+\qquad \Delta=\sum_{k\ge1}k(\Gamma_k+\Gamma_k^{\!\top}),
+\label{eq:bmbias}
+\end{equation}
+and by \Cref{lem:davydov} both remainder sums are $O(b\rho^{b})$, giving
+$\E[\Sbm]=S-\Delta/b+O(\rho^{b})$ up to the drift term treated below.
+
+\emph{(ii) Bias of the two-scale estimator.} With
+$\Lambda_1=\E[\eps_0\eps_1^{\!\top}]=b^{-2}\sum_{i\in B_0,j\in B_1}\Gamma_{j-i}$ and
+counting multiplicities of each lag ($k$ for $1\le k\le b$, $2b-k$ for $b<k<2b$),
+\begin{equation}
+b(\Lambda_1+\Lambda_1^{\!\top})
+=\sum_{1\le|k|\le b}\frac{|k|}{b}\Gamma_k+\sum_{b<|k|<2b}\frac{2b-|k|}{b}\Gamma_k .
+\end{equation}
+Adding \eqref{eq:bmbias} in the form $b\Lambda_0=\sum_{|k|<b}(1-|k|/b)\Gamma_k$, the
+coefficient of $\Gamma_k$ becomes exactly $1$ for $|k|\le b$ and $(2b-|k|)/b\in(0,1)$ for
+$b<|k|<2b$, so
+\begin{equation}
+b\Lambda_0+b(\Lambda_1+\Lambda_1^{\!\top})
+=S-\sum_{|k|\ge2b}\Gamma_k-\sum_{b<|k|<2b}\Big(1-\frac{2b-|k|}{b}\Big)\Gamma_k
+=S+O(\rho^{b}),
+\end{equation}
+using \Cref{lem:davydov}. This is the flat-top window of \citet{politis1995bias} at block
+resolution; the point is that under geometric mixing its bias is exponentially small in
+$b$, whereas the batch-means bias in (i) is only $O(1/b)$. The algebraic identity
+$\Sft=2\Sbm(2b)-\Sbm(b)$ (using disjoint pairs) is immediate from
+$\Sbm(2b)=\Sbm(b)+ (b/T)\sum(\gb_{2k-1}\gb_{2k}^{\!\top}+\text{transpose})$.
+
+\emph{(iii) Variance.} $\Sbm$ is an average of $T'\asymp N/b$ terms that are themselves
+weakly dependent with geometrically decaying block-level autocovariances
+(\Cref{lem:davydov}); \Cref{as:mix} plus fourth moments give
+$\Var[\Sbm_{jk}]=O(1/T')=O(b/N)$, and the same for the lag-one term, hence for $\Sft$.
+
+\emph{Drift.} Write $\gb_t(\theta_{t-1})=\eps_t+\Xi_t$ with
+$\Xi_t=\widehat H_t\delta_{t-1}+O(\norm{\delta_{t-1}}^2)$. Then
+$\Sft$ built from $\gb_t(\theta_{t-1})$ differs from the idealised version by terms bounded
+by $b\,T'^{-1}\sum_{t\in\mathcal T}\{\norm{\Xi_t}^2+2\norm{\Xi_t}\norm{\eps_t}\}$.
+Two facts are needed. First, on the retained window $t\asymp T$, \Cref{thm:rate} gives
+$\E\norm{\delta_{t-1}}^2=O(\log t/(bt))$. Second, $\widehat H_t$ is a $b$-sample estimate of
+a $d\times d$ matrix, so for $\delta$ independent of block $t$,
+$\E\opnorm{\widehat H_t\delta}^2
+=\delta^{\!\top}\E[\widehat H_t^2]\delta
+\le\big(1+C d/b\big)\opnorm{H\delta}^2$
+under \Cref{as:curv} (the $d/b$ term is the fluctuation
+$\E[(\widehat H_t-H)M(\widehat H_t-H)]$, whose trace contributes a factor $\tr(HM)/b$).
+Hence
+\[
+b\,T'^{-1}\sum_{t\in\mathcal T}\E\norm{\Xi_t}^2
+=O\Big((1+d/b)\,T'^{-1}\sum_{t}\log t/t\Big)
+=O\big((1+d/b)\,b\log^2 N/N\big)
+=O\big((b+d)\log^2N/N\big),
+\]
+and the cross term is of smaller order by Cauchy--Schwarz. Writing
+$\tau_{b,N}=(b+d)\log^2N/N$, this is dominated by the $\sqrt{b/N}$ standard deviation in
+(iii) whenever $b+d=o(\sqrt N)$ up to logarithms; in the reported experiments
+$b+d\le 340$ and $N\ge2.5\times10^4$. Note that $\tau_{b,N}$ grows as $b$ falls below $d$,
+which is visible in \Cref{fig:lrv}(b) and is why we do not recommend $b\ll d$.
+
+\emph{(iv) Rate.} The entrywise bounds give
+$\opnorm{\Sft-S}\le\norm{\Sft-S}_F\le d\max_{jk}|\Sft_{jk}-S_{jk}|$, hence
+$\opnorm{\Sft-S}=O_p(d\sqrt{b/N}+\rho^b+\tau_{b,N})$; the factor $d$ is the price of the
+conversion and we do not try to remove it (a matrix-Bernstein argument under an explicit
+sub-exponential condition would give $\sqrt{db/N}$).
+Choosing $b=\lceil c\log N\rceil$ with $c>2/\log(1/\rho)$ makes $\rho^{b}=O(N^{-2})$ and
+gives $O_p(\sqrt{\log N/N})$. For $\Sbm$ the bias term $1/b$ replaces $\rho^b$ and the
+trade-off $\sqrt{b/N}\asymp1/b$ gives $b\asymp N^{1/3}$ and $O_p(N^{-1/3})$.
+Finally, $\Hb^{-1}\to_pH^{-1}$ (\Cref{thm:curv}) and $\Sft\to_pS$ give
+$u_j^{\!\top}\Sft u_j\to_p V_{jj}$, and \Cref{thm:clt} with Slutsky gives the
+studentised limit. \hfill$\square$
+
+\subsection{Curvature schedules (\texorpdfstring{\Cref{prop:gap}}{Proposition})}
+
+Let $\widehat H^{\mathrm{gap}}=n^{-1}\sum_{j\le n}Y_{jm}$. By stationarity,
+\[
+n\Var[\widehat H^{\mathrm{gap}}]
+=\Gamma_0^H+2\sum_{j\ge1}\Big(1-\frac jn\Big)\Gamma^H_{jm}
+=\Gamma_0^H+2\sum_{j\ge1}\Gamma^H_{jm}+o(1)
+=\Gamma_0^H+O(\rho^{m}),
+\]
+using $\opnorm{\Gamma^H_k}\le C\rho^{k}$ (\Cref{lem:davydov} applied to $Y$, which has
+$\eta'>2$ moments by \Cref{as:curv}). For Bernoulli thinning, let $Z_i\stackrel{iid}{\sim}\mathrm{Bernoulli}(p)$ be independent of
+the data and let
+\[
+\widehat H^{\mathrm{Bern}}=\Big(\sum_{i\le N}Z_i\Big)^{-1}\sum_{i\le N}Z_iY_i
+\]
+be the estimator with the \emph{realised} normaliser --- which is what the algorithm computes,
+since $W$ counts the updates actually made. Using a fixed normaliser $pN$ instead would leave
+a term $p(1-p)\,\mathrm{vec}(H)\mathrm{vec}(H)^{\!\top}$ coming from $\E[Y_i]=H\ne0$, which is
+$\Theta(1)$ and would swamp the $O(1/m)$ effect; the ratio form removes it, because
+$\widehat H^{\mathrm{Bern}}-H
+=(\sum_iZ_i)^{-1}\sum_iZ_i(Y_i-H)$ \emph{exactly}. Writing $n_Z=\sum_iZ_i$ with
+$\E n_Z=pN=n$ and $n_Z/n\to1$ a.s., the delta method for a ratio gives
+$n\Var[\widehat H^{\mathrm{Bern}}]=n^{-1}\Var\big[\sum_iZ_i(Y_i-H)\big]+o(1)$, and
+\[
+\Var\Big[\sum_iZ_i(Y_i-H)\Big]
+=\sum_ip\,\Gamma^H_0+\sum_{i\ne j}p^2\Gamma^H_{i-j}
+=Np\,\Gamma^H_0+2p^2\sum_{k\ge1}(N-k)\Gamma^H_k .
+\]
+Dividing by $n=pN$ and using $p=1/m$,
+$n\Var[\widehat H^{\mathrm{Bern}}]=\Gamma^H_0+2p\sum_{k\ge1}\Gamma^H_k+o(1)
+=\Gamma^H_0+m^{-1}(S^H-\Gamma^H_0)+o(1)$. \hfill$\square$
+
+\begin{remark}
+The contrast is that random thinning leaves a fixed fraction $p$ of \emph{all} lag pairs in
+the sum, whereas a deterministic gap removes every lag below $m$. For Gaussian AR(1)
+covariates and $\alpha\equiv1$, $\Gamma^H_k$ decays like $\phi^{2k}$ and
+$\kappa_H=(1+\phi^2)/(1-\phi^2)$.
+\end{remark}
+
+\section{Experimental details}
+\label{app:details}
+
+\input{sec_appendix_exp}

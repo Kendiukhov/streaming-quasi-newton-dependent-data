@@ -1,0 +1,19 @@
+\begin{table}[t]
+\centering
+\small
+\caption{\textbf{Cost.} Wall-clock milliseconds for one pass over $N=200{,}000$ observations, single-threaded, median of 7 runs, and the empirical exponent $s$ in time $\propto d^{s}$ fitted on the four largest $d$. The i.i.d.\ plug-in score covariance that the independent-data theory prescribes costs $O(d^2)$ per \emph{observation}, so the dependence-blind interval is more expensive than our long-run interval, which costs $O(d^2)$ per \emph{block}.}
+\ \emph{Asymptotic} exponents are the same exact counts evaluated at $N=10^{8}$, where the one-off $O(c_{\mathrm w}d^{3})$ warm-up is negligible and \eqref{eq:cost} reduces to $O(dN)$; at the $N$ used here the warm-up inflates the exponent, which is why the measured value exceeds one.}
+\label{tab:cost}
+\begin{tabular}{lrrrrrrrr}
+\toprule
+method & $d{=}5$ & $d{=}10$ & $d{=}20$ & $d{=}40$ & $d{=}80$ & $d{=}160$ & $s_{\mathrm{time}}$ & $s_{\mathrm{flop}}$ & $s_{\infty}$ \\
+\midrule
+\textbf{BGSN} (long-run interval) & 78.0 & 11.6 & 31.3 & 78.4 & 448.1 & 2697.5 & 2.18 & 1.56 & 1.00 \\
+\quad with the i.i.d.\ plug-in variance & 43.4 & 79.6 & 241.6 & 632.2 & 2355.5 & 12448.9 & 1.90 & 1.91 & 1.86 \\
+streaming Newton, Bernoulli $p=1/d$ & 46.3 & 21.3 & 15.1 & 169.5 & 457.7 & 2677.6 & 2.38 & 1.56 & -- \\
+streaming Newton, every observation ($p=1$) & 77.0 & 292.8 & 840.9 & 2214.2 & 9754.7 & 46629.9 & 1.95 & 1.97 & 1.97 \\
+ASGD (first order, random scaling) & 8.8 & 5.2 & 32.3 & 81.3 & 168.3 & 478.2 & 1.27 & -- & -- \\
+offline HAC, $L=100$ \emph{(not streaming)} & 1568.3 & 2296.9 & 6894.0 & 21089.4 & -- & -- & -- & -- & -- \\
+\bottomrule
+\end{tabular}
+\end{table}

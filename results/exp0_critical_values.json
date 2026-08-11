@@ -1,0 +1,27 @@
+{
+ "rows": [
+  {
+   "quantile": 0.9,
+   "simulated": 5.323164392911553,
+   "published_kvb": 3.89
+  },
+  {
+   "quantile": 0.95,
+   "simulated": 6.746467475298467,
+   "published_kvb": 5.374
+  },
+  {
+   "quantile": 0.975,
+   "simulated": 8.1541990156798,
+   "published_kvb": 6.811
+  },
+  {
+   "quantile": 0.99,
+   "simulated": 10.022581056181426,
+   "published_kvb": 8.544
+  }
+ ],
+ "n_paths": 4000000,
+ "n_terms": 400,
+ "used_two_sided_95": 8.1541990156798
+}

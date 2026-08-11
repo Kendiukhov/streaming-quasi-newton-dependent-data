@@ -1,0 +1,8 @@
+m=  1 (n=200000/200000)  n*Var gap=163.3  bern=163.3  ratio=1.000  predicted excess: gap=1.92e+00 bern=1.922
+m=  2 (n=100000/100002)  n*Var gap=91.27  bern=109.7  ratio=1.202  predicted excess: gap=6.32e-01 bern=0.961
+m=  5 (n=40000/40019)  n*Var gap=59.84  bern=78.09  ratio=1.305  predicted excess: gap=5.81e-02 bern=0.384
+m= 10 (n=20000/20021)  n*Var gap=56.19  bern=66.14  ratio=1.177  predicted excess: gap=1.60e-03 bern=0.192
+m= 20 (n=10000/10007)  n*Var gap=56.91  bern=60.84  ratio=1.069  predicted excess: gap=1.27e-06 bern=0.096
+m= 40 (n=5000/5003)  n*Var gap=57.14  bern=58.03  ratio=1.016  predicted excess: gap=8.11e-13 bern=0.048
+m= 80 (n=2500/2501)  n*Var gap=56.64  bern=56.54  ratio=0.998  predicted excess: gap=3.29e-25 bern=0.024
+[saved] /Volumes/Crucial X6/MacBook/Code/ml_papers/streaming_qn_dependent/experiments/../results/exp4_gapping.json
