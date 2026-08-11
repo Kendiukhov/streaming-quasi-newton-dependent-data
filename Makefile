@@ -22,6 +22,7 @@ data:
 	$(PY) $(EXP)/fetch_data.py
 
 test:
+	$(PY) tests/test_paper_sources.py
 	$(PY) tests/test_oracles.py
 
 exp: $(RES)/exp0_critical_values.json $(RES)/exp1_main.json $(RES)/exp2_coverage_law.json \

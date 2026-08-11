@@ -90,7 +90,9 @@ long-run variance covers $\WcCovAsgdOurs$, the same estimator with the i.i.d.\ p
 $\WcCovAsgdPlugin$, and \bgsn{} covers $\WcCovBgsn$.
 
 Coverage checks a single quantile, while the theorem claims a whole distribution, so we also
-report the Kolmogorov--Smirnov distance between the studentised error
+report the Kolmogorov--Smirnov distance between the studentised error (the error divided by
+its own estimated standard error, which is what an interval implicitly compares to a normal
+quantile)
 $\sqrt N(\theta_{T,j}-\ts_j)/\{u_j^{\!\top}\Sft u_j\}^{1/2}$ and the standard normal, taken
 per coordinate across replicates. On AR-hom the worst coordinate gives $\KsBgsnArhom$
 against a $5\%$ critical value of $\KsCritArhom$, so the studentised distribution is not

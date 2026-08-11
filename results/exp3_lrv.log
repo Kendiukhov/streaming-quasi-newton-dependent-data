@@ -1,0 +1,8 @@
+b=   5 BM 0.7489 (theory 0.7494)  2scale 0.9927±0.0012  drift-only contribution to 2scale 0.00128  non-PSD diag 0.000
+b=  10 BM 0.8701 (theory 0.8711)  2scale 0.9986±0.0013  drift-only contribution to 2scale 0.00077  non-PSD diag 0.000
+b=  20 BM 0.9341 (theory 0.9355)  2scale 0.9991±0.0016  drift-only contribution to 2scale 0.00099  non-PSD diag 0.000
+b=  40 BM 0.9667 (theory 0.9678)  2scale 0.9994±0.0019  drift-only contribution to 2scale 0.00148  non-PSD diag 0.000
+b=  80 BM 0.9823 (theory 0.9839)  2scale 1.0004±0.0026  drift-only contribution to 2scale 0.00247  non-PSD diag 0.000
+b= 160 BM 0.9928 (theory 0.9919)  2scale 1.0023±0.0036  drift-only contribution to 2scale 0.00446  non-PSD diag 0.000
+b= 320 BM 0.9976 (theory 0.9960)  2scale 1.0051±0.0047  drift-only contribution to 2scale 0.00858  non-PSD diag 0.000
+[saved] /Volumes/Crucial X6/MacBook/Code/ml_papers/streaming_qn_dependent/experiments/../results/exp3_lrv.json

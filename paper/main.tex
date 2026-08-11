@@ -97,8 +97,9 @@ real streams we study the estimated inflation is about $20$, which pins that lim
 third.
 
 We prove almost sure convergence, an $O(\log N/N)$ rate, and a central limit theorem with the
-long-run sandwich for the inversion-free rank-one curvature recursion under geometric
-mixing---the regime where the martingale argument behind the independent-data analysis fails.
+long-run sandwich for the inversion-free rank-one curvature recursion under geometric mixing
+(the dependence between distant parts of the stream decays exponentially) --- the regime where
+the martingale argument behind the independent-data analysis fails.
 Because the blocks carry \emph{gradients} rather than \emph{iterates}, their length is set by
 the mixing time of the data rather than of the optimisation path: $b\asymp\log N$ suffices and
 $S$ is estimated at $\widetilde O(N^{-1/2})$, against $N^{-1/8}$ for the best published
@@ -129,8 +130,9 @@ When the Hessian has the form
 $\nabla^2F(\theta)=\E[\alpha(\theta;\xi)\,\Psi(\theta;\xi)\Psi(\theta;\xi)^{\!\top}]$---as
 it does for linear, logistic, softmax, Poisson and ridge regression, and for the
 geometric median---the running curvature estimate is a sum of rank-one terms, so its
-inverse can be maintained directly by the Sherman--Morrison identity
-\citep{sherman1950adjustment} without ever forming or inverting a matrix
+inverse can be maintained directly by the Sherman--Morrison rank-one update
+\citep{sherman1950adjustment} --- also called the Riccati form, the name we use in the proofs
+--- without ever forming or inverting a matrix
 \citep{bercu2020efficient,cenac2025efficient,boyer2023asymptotic,godichonbaggioni2024online}.
 \citet{godichonbaggioni2025adaptive} push this to its natural conclusion: thinning the
 rank-one updates and taking mini-batches of size $d$ gives an estimator whose \emph{total}
@@ -207,7 +209,9 @@ resulting estimator \bgsn{} (blocked--gapped streaming Newton).
 \item \textbf{An exponentially small block-length bias} (\Cref{thm:lrv}). What makes
       $b\asymp\log N$ admissible is that the two-scale (flat-top / lugsail) correction
       $\Sft=\Sbm+b(\hat\Lambda_1+\hat\Lambda_1^{\!\top})$ has bias $O(\rho^b)$ rather than
-      the $O(1/b)$ of plain batch means. The correction and this tail-sum property are due
+      the $O(1/b)$ of plain batch means. (A flat-top lag window is one whose weights are flat
+      near lag zero, so its bias picks up only the far tail of the autocovariances rather than
+      shaving every lag.) The correction and this tail-sum property are due
       to the flat-top literature
       \citep{politis1995bias,politis2011higher,vats2022lugsail,singh2025utility}, not to us
       (\Cref{sec:lrv} is explicit about the boundary); what we add is that it is available

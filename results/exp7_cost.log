@@ -1,24 +1,5 @@
-d=   5  BGSN     78.0ms  BGSN+plugin      43.4ms  SN-iid(p=1)      77.0ms  SN-iid(p=1/d)     46.3ms  ASGD     8.8ms  offlineHAC      1568ms
-d=  10  BGSN     11.6ms  BGSN+plugin      79.6ms  SN-iid(p=1)     292.8ms  SN-iid(p=1/d)     21.3ms  ASGD     5.2ms  offlineHAC      2297ms
-d=  20  BGSN     31.3ms  BGSN+plugin     241.6ms  SN-iid(p=1)     840.9ms  SN-iid(p=1/d)     15.1ms  ASGD    32.3ms  offlineHAC      6894ms
-d=  40  BGSN     78.4ms  BGSN+plugin     632.2ms  SN-iid(p=1)    2214.2ms  SN-iid(p=1/d)    169.5ms  ASGD    81.3ms  offlineHAC     21089ms
-d=  80  BGSN    448.1ms  BGSN+plugin    2355.5ms  SN-iid(p=1)    9754.7ms  SN-iid(p=1/d)    457.7ms  ASGD   168.3ms
-d= 160  BGSN   2697.5ms  BGSN+plugin   12448.9ms  SN-iid(p=1)   46629.9ms  SN-iid(p=1/d)   2677.6ms  ASGD   478.2ms
-
--- deterministic operation counts (flops, leading order) --
-  d=   5  BGSN 8.015e+06  +plugin 1.302e+07  SN-iid(p=1) 2.000e+07  SN-iid(p=1/d) 8.015e+06
-  d=  10  BGSN 1.614e+07  +plugin 3.614e+07  SN-iid(p=1) 7.000e+07  SN-iid(p=1/d) 1.614e+07
-  d=  20  BGSN 3.314e+07  +plugin 1.131e+08  SN-iid(p=1) 2.600e+08  SN-iid(p=1/d) 3.314e+07
-  d=  40  BGSN 7.336e+07  +plugin 3.934e+08  SN-iid(p=1) 1.000e+09  SN-iid(p=1/d) 7.336e+07
-  d=  80  BGSN 2.038e+08  +plugin 1.484e+09  SN-iid(p=1) 3.920e+09  SN-iid(p=1/d) 2.038e+08
-  d= 160  BGSN 8.666e+08  +plugin 5.987e+09  SN-iid(p=1) 1.552e+10  SN-iid(p=1/d) 8.666e+08
-  flop exponent in d, BGSN           : 1.560
-  flop exponent in d, BGSN_plugin    : 1.909
-  flop exponent in d, SN_iid_p1      : 1.967
-  flop exponent in d, SN_iid_pinv_d  : 1.560
-  empirical exponent in d (last four points), BGSN           : 2.18
-  empirical exponent in d (last four points), BGSN_plugin    : 1.90
-  empirical exponent in d (last four points), SN_iid_p1      : 1.95
-  empirical exponent in d (last four points), SN_iid_pinv_d  : 2.38
-  empirical exponent in d (last four points), ASGD           : 1.27
-[saved] /Volumes/Crucial X6/MacBook/Code/ml_papers/streaming_qn_dependent/experiments/../results/exp7_cost.json
+d=   5  BGSN     19.3ms  BGSN+plugin      55.0ms  SN-iid(p=1)     148.4ms  SN-iid(p=1/d)      9.6ms  ASGD    13.0ms  offlineHAC       723ms
+d=  10  BGSN      7.3ms  BGSN+plugin      42.3ms  SN-iid(p=1)     157.9ms  SN-iid(p=1/d)      8.5ms  ASGD     4.1ms  offlineHAC      1416ms
+d=  20  BGSN     24.3ms  BGSN+plugin     103.4ms  SN-iid(p=1)     520.4ms  SN-iid(p=1/d)     71.4ms  ASGD    46.3ms  offlineHAC      4199ms
+d=  40  BGSN    145.9ms  BGSN+plugin     375.2ms  SN-iid(p=1)    1295.9ms  SN-iid(p=1/d)    163.8ms  ASGD    23.4ms  offlineHAC     13487ms
+d=  80  BGSN    531.6ms  BGSN+plugin    1948.5ms  SN-iid(p=1)    6300.6ms  SN-iid(p=1/d)    618.0ms  ASGD   104.3ms

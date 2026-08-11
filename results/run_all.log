@@ -1,2 +1,5 @@
 [skip] exp0_critical_values.py (exp0_critical_values.json exists)
 [run ] exp3_lrv.py -> exp3_lrv.json
+[done] exp3_lrv.py rc=0 (202s, log: exp3_lrv.log)
+[skip] exp4_gapping.py (exp4_gapping.json exists)
+[run ] exp7_cost.py -> exp7_cost.json
