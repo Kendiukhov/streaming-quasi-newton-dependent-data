@@ -28,6 +28,118 @@ C = dict(ours="#0072B2", bm="#56B4E9", plugin="#D55E00", base="#CC79A7",
          asgd="#E69F00", rs="#009E73", offline="#666666", oracle="#000000")
 
 
+# Legends must not sit on top of the data.  `legend.frameon` is False throughout -- a frame
+# would hide the curve it covers rather than fix the problem -- so an overlap shows up as text
+# with a line struck through it.  It happened in figure 1: the theory curve and two error bars
+# ran straight through all three legend rows.  matplotlib will not warn about it, so this does.
+_OVERLAPS = []
+
+
+def _legend_hits(ax, leg):
+    """Count drawn data that falls inside the legend's box.
+
+    Lines are sampled along each segment, not only at their vertices, because a curve can cross
+    the box between two widely spaced points; using a line's bounding box instead would flag the
+    whole panel. Bars are solid, so for those a box overlap is the right test.
+
+    Every axes whose own area overlaps the legend is searched, not just the one that owns the
+    legend: figures 5(c) and 6(c) draw a second series on a twin axes, whose lines are invisible
+    from the primary axes, and a legend pushed below a panel can land on a neighbour.
+    """
+    fig = ax.figure
+    fig.canvas.draw()
+    rend = fig.canvas.get_renderer()
+    box = leg.get_window_extent(rend)
+    hits = 0
+    for other in fig.axes:
+        try:
+            if not other.get_window_extent(rend).overlaps(box):
+                continue
+        except Exception:
+            pass
+        for ln in other.get_lines():
+            xy = ln.get_xydata()
+            if len(xy) == 0 or not ln.get_visible():
+                continue
+            pts = ln.get_transform().transform(xy)
+            for i in range(len(pts)):
+                if box.contains(*pts[i]):
+                    hits += 1
+                if i + 1 < len(pts):                      # sample along the segment
+                    (x0, y0), (x1, y1) = pts[i], pts[i + 1]
+                    for t in (0.2, 0.4, 0.6, 0.8):
+                        if box.contains(x0 + t * (x1 - x0), y0 + t * (y1 - y0)):
+                            hits += 1
+        for pa in other.patches:                          # bars
+            try:
+                if box.overlaps(pa.get_window_extent(rend)):
+                    hits += 1
+            except Exception:
+                pass
+        # annotations inside the panel, and -- for a legend placed outside it -- the axis label
+        # and tick labels it could otherwise land on top of
+        others = list(other.texts) + [other.xaxis.label, other.yaxis.label]
+        others += other.get_xticklabels() + other.get_yticklabels()
+        for tx in others:
+            if not tx.get_text():
+                continue
+            try:
+                tb = tx.get_window_extent(rend)
+            except Exception:
+                continue
+            if box.overlaps(tb):
+                hits += 1
+    return hits
+
+
+def _legend_clear(ax, leg, where):
+    """Record and report an overlap, so the build can fail on it."""
+    hits = _legend_hits(ax, leg)
+    if hits:
+        _OVERLAPS.append((where, hits))
+        print("[fig] WARNING legend overlaps the data in %s (%d sampled points inside "
+              "the legend box)" % (where, hits))
+    return hits
+
+
+_ALL_LOCS = ("lower left", "lower right", "upper left", "upper right", "center left",
+             "center right", "lower center", "upper center", "center", "best")
+
+
+def _legend_auto(ax, where, locs, **kw):
+    """Put the legend at the first candidate position that covers no data.
+
+    The caller's list is a preference order -- its first entry is the placement the panel was
+    designed around, so a panel whose legend is already clear does not move -- and every remaining
+    matplotlib position is then tried, including the centre, which is where a legend belongs when
+    the data leave a horizontal band empty. Only if all ten cover something does the legend go
+    below the panel, where it cannot overlap anything.
+    """
+    best = None
+    for loc in tuple(locs) + tuple(l for l in _ALL_LOCS if l not in locs):
+        leg = ax.legend(loc=loc, **kw)
+        hits = _legend_hits(ax, leg)
+        if hits == 0:
+            return leg
+        if best is None or hits < best[0]:
+            best = (hits, loc)
+        leg.remove()
+    # Nothing in the panel is clear, so go below it -- as close as will clear the x-axis label.
+    ncol = 2 if len(ax.get_legend_handles_labels()[0]) > 2 else 1
+    for drop in (-0.24, -0.30, -0.36, -0.44):
+        leg = ax.legend(loc="upper center", bbox_to_anchor=(0.5, drop), ncol=ncol, **kw)
+        if _legend_hits(ax, leg) == 0:
+            print("[fig] %s: no in-panel position is clear (best was %r, %d points); legend "
+                  "moved below the panel" % (where, best[1], best[0]))
+            return leg
+        leg.remove()
+    # Even below the panel it lands on something: keep the lowest position and record it, so the
+    # build reports the figure rather than shipping a legend over the data.
+    leg = ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.44), ncol=ncol, **kw)
+    _legend_clear(ax, leg, where)
+    return leg
+
+
 def _ok(name):
     p = os.path.join(common.RESULTS, name)
     return os.path.exists(p)
@@ -77,18 +189,24 @@ def fig1_headline():
     a.errorbar(x, [q["cov_BGSN-plugin"] for q in r],
                yerr=[1.96 * q["covse_BGSN-plugin"] for q in r], fmt="o", ms=4.5,
                color=C["plugin"], mfc="white", mew=1.3, capsize=2, lw=1,
-               label="measured, dependence-blind interval")
+               label="measured, dependence-blind")
     a.errorbar(x, [q["cov_BGSN"] for q in r], yerr=[1.96 * q["covse_BGSN"] for q in r],
                fmt="s", ms=4.5, color=C["ours"], capsize=2, lw=1,
-               label="measured, BGSN (this paper)")
+               label="measured, BGSN (ours)")
     a.axhline(0.95, color="k", ls=":", lw=1)
     a.text(x.max(), 0.955, "nominal 95%", ha="right", va="bottom", fontsize=7.5)
     a.set_xlabel(r"variance inflation $\kappa=(1{+}\phi\psi)/(1{-}\phi\psi)$")
     a.set_ylabel("coverage of a nominal 95% interval")
-    a.set_ylim(0.5, 1.0)
+    # The y-axis is extended below the lowest measurement so that the legend has empty space
+    # of its own.  At ylim=(0.5, 1.0) the theory curve descended to 0.56 and ran straight
+    # through all three legend rows.
+    a.set_ylim(0.42, 1.0)
+    a.set_yticks([0.5, 0.6, 0.7, 0.8, 0.9, 1.0])
     a.set_title("(a) Dependence-blind intervals fail by a\npredictable amount",
                 loc="left")
-    a.legend(loc="lower left")
+    leg = a.legend(loc="lower left", fontsize=7.2, labelspacing=0.32,
+                   handletextpad=0.55, borderaxespad=0.35)
+    _legend_clear(a, leg, "fig1(a)")
 
     # (b) coverage by method on the AR-hom design.
     # A width-versus-coverage scatter was the original design and it no longer works: with the
@@ -181,7 +299,9 @@ def fig2_lrv():
     a.set_ylabel(r"$\mathbb{E}[\widehat{S}]/S$  (diagonal mean)")
     a.set_title("(a) Both estimators match their exact\nexpectations at every block length",
                 loc="left")
-    a.legend(loc="lower right", fontsize=7.2)
+    _legend_auto(a, "fig2_lrv(a)",
+                 ("lower right", "lower center", "center right", "lower left", "center left"),
+                 fontsize=7.2)
 
     a = ax[1]
     a.axhline(0.0, color="k", ls=":", lw=1)
@@ -195,7 +315,8 @@ def fig2_lrv():
     a.set_ylabel(r"contribution relative to $S$")
     a.set_title("(b) The moving iterate contributes\n$O((b{+}d)/N)$: essentially nothing",
                 loc="left")
-    a.legend(loc="upper left")
+    _legend_auto(a, "fig2_lrv(b)",
+                 ("upper left", "lower right", "center right", "lower center"), fontsize=7.6)
     savefig(fig, "fig2_lrv.pdf")
 
 
@@ -233,7 +354,8 @@ def fig3_gapping():
     a.set_ylabel("curvature-estimator variance,\nrelative to the i.i.d. benchmark")
     a.set_title("At matched cost, gapping decorrelates\nexponentially, thinning only as $1/m$",
                 loc="left")
-    a.legend(loc="upper right")
+    leg = a.legend(loc="upper right")
+    _legend_clear(a, leg, "fig3_gapping")
     savefig(fig, "fig3_gapping.pdf")
 
 
@@ -273,8 +395,9 @@ def fig4_cost():
     a.set_title(ttl, loc="left", fontsize=8.2)
     # Five curves fan across the whole panel, so there is no free corner: put the legend below
     # the axes.  savefig uses bbox_inches="tight", so it is not clipped.
-    a.legend(loc="upper center", bbox_to_anchor=(0.5, -0.24), ncol=2, fontsize=6.3,
+    leg = a.legend(loc="upper center", bbox_to_anchor=(0.5, -0.24), ncol=2, fontsize=6.3,
              frameon=False, handlelength=1.6, columnspacing=1.1, labelspacing=0.25)
+    _legend_clear(a, leg, "fig4_cost")
     savefig(fig, "fig4_cost.pdf")
 
 
@@ -295,8 +418,9 @@ def fig5_ablations():
     a.axhline(0.95, color="k", ls=":", lw=1)
     a.set_xscale("log"); a.set_xlabel("stream length $N$"); a.set_ylabel("coverage")
     a.set_ylim(0.6, 1.0); a.set_title("(a) sample size", loc="left", fontsize=8.4)
-    a.legend(loc="center right", fontsize=6.4, framealpha=0.95, borderpad=0.3,
+    leg = a.legend(loc="center right", fontsize=6.4, framealpha=0.95, borderpad=0.3,
              labelspacing=0.22)
+    _legend_clear(a, leg, "fig5_ablations")
 
     a = ax[1]
     r = d["b"]
@@ -309,8 +433,9 @@ def fig5_ablations():
     a.set_xscale("log"); a.set_xlabel("block length $b$")
     a.set_ylim(0.6, 1.0)          # same scale as (a); a second "coverage" label collided with it
     a.set_title("(b) block length ($N=200{,}000$)", loc="left", fontsize=8.4)
-    a.legend(loc="lower center", fontsize=6.4, framealpha=0.95, borderpad=0.3,
+    leg = a.legend(loc="lower center", fontsize=6.4, framealpha=0.95, borderpad=0.3,
              labelspacing=0.22)
+    _legend_clear(a, leg, "fig5_ablations")
 
     a = ax[2]
     r = d["warm"]
@@ -390,8 +515,9 @@ def fig6_real():
     a.set_xscale("log"); a.set_xlabel("block length $b$ (traffic)")
     a.set_ylabel("coverage"); a.set_ylim(0.25, 1.02)
     a.set_title("(c) block length, real covariates", loc="left", fontsize=8.6)
-    a.legend(loc="lower left", fontsize=5.9, handlelength=1.5, framealpha=0.95,
+    leg = a.legend(loc="lower left", fontsize=5.9, handlelength=1.5, framealpha=0.95,
              frameon=True, borderpad=0.3, labelspacing=0.22)
+    _legend_clear(a, leg, "fig6_real")
     # The block-adequacy diagnostic on a twin axis.  The caption claims it is overlaid here, so
     # it has to be drawn: an earlier version described a curve that was not in the figure.
     a2 = a.twinx()
@@ -427,14 +553,23 @@ def fig7_lrv_rate():
                    label=(r"iterate-path OBM, $b_n\asymp T^{3/4}$"
                           + (f" (slope {e2:.2f})" if e2 else "")))
     a.set_xscale("log"); a.set_yscale("log")
+    if "log" in res and res["log"]["rows"]:
+        _logticks(a, [q["N"] for q in res["log"]["rows"]])
     a.set_xlabel("stream length $N$")
     a.set_ylabel(r"$\|\widehat\Sigma-\Sigma\|_2/\|\Sigma\|_2$")
     a.set_title("(a) The same object, two ways:\nthe sandwich an interval actually uses",
                 loc="left")
+    # Open space below the curves so the legend has a corner of its own; both panels are
+    # descending or flat, so without this there is no in-panel position that does not cover data
+    # and the legend has to go below the panel, where two panels' legends run together.
+    _lo, _hi = a.get_ylim()
+    a.set_ylim(_lo / 2.6, _hi)
     # both curves are flat-ish, one high one low, so the middle of the panel is the only place a
     # legend does not sit on top of data
-    a.legend(loc="center left", fontsize=6.6, framealpha=0.95, borderpad=0.3,
-             labelspacing=0.24, handlelength=1.8)
+    _legend_auto(a, "fig7_lrv_rate(a)",
+                 ("center left", "lower left", "lower right", "upper right", "center right"),
+                 fontsize=6.6, framealpha=0.95, borderpad=0.3, labelspacing=0.24,
+                 handlelength=1.8)
 
     # (b) the long-run covariance itself, under each estimator's own optimal schedule
     a = ax[1]
@@ -455,11 +590,20 @@ def fig7_lrv_rate():
         ref = res["log"]["rows"][0]["err_ft"] * (nn / nn[0]) ** -0.5
         a.plot(nn, ref, ls=":", color="k", lw=1, label=r"slope $-1/2$")
     a.set_xscale("log"); a.set_yscale("log")
+    if "log" in res and res["log"]["rows"]:
+        _logticks(a, [q["N"] for q in res["log"]["rows"]])
     a.set_xlabel("stream length $N$")
     a.set_ylabel(r"$\|\widehat S-S\|_2/\|S\|_2$")
     a.set_title("(b) The long-run covariance itself,\neach at its own optimal $b$", loc="left")
-    a.legend(loc="lower left", fontsize=6.6, framealpha=0.95, borderpad=0.3,
-             labelspacing=0.24, handlelength=1.8, bbox_to_anchor=(-0.02, -0.03))
+    # Open space below the curves so the legend has a corner of its own; both panels are
+    # descending or flat, so without this there is no in-panel position that does not cover data
+    # and the legend has to go below the panel, where two panels' legends run together.
+    _lo, _hi = a.get_ylim()
+    a.set_ylim(_lo / 2.6, _hi)
+    _legend_auto(a, "fig7_lrv_rate(b)",
+                 ("lower left", "lower right", "upper right", "center left", "center right"),
+                 fontsize=6.6, framealpha=0.95, borderpad=0.3, labelspacing=0.24,
+                 handlelength=1.8)
     savefig(fig, "fig7_lrv_rate.pdf")
 
 
@@ -490,11 +634,15 @@ def fig8_hard_design():
                label="dependence-blind")
         a.set_xscale("log"); a.set_xlabel("stream length $N$")
         _logticks(a, N)
+        a.set_ylim(0.0, 1.06)
         if k == 0:
             a.set_ylabel("coverage")
-            a.legend(fontsize=6.2, loc="lower right", framealpha=0.95, frameon=True,
-                     borderpad=0.3, labelspacing=0.22, handlelength=1.5)
-        a.set_ylim(0.0, 1.06)
+            # placed after set_ylim, so the candidate search sees the final axes limits
+            _legend_auto(a, "fig8_hard_design(a)",
+                         ("lower right", "lower left", "center right", "center left",
+                          "upper left"),
+                         fontsize=6.2, framealpha=0.95, frameon=True, borderpad=0.3,
+                         labelspacing=0.22, handlelength=1.5)
         a.set_title(f"({chr(97 + k)}) {label}", fontsize=9, loc="left")
 
     a = ax[-1]
@@ -507,8 +655,10 @@ def fig8_hard_design():
     _logticks(a, [q["N"] for q in designs[0][1]["rows"]])
     a.set_ylabel("RMSE / efficient s.e.")
     a.set_title(f"({chr(97 + len(designs))}) why: the point estimate", fontsize=9, loc="left")
-    a.legend(fontsize=6.2, loc="upper right", framealpha=0.95, borderpad=0.3,
-             labelspacing=0.22, handlelength=1.5)
+    _legend_auto(a, "fig8_hard_design(rmse)",
+                 ("upper right", "lower left", "center right", "upper left", "lower right"),
+                 fontsize=6.2, framealpha=0.95, borderpad=0.3, labelspacing=0.22,
+                 handlelength=1.5)
 
     savefig(fig, "fig8_hard_design.pdf")
 
@@ -516,3 +666,8 @@ def fig8_hard_design():
 if __name__ == "__main__":
     fig1_headline(); fig2_lrv(); fig3_gapping(); fig4_cost(); fig5_ablations(); fig6_real()
     fig7_lrv_rate(); fig8_hard_design()
+    if _OVERLAPS:
+        print("\n[fig] %d legend/data overlap(s) remain: %s"
+              % (len(_OVERLAPS), ", ".join("%s (%d)" % t for t in _OVERLAPS)))
+        sys.exit(1)
+    print("[fig] no legend sits on top of the data")

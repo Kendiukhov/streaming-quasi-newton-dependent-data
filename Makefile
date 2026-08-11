@@ -2,6 +2,8 @@
 #
 #   make all            everything (a few CPU-hours; safe to interrupt and resume)
 #   make test           validation of every closed-form population quantity
+#   make layout         check both PDFs for over-wide lines, oversized floats and ink
+#                       outside the text block on any side of any page
 #   make paper          rebuild the preprint PDF from whatever results exist
 #   make submission     rebuild the Information Sciences submission package
 #   make clean-results  delete results (keeps the downloaded data)
@@ -15,9 +17,9 @@ RES     := results
 NJOBS   ?= 5
 export NJOBS
 
-.PHONY: all data test exp figures tables paper submission clean-results clean
+.PHONY: all data test exp figures tables paper submission layout clean-results clean
 
-all: data test exp figures tables paper submission
+all: data test exp figures tables paper submission layout
 
 data:
 	$(PY) $(EXP)/fetch_data.py
@@ -52,6 +54,13 @@ paper: tables
 submission: tables
 	sh submission/build.sh
 	$(PY) submission/check_highlights.py
+
+# Two independent layout gates, because each catches what the other cannot: the log knows about
+# over-wide lines and floats too tall for a page, and the rendered page is the only place a table
+# hanging off the bottom actually shows up.  Both read paper/ and submission/.
+layout: paper submission
+	$(PY) submission/check_overflow.py
+	$(PY) submission/check_geometry.py
 
 clean-results:
 	rm -f $(RES)/*.json $(RES)/*.log $(RES)/*.npz

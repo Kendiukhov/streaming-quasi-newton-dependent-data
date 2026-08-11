@@ -1,104 +1,109 @@
-\begin{table}[tbp]
-\centering
-\small
-\caption{\textbf{Ablations} on the homogeneous autoregressive design ($d=20$, $\kappa=2.92$, $R=250$). \emph{cov} columns are coverage of nominal 95\% intervals using the two-scale, plain batch-means, and i.i.d.\ plug-in variance respectively; \emph{eff} is the empirical variance of the point estimate divided by its asymptotic value ($1.00$ is efficient); \emph{adeq} is the free block-adequacy diagnostic $r_j$, an estimate of the relative block-length bias of plain batch means. The three coverage columns use the two-scale, plain batch-means and i.i.d.\ plug-in variance respectively. In panel~(i) the designs are abbreviated AR (autoregressive), AR-s (strongly autoregressive) and Mkv (regime-switching); the number of times the safeguard acted is in the text. Panel (c$'$) is on the regime-switching design and is the reason the default warm-up is $c_{\mathrm w}=200$ rather than $50$: there, $50d$ consecutive observations span only about thirty regime visits, the curvature estimate is still rank-starved, and the $1/t$ schedule diverges. The warm-up must span enough effectively distinct design points, which is not the same as enough observations. Panel (i) varies how the blocked step is safeguarded: \emph{none} is the raw $1/t$ step, \emph{cap} is the step-length safeguard of \eqref{eq:step} at $c_D=1$ (our default) with \emph{cap 0.25} and \emph{cap 4} changing $c_D$ by a factor of four either way, \emph{shift} is the rejected schedule shift of \Cref{app:t0}, and \emph{both} applies the two together; \emph{clips} counts how many of the $10{,}000$ blocks the safeguard acted on. \emph{eff} is in scientific notation where the unsafeguarded step diverges. Panel (j) is on a short stream ($N=4000$, $d=11$, the length of a real-data evaluation segment) and varies the cap on the warm-up as a fraction of the stream; $\varpi_{\mathrm w}=1$ means uncapped, which spends $2200$ of the $4000$ observations on curvature and leaves $45$ blocked steps.}
-\label{tab:ablation}
+\begingroup
 \small
 \setlength{\tabcolsep}{4pt}
-\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{%
-\begin{tabular}{llrrrrr}
+\begin{longtable}{llrrrrr}
+\caption{\textbf{Ablations} on the homogeneous autoregressive design ($d=20$, $\kappa=2.92$, $R=250$). The three coverage columns --- \emph{2-scale}, \emph{BM} and \emph{plug-in} --- are coverage of nominal 95\% intervals using the two-scale, plain batch-means and i.i.d.\ plug-in variance respectively; \emph{eff} is the empirical variance of the point estimate divided by its asymptotic value ($1.00$ is efficient), in scientific notation where the unsafeguarded step diverges; and $r_j$ is the free block-adequacy diagnostic, an estimate of the relative block-length bias of plain batch means. Panel (c$'$) is on the regime-switching design and is why the default warm-up is $c_{\mathrm w}=200$ rather than $50$ (\Cref{app:abl}). Panel (f) varies the Bernoulli retention probability $p$ at gap $m=1$ and then the gap $m$ at $p=1$, so the shared baseline $m=1,\ p=1$ appears in both sub-sweeps. In panel~(i) the designs are abbreviated AR (autoregressive), AR-s (strongly autoregressive) and Mkv (regime-switching), and the variants are: \emph{none}, the raw $1/t$ step; \emph{cap}, the step-length safeguard of \eqref{eq:step} at $c_D=1$ (our default), with \emph{cap 0.25} and \emph{cap 4} changing $c_D$ by a factor of four either way; \emph{shift}, the rejected schedule shift of \Cref{app:t0}; and \emph{both}, the two together. The number of blocks out of $10{,}000$ on which the safeguard acted is reported in \Cref{app:abl} and in \Cref{tab:hard}. Panel (j) is on a short stream ($N=4000$, $d=11$, the length of a real-data evaluation segment) and varies the cap on the warm-up as a fraction of the stream; $\varpi_{\mathrm w}=1$ means uncapped, which spends $2200$ of the $4000$ observations on curvature and leaves $45$ blocked steps.}
+\label{tab:ablation}\\
 \toprule
 panel & setting & eff & 2-scale & BM & plug-in & $r_j$ \\
 \midrule
-\multirow{5}{*}{(a) length $N$} & $N=25{,}000$ & 1.23 & 0.930 & 0.922 & 0.710 & 0.086 \\
- & $N=50{,}000$ & 1.08 & 0.937 & 0.931 & 0.731 & 0.072 \\
- & $N=100{,}000$ & 1.04 & 0.947 & 0.938 & 0.733 & 0.069 \\
- & $N=200{,}000$ & 1.04 & 0.947 & 0.937 & 0.736 & 0.069 \\
+\endfirsthead
+\multicolumn{7}{l}{\emph{\tablename~\thetable, continued from the previous page.}}\\
+\toprule
+panel & setting & eff & 2-scale & BM & plug-in & $r_j$ \\
+\midrule
+\endhead
+\midrule
+\multicolumn{7}{r}{\emph{continued on the next page}}\\
+\endfoot
+\bottomrule
+\endlastfoot
+\multirow{5}{*}{(a) length $N$} & $N=25{,}000$ & 1.23 & 0.930 & 0.922 & 0.710 & 0.086 \\*
+ & $N=50{,}000$ & 1.08 & 0.937 & 0.931 & 0.731 & 0.072 \\*
+ & $N=100{,}000$ & 1.04 & 0.947 & 0.938 & 0.733 & 0.069 \\*
+ & $N=200{,}000$ & 1.04 & 0.947 & 0.937 & 0.736 & 0.069 \\*
  & $N=400{,}000$ & 1.10 & 0.941 & 0.934 & 0.729 & 0.069 \\
 \midrule
-\multirow{8}{*}{(b) block $b$} & $b=5$ & 1.02 & 0.948 & 0.905 & 0.736 & 0.325 \\
- & $b=10$ & 1.03 & 0.949 & 0.926 & 0.737 & 0.149 \\
- & $b=20$ & 1.04 & 0.947 & 0.937 & 0.736 & 0.069 \\
- & $b=40$ & 1.04 & 0.946 & 0.943 & 0.737 & 0.041 \\
- & $b=80$ & 1.05 & 0.946 & 0.944 & 0.738 & 0.045 \\
- & $b=160$ & 1.06 & 0.946 & 0.944 & 0.734 & 0.060 \\
- & $b=320$ & 1.07 & 0.943 & 0.944 & 0.738 & 0.085 \\
+\multirow{8}{*}{(b) block $b$} & $b=5$ & 1.02 & 0.948 & 0.905 & 0.736 & 0.325 \\*
+ & $b=10$ & 1.03 & 0.949 & 0.926 & 0.737 & 0.149 \\*
+ & $b=20$ & 1.04 & 0.947 & 0.937 & 0.736 & 0.069 \\*
+ & $b=40$ & 1.04 & 0.946 & 0.943 & 0.737 & 0.041 \\*
+ & $b=80$ & 1.05 & 0.946 & 0.944 & 0.738 & 0.045 \\*
+ & $b=160$ & 1.06 & 0.946 & 0.944 & 0.734 & 0.060 \\*
+ & $b=320$ & 1.07 & 0.943 & 0.944 & 0.738 & 0.085 \\*
  & $b=640$ & 1.10 & 0.938 & 0.942 & 0.733 & 0.118 \\
 \midrule
-\multirow{7}{*}{(c) warm-up} & $c_{\mathrm w}=0.5$ & 1.13 & 0.928 & 0.921 & 0.724 & 0.069 \\
- & $c_{\mathrm w}=5$ & 1.06 & 0.941 & 0.931 & 0.730 & 0.069 \\
- & $c_{\mathrm w}=25$ & 1.04 & 0.944 & 0.936 & 0.737 & 0.068 \\
- & $c_{\mathrm w}=50$ & 1.04 & 0.944 & 0.935 & 0.741 & 0.068 \\
- & $c_{\mathrm w}=100$ & 1.01 & 0.949 & 0.941 & 0.739 & 0.069 \\
- & $c_{\mathrm w}=200$ & 1.04 & 0.947 & 0.938 & 0.733 & 0.069 \\
+\multirow{7}{*}{(c) warm-up} & $c_{\mathrm w}=0.5$ & 1.13 & 0.928 & 0.921 & 0.724 & 0.069 \\*
+ & $c_{\mathrm w}=5$ & 1.06 & 0.941 & 0.931 & 0.730 & 0.069 \\*
+ & $c_{\mathrm w}=25$ & 1.04 & 0.944 & 0.936 & 0.737 & 0.068 \\*
+ & $c_{\mathrm w}=50$ & 1.04 & 0.944 & 0.935 & 0.741 & 0.068 \\*
+ & $c_{\mathrm w}=100$ & 1.01 & 0.949 & 0.941 & 0.739 & 0.069 \\*
+ & $c_{\mathrm w}=200$ & 1.04 & 0.947 & 0.938 & 0.733 & 0.069 \\*
  & $c_{\mathrm w}=500$ & 1.12 & 0.937 & 0.927 & 0.713 & 0.069 \\
 \midrule
-\multirow{4}{*}{(c$'$) warm-up, Mkv} & $c_{\mathrm w}=50$ & 2.19 & 0.848 & 0.812 & 0.452 & 0.239 \\
- & $c_{\mathrm w}=100$ & 1.76 & 0.879 & 0.851 & 0.467 & 0.238 \\
- & $c_{\mathrm w}=200$ & 1.41 & 0.907 & 0.877 & 0.495 & 0.237 \\
+\multirow{4}{*}{(c$'$) warm-up, Mkv} & $c_{\mathrm w}=50$ & 2.19 & 0.848 & 0.812 & 0.452 & 0.239 \\*
+ & $c_{\mathrm w}=100$ & 1.76 & 0.879 & 0.851 & 0.467 & 0.238 \\*
+ & $c_{\mathrm w}=200$ & 1.41 & 0.907 & 0.877 & 0.495 & 0.237 \\*
  & $c_{\mathrm w}=500$ & 1.21 & 0.923 & 0.900 & 0.536 & 0.235 \\
 \midrule
-\multirow{10}{*}{(d) ridge} & $c_\iota{=}0,\ \qr{=}0.2$ & 1.04 & 0.949 & 0.940 & 0.741 & 0.069 \\
- & $c_\iota{=}0.001,\ \qr{=}0.2$ & 1.04 & 0.949 & 0.940 & 0.740 & 0.069 \\
- & $c_\iota{=}0.01,\ \qr{=}0.2$ & 1.04 & 0.947 & 0.937 & 0.736 & 0.069 \\
- & $c_\iota{=}0.1,\ \qr{=}0.2$ & 1.04 & 0.931 & 0.920 & 0.703 & 0.069 \\
- & $c_\iota{=}1,\ \qr{=}0.2$ & 3.07 & 0.605 & 0.591 & 0.405 & 0.069 \\
- & $c_\iota{=}0.01,\ \qr{=}0.05$ & 1.03 & 0.943 & 0.931 & 0.729 & 0.069 \\
- & $c_\iota{=}0.01,\ \qr{=}0.1$ & 1.03 & 0.946 & 0.934 & 0.732 & 0.069 \\
- & $c_\iota{=}0.01,\ \qr{=}0.24$ & 1.04 & 0.948 & 0.938 & 0.737 & 0.069 \\
- & $c_\iota{=}0.01,\ \qr{=}0.4$ & 1.04 & 0.949 & 0.939 & 0.740 & 0.069 \\
+\multirow{10}{*}{(d) ridge} & $c_\iota{=}0,\ \qr{=}0.2$ & 1.04 & 0.949 & 0.940 & 0.741 & 0.069 \\*
+ & $c_\iota{=}0.001,\ \qr{=}0.2$ & 1.04 & 0.949 & 0.940 & 0.740 & 0.069 \\*
+ & $c_\iota{=}0.01,\ \qr{=}0.2$ & 1.04 & 0.947 & 0.937 & 0.736 & 0.069 \\*
+ & $c_\iota{=}0.1,\ \qr{=}0.2$ & 1.04 & 0.931 & 0.920 & 0.703 & 0.069 \\*
+ & $c_\iota{=}1,\ \qr{=}0.2$ & 3.07 & 0.605 & 0.591 & 0.405 & 0.069 \\*
+ & $c_\iota{=}0.01,\ \qr{=}0.05$ & 1.03 & 0.943 & 0.931 & 0.729 & 0.069 \\*
+ & $c_\iota{=}0.01,\ \qr{=}0.1$ & 1.03 & 0.946 & 0.934 & 0.732 & 0.069 \\*
+ & $c_\iota{=}0.01,\ \qr{=}0.24$ & 1.04 & 0.948 & 0.938 & 0.737 & 0.069 \\*
+ & $c_\iota{=}0.01,\ \qr{=}0.4$ & 1.04 & 0.949 & 0.939 & 0.740 & 0.069 \\*
  & $c_\iota{=}0.01,\ \qr{=}0.49$ & 1.04 & 0.949 & 0.940 & 0.740 & 0.069 \\
 \midrule
-\multirow{5}{*}{(e) $H_0$ scale} & $\lambda_0=1e-08$ & 1.04 & 0.947 & 0.937 & 0.736 & 0.069 \\
- & $\lambda_0=1e-06$ & 1.04 & 0.947 & 0.937 & 0.736 & 0.069 \\
- & $\lambda_0=0.0001$ & 1.04 & 0.947 & 0.937 & 0.736 & 0.069 \\
- & $\lambda_0=0.01$ & 1.04 & 0.947 & 0.937 & 0.736 & 0.069 \\
+\multirow{5}{*}{(e) $H_0$ scale} & $\lambda_0=1e-08$ & 1.04 & 0.947 & 0.937 & 0.736 & 0.069 \\*
+ & $\lambda_0=1e-06$ & 1.04 & 0.947 & 0.937 & 0.736 & 0.069 \\*
+ & $\lambda_0=0.0001$ & 1.04 & 0.947 & 0.937 & 0.736 & 0.069 \\*
+ & $\lambda_0=0.01$ & 1.04 & 0.947 & 0.937 & 0.736 & 0.069 \\*
  & $\lambda_0=1$ & 1.03 & 0.947 & 0.935 & 0.734 & 0.069 \\
 \midrule
-\multirow{7}{*}{(f) curvature} & $m=1,\ p=1$ & 1.02 & 0.949 & 0.940 & 0.740 & 0.069 \\
- & $m=1,\ p=0.5$ & 1.02 & 0.949 & 0.940 & 0.739 & 0.069 \\
- & $m=1,\ p=0.2$ & 1.03 & 0.948 & 0.939 & 0.739 & 0.069 \\
- & $m=1,\ p=0.05$ & 1.03 & 0.948 & 0.937 & 0.737 & 0.069 \\
- & $m=1,\ p=1$ & 1.02 & 0.949 & 0.940 & 0.740 & 0.069 \\
- & $m=5,\ p=1$ & 1.03 & 0.949 & 0.938 & 0.737 & 0.069 \\
+\multirow{7}{*}{(f) curvature} & $m=1,\ p=1$ & 1.02 & 0.949 & 0.940 & 0.740 & 0.069 \\*
+ & $m=1,\ p=0.5$ & 1.02 & 0.949 & 0.940 & 0.739 & 0.069 \\*
+ & $m=1,\ p=0.2$ & 1.03 & 0.948 & 0.939 & 0.739 & 0.069 \\*
+ & $m=1,\ p=0.05$ & 1.03 & 0.948 & 0.937 & 0.737 & 0.069 \\*
+ & $m=1,\ p=1$ & 1.02 & 0.949 & 0.940 & 0.740 & 0.069 \\*
+ & $m=5,\ p=1$ & 1.03 & 0.949 & 0.938 & 0.737 & 0.069 \\*
  & $m=20,\ p=1$ & 1.04 & 0.947 & 0.937 & 0.736 & 0.069 \\
 \midrule
-\midrule
-\multirow{5}{*}{(g) strong dep.} & $b=20$ & 1.04 & 0.944 & 0.921 & 0.558 & 0.177 \\
- & $b=40$ & 1.05 & 0.946 & 0.934 & 0.556 & 0.082 \\
- & $b=80$ & 1.07 & 0.948 & 0.942 & 0.553 & 0.053 \\
- & $b=160$ & 1.09 & 0.947 & 0.946 & 0.555 & 0.063 \\
+\multirow{5}{*}{(g) strong dep.} & $b=20$ & 1.04 & 0.944 & 0.921 & 0.558 & 0.177 \\*
+ & $b=40$ & 1.05 & 0.946 & 0.934 & 0.556 & 0.082 \\*
+ & $b=80$ & 1.07 & 0.948 & 0.942 & 0.553 & 0.053 \\*
+ & $b=160$ & 1.09 & 0.947 & 0.946 & 0.555 & 0.063 \\*
  & $b=320$ & 1.11 & 0.945 & 0.946 & 0.549 & 0.086 \\
 \midrule
-\multirow{3}{*}{(h) averaged} & $N=25{,}000$ & 1.28 & 0.923 & 0.916 & 0.701 & 0.079 \\
- & $N=100{,}000$ & 1.11 & 0.937 & 0.927 & 0.718 & 0.064 \\
+\multirow{3}{*}{(h) averaged} & $N=25{,}000$ & 1.28 & 0.923 & 0.916 & 0.701 & 0.079 \\*
+ & $N=100{,}000$ & 1.11 & 0.937 & 0.927 & 0.718 & 0.064 \\*
  & $N=400{,}000$ & 1.13 & 0.939 & 0.930 & 0.725 & 0.067 \\
 \midrule
-\multirow{18}{*}{(i) safeguard} & AR, none & 1.05 & 0.947 & 0.937 & 0.733 & 0.069 \\
- & AR, shift & 1.07 & 0.942 & 0.935 & 0.729 & 0.069 \\
- & AR, cap & 1.04 & 0.947 & 0.937 & 0.736 & 0.069 \\
- & AR, cap 0.25 & 1.04 & 0.945 & 0.937 & 0.736 & 0.069 \\
- & AR, cap 4 & 1.04 & 0.948 & 0.937 & 0.736 & 0.069 \\
- & AR, both & 1.07 & 0.942 & 0.935 & 0.728 & 0.069 \\
- & AR-s, none & 1.22 & 0.922 & 0.897 & 0.537 & 0.177 \\
- & AR-s, shift & 1.12 & 0.936 & 0.911 & 0.527 & 0.177 \\
- & AR-s, cap & 1.04 & 0.944 & 0.921 & 0.558 & 0.177 \\
- & AR-s, cap 0.25 & 1.05 & 0.943 & 0.920 & 0.553 & 0.177 \\
- & AR-s, cap 4 & 1.05 & 0.943 & 0.918 & 0.559 & 0.177 \\
- & AR-s, both & 1.12 & 0.936 & 0.911 & 0.527 & 0.177 \\
- & Mkv, none & \ensuremath{1.1\times10^{14}} & 0.228 & 0.204 & 0.484 & 0.896 \\
- & Mkv, shift & 3.08 & 0.785 & 0.746 & 0.372 & 0.242 \\
- & Mkv, cap & 1.41 & 0.907 & 0.877 & 0.495 & 0.237 \\
- & Mkv, cap 0.25 & 1.59 & 0.883 & 0.848 & 0.480 & 0.237 \\
- & Mkv, cap 4 & \ensuremath{4.3\times10^{7}} & 0.518 & 0.484 & 0.526 & 0.520 \\
+\multirow{18}{*}{(i) safeguard} & AR, none & 1.05 & 0.947 & 0.937 & 0.733 & 0.069 \\*
+ & AR, shift & 1.07 & 0.942 & 0.935 & 0.729 & 0.069 \\*
+ & AR, cap & 1.04 & 0.947 & 0.937 & 0.736 & 0.069 \\*
+ & AR, cap 0.25 & 1.04 & 0.945 & 0.937 & 0.736 & 0.069 \\*
+ & AR, cap 4 & 1.04 & 0.948 & 0.937 & 0.736 & 0.069 \\*
+ & AR, both & 1.07 & 0.942 & 0.935 & 0.728 & 0.069 \\*
+ & AR-s, none & 1.22 & 0.922 & 0.897 & 0.537 & 0.177 \\*
+ & AR-s, shift & 1.12 & 0.936 & 0.911 & 0.527 & 0.177 \\*
+ & AR-s, cap & 1.04 & 0.944 & 0.921 & 0.558 & 0.177 \\*
+ & AR-s, cap 0.25 & 1.05 & 0.943 & 0.920 & 0.553 & 0.177 \\*
+ & AR-s, cap 4 & 1.05 & 0.943 & 0.918 & 0.559 & 0.177 \\*
+ & AR-s, both & 1.12 & 0.936 & 0.911 & 0.527 & 0.177 \\*
+ & Mkv, none & \ensuremath{1.1\times10^{14}} & 0.228 & 0.204 & 0.484 & 0.896 \\*
+ & Mkv, shift & 3.08 & 0.785 & 0.746 & 0.372 & 0.242 \\*
+ & Mkv, cap & 1.41 & 0.907 & 0.877 & 0.495 & 0.237 \\*
+ & Mkv, cap 0.25 & 1.59 & 0.883 & 0.848 & 0.480 & 0.237 \\*
+ & Mkv, cap 4 & \ensuremath{4.3\times10^{7}} & 0.518 & 0.484 & 0.526 & 0.520 \\*
  & Mkv, both & 3.10 & 0.785 & 0.745 & 0.372 & 0.242 \\
 \midrule
-\multirow{5}{*}{(j) warm-up frac.} & $\varpi_{\mathrm w}=0.02$ & 1.40 & 0.937 & 0.946 & 0.723 & 0.190 \\
- & $\varpi_{\mathrm w}=0.05$ & 1.28 & 0.935 & 0.939 & 0.721 & 0.197 \\
- & $\varpi_{\mathrm w}=0.10$ & 1.28 & 0.929 & 0.930 & 0.715 & 0.203 \\
- & $\varpi_{\mathrm w}=0.25$ & 1.50 & 0.880 & 0.894 & 0.644 & 0.233 \\
+\multirow{5}{*}{(j) warm-up frac.} & $\varpi_{\mathrm w}=0.02$ & 1.40 & 0.937 & 0.946 & 0.723 & 0.190 \\*
+ & $\varpi_{\mathrm w}=0.05$ & 1.28 & 0.935 & 0.939 & 0.721 & 0.197 \\*
+ & $\varpi_{\mathrm w}=0.10$ & 1.28 & 0.929 & 0.930 & 0.715 & 0.203 \\*
+ & $\varpi_{\mathrm w}=0.25$ & 1.50 & 0.880 & 0.894 & 0.644 & 0.233 \\*
  & $\varpi_{\mathrm w}=1.00$ & 2.51 & 0.787 & 0.789 & 0.515 & 0.281 \\
-\bottomrule
-\end{tabular}
-}
-\end{table}
+\end{longtable}
+\endgroup

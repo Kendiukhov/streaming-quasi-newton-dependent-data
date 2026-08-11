@@ -41,3 +41,11 @@ for e in errs[:5]:
     print("   ", e[:120])
 PY
 done
+
+# Layout gates.  The first reads the logs (over-wide lines, oversized floats); the second renders
+# every page and measures the ink on all four sides, which is the only check that catches a float
+# hanging off the bottom of a page.  Neither aborts the build -- the PDFs are still wanted -- but
+# both print loudly, and `make check` exits non-zero on them.
+printf '\n=== layout ===\n'
+OVERFULL_PT=${OVERFULL_PT:-25} python3 check_overflow.py || true
+python3 check_geometry.py || true

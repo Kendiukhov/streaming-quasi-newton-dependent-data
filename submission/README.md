@@ -15,7 +15,7 @@ cd submission && sh build.sh
 | File | Purpose | Upload as |
 |---|---|---|
 | `manuscript.tex`, `body.tex` | The manuscript. `elsarticle`, single column, line-numbered. | Manuscript (source) |
-| `manuscript.pdf` | Compiled manuscript: 17-page main text, 59 pages including appendices and references. | Manuscript (PDF, for review) |
+| `manuscript.pdf` | Compiled manuscript: 17-page main text, 60 pages including appendices and references. | Manuscript (PDF, for review) |
 | `supplementary.tex` / `.pdf` | Four figures held out of the main text (see below). | Supplementary material |
 | `highlights.tex` / `.txt` / `.pdf` | 5 bullets, each ≤ 85 characters. | Highlights (file name contains "highlights") |
 | `cover_letter.tex` / `.pdf` | Cover letter to the Editors-in-Chief. | Cover letter |
@@ -25,7 +25,8 @@ cd submission && sh build.sh
 | `author_biography.txt` | Vitae **template — must be completed by the author**. | Editable file + photograph |
 | `suggested_reviewers.md` | Candidate reviewers, with affiliations deliberately omitted. | Enter in the system |
 | `check_highlights.py` | Verifies the 3–5 bullets / 85-character limits. | — |
-| `check_overflow.py` | Lists every overfull box with the source file and line. | — |
+| `check_overflow.py` | Lists every overfull box and every oversized float, with source file and line. | — |
+| `check_geometry.py` | Renders every page and measures ink on all four sides; catches what the logs miss. | — |
 | `build.sh` | Builds all four PDFs. | — |
 
 ## How this stays consistent with the preprint
@@ -71,11 +72,18 @@ Checked against the Guide for Authors on 11 August 2026.
 - **Figures and tables** — 10 in the manuscript (Figures 1–2 and Table 1 in the main text, Figures
   D.1–D.2 and Tables D.1–D.5 in the appendices), matching the guideline of 10 for a theoretical
   article; 4 more are in the Supplementary Material. Appendix floats are numbered within their
-  appendix, so there is no gap in the sequence. All are cited in the text. Figures are vector PDFs in `../figures`.
-- **Overfull boxes** — `check_overflow.py` reports one benign 30 pt overfull `\vbox` on the title
-  page, from `elsarticle`'s corresponding-author footnote; the rendered page is inside its margins
-  (checked pixelwise). No line or table protrudes past the text block by more than 0.08 in
-  anywhere in either document.
+  appendix, so there is no gap in the sequence. Table D.4 (the ablations, 77 rows across 11 panels)
+  is a `longtable` and spans three pages: as a float it was twice the height of the text block, and
+  a float that does not fit is not an error in LaTeX — it runs off the bottom of the page, and 40 of
+  its 77 rows, panels (f) to (j), were silently never drawn while the text cited them 13 times. All are cited in the text. Figures are vector PDFs in `../figures`.
+- **Layout** — two independent gates run at the end of `build.sh`. `check_overflow.py` reads the
+  logs (over-wide lines, and floats too large for their page — a class it originally missed, which
+  is how a 617 pt table came to hang off page 44). `check_geometry.py` renders every page and
+  measures the extreme ink on all four sides, calibrating each side's baseline from the document
+  itself, so it needs no page-geometry constants and catches vertical overflow as well as
+  horizontal. The only remaining report is a benign 30 pt overfull `\vbox` on the title page from
+  `elsarticle`'s corresponding-author footnote; the rendered page is inside its margins. Nothing
+  protrudes past the text block by more than an end-of-line hyphen (0.07 in) in either document.
 - **Declarations** — competing interest, funding, CRediT, data availability, and the declaration on
   generative AI use all appear as unnumbered sections after the Conclusions, and are also provided
   as separate files here.

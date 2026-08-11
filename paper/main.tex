@@ -40,6 +40,10 @@
 \renewcommand{\floatpagefraction}{0.72}
 \usepackage{placeins}
 \usepackage{caption}
+% The ablation table has 77 body rows and cannot fit one page.  A float taller than the text block
+% is not an error in LaTeX -- it simply runs off the bottom, silently losing rows -- so that table
+% is a longtable, which breaks across pages instead.
+\usepackage{longtable}
 \captionsetup{font=small,labelfont=bf}
 
 \newtheorem{theorem}{Theorem}

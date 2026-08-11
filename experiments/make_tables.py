@@ -169,46 +169,67 @@ def table_main():
 # --------------------------------------------------------------------------------------
 def table_ablation():
     d = common.load("exp5_ablations.json")
-    L = [r"\begin{table}[tbp]", r"\centering", r"\small",
+    # A longtable, not a table float.  With 77 body rows across 11 panels this table is twice as
+    # tall as the text block, and a float that does not fit is not an error in LaTeX: it runs off
+    # the bottom of the page and the rows below the paper edge are simply never drawn.  That is
+    # what happened here -- panels (f) to (j), 40 of the 77 rows, were absent from both PDFs while
+    # the text cited them thirteen times.  A longtable breaks across pages instead.
+    #
+    # Consequences of not being a float, all deliberate: there is no [tbp] placement, so the table
+    # appears where it is \input; the fit() width guard cannot be used, because \resizebox cannot
+    # break a page -- the tabular's natural width is 365pt against a 452pt \linewidth, so it fits
+    # unaided, and submission/check_geometry.py is what would catch a regression; and rows inside
+    # one panel are terminated with \\* rather than \\, which forbids a page break inside a
+    # \multirow group, whose label would otherwise be dropped.
+    HEADER = r"panel & setting & eff & 2-scale & BM & plug-in & $r_j$ \\"
+    L = [r"\begingroup", r"\small", r"\setlength{\tabcolsep}{4pt}",
+         r"\begin{longtable}{llrrrrr}",
          r"\caption{\textbf{Ablations} on the homogeneous autoregressive design"
-         r" ($d=20$, $\kappa=2.92$, $R=%d$). \emph{cov} columns are coverage of nominal"
-         r" 95\%% intervals using the two-scale, plain batch-means, and i.i.d.\ plug-in"
+         r" ($d=20$, $\kappa=2.92$, $R=%d$). The three coverage columns"
+         r" --- \emph{2-scale}, \emph{BM} and \emph{plug-in} --- are coverage of nominal"
+         r" 95\%% intervals using the two-scale, plain batch-means and i.i.d.\ plug-in"
          r" variance respectively; \emph{eff} is the empirical variance of the point"
-         r" estimate divided by its asymptotic value ($1.00$ is efficient); \emph{adeq} is"
-         r" the free block-adequacy diagnostic $r_j$, an estimate of the relative"
-         r" block-length bias of plain batch means. The three coverage columns use the two-scale,"
-         r" plain batch-means and i.i.d.\ plug-in variance respectively. In panel~(i) the designs"
-         r" are abbreviated AR (autoregressive), AR-s (strongly autoregressive) and Mkv"
-         r" (regime-switching); the number of times the safeguard acted is in the text. Panel (c$'$) is on the regime-switching"
-         r" design and is the reason the default warm-up is $c_{\mathrm w}=200$ rather than"
-         r" $50$: there, $50d$ consecutive observations span only about thirty regime visits,"
-         r" the curvature estimate is still rank-starved, and the $1/t$ schedule diverges."
-         r" The warm-up must span enough effectively distinct design points, which is not the"
-         r" same as enough observations. Panel (i) varies how the blocked step is"
-         r" safeguarded: \emph{none} is the raw $1/t$ step, \emph{cap} is the step-length"
-         r" safeguard of \eqref{eq:step} at $c_D=1$ (our default) with \emph{cap 0.25} and"
-         r" \emph{cap 4} changing $c_D$ by a factor of four either way, \emph{shift} is the"
-         r" rejected schedule shift of \Cref{app:t0}, and \emph{both} applies the two"
-         r" together; \emph{clips} counts how many of the $10{,}000$ blocks the safeguard"
-         r" acted on. \emph{eff} is in scientific notation where the unsafeguarded step"
-         r" diverges. Panel (j) is on a short stream ($N=4000$, $d=11$, the length of a"
-         r" real-data evaluation segment) and varies the cap on the warm-up as a fraction of"
-         r" the stream; $\varpi_{\mathrm w}=1$ means uncapped, which spends $2200$ of the"
-         r" $4000$ observations on curvature and leaves $45$ blocked steps.}"
+         r" estimate divided by its asymptotic value ($1.00$ is efficient), in scientific"
+         r" notation where the unsafeguarded step diverges; and $r_j$ is the free"
+         r" block-adequacy diagnostic, an estimate of the relative block-length bias of plain"
+         r" batch means. Panel (c$'$) is on the regime-switching design and is why the default"
+         r" warm-up is $c_{\mathrm w}=200$ rather than $50$ (\Cref{app:abl}). Panel (f) varies"
+         r" the Bernoulli retention probability $p$ at gap $m=1$ and then the gap $m$ at $p=1$,"
+         r" so the shared baseline $m=1,\ p=1$ appears in both sub-sweeps. In panel~(i) the"
+         r" designs are abbreviated AR (autoregressive), AR-s (strongly autoregressive) and"
+         r" Mkv (regime-switching), and the variants are: \emph{none}, the raw $1/t$ step;"
+         r" \emph{cap}, the step-length safeguard of \eqref{eq:step} at $c_D=1$ (our default),"
+         r" with \emph{cap 0.25} and \emph{cap 4} changing $c_D$ by a factor of four either"
+         r" way; \emph{shift}, the rejected schedule shift of \Cref{app:t0}; and \emph{both},"
+         r" the two together. The number of blocks out of $10{,}000$ on which the safeguard"
+         r" acted is reported in \Cref{app:abl} and in \Cref{tab:hard}. Panel (j) is on a short"
+         r" stream ($N=4000$, $d=11$, the length of a real-data evaluation segment) and varies"
+         r" the cap on the warm-up as a fraction of the stream; $\varpi_{\mathrm w}=1$ means"
+         r" uncapped, which spends $2200$ of the $4000$ observations on curvature and leaves"
+         r" $45$ blocked steps.}"
          % d["N"][0]["R"],
-         r"\label{tab:ablation}", r"\small", r"\setlength{\tabcolsep}{4pt}",
-         r"\begin{tabular}{llrrrrr}", r"\toprule",
-         r"panel & setting & eff & 2-scale & BM & plug-in & $r_j$ \\",
-         r"\midrule"]
+         r"\label{tab:ablation}\\",
+         r"\toprule", HEADER, r"\midrule",
+         r"\endfirsthead",
+         r"\multicolumn{7}{l}{\emph{\tablename~\thetable, continued from the previous page.}}\\",
+         r"\toprule", HEADER, r"\midrule",
+         r"\endhead",
+         r"\midrule",
+         r"\multicolumn{7}{r}{\emph{continued on the next page}}\\",
+         r"\endfoot",
+         r"\bottomrule",
+         r"\endlastfoot"]
 
     def block(title, rows, keyfmt):
+        """One panel.  Every row but the last ends with \\* so the panel cannot be split."""
         out = []
         for i, q in enumerate(rows):
             lab = keyfmt(q)
+            end = r"\\" if i == len(rows) - 1 else r"\\*"
             out.append((r"\multirow{%d}{*}{%s}" % (len(rows), title) if i == 0 else "")
                        + f" & {lab} & {sci(q['eff'])} & {q['cov_ft']:.3f}"
                        + f" & {q['cov_bm']:.3f} & {q['cov_plugin']:.3f}"
-                       + f" & {q['block_adequacy']:.3f} \\\\")
+                       + f" & {q['block_adequacy']:.3f} " + end)
         return out
 
     L += block("(a) length $N$", d["N"], lambda q: f"$N={q['N']:,}$".replace(",", r"{,}"))
@@ -228,7 +249,6 @@ def table_ablation():
     L.append(r"\midrule")
     L += block("(f) curvature", d["p"],
                lambda q: r"$m=%d,\ p=%.3g$" % (q["m"], q["p"]))
-    L.append(r"\midrule")
     if "b_strong" in d:
         L.append(r"\midrule")
         L += block(r"(g) strong dep.", d["b_strong"], lambda q: f"$b={q['b']}$")
@@ -245,15 +265,8 @@ def table_ablation():
         L.append(r"\midrule")
         L += block(r"(j) warm-up frac.", d["warm_frac"],
                    lambda q: r"$\varpi_{\mathrm w}=%.2f$" % q["warm_frac"])
-    L += [r"\bottomrule", r"\end{tabular}"]
-
-    # never let a table run into the margin, whatever the next re-run produces
-
-    k = next(j for j, x in enumerate(L) if x.startswith(r"\begin{tabular}"))
-
-    L[k:] = fit(L[k:])
-
-    L += [r"\end{table}"]
+    # \bottomrule and \end{longtable} come from \endlastfoot, declared above
+    L += [r"\end{longtable}", r"\endgroup"]
     w("tab_ablation.tex", "\n".join(L) + "\n")
     return d
 

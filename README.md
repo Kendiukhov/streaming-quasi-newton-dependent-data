@@ -164,6 +164,7 @@ tests/
   test_oracles.py every closed-form S, Gamma_0 and H checked against a long simulation;
                   the two-scale algebraic identity; the streaming dyadic accumulators
                   checked against an explicit batch-means computation
+  test_paper_sources.py  no shared fragment truncated; every numeric macro generated
 paper/            LaTeX sources for the preprint.  Section bodies, figure captions, tables,
                   the abstract and numbers.tex are shared with the journal submission, so the
                   two versions cannot drift apart.  Every refs.bib entry was verified against
@@ -214,6 +215,9 @@ Two versions are built from one set of sources, so they cannot disagree:
   requires.
 
 Both have a **17-page main narrative** (the numbered Sections 1–8) and seven lettered appendices.
+Table D.4 is a `longtable` spanning three pages; every other table is a float whose width is capped
+by a `\resizebox` guard. `make layout` checks both PDFs for over-wide lines, floats too tall for a
+page, and ink outside the text block on any side of any page.
 Each long section is split into a core fragment, which the body includes, and a `_detail`
 fragment, which the appendix includes — so the derivation of the contraction condition, the full
 assumption statements, the secondary experiments, the complete literature survey and the long-form
