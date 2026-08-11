@@ -1,3 +1,7 @@
+% \Needspace* is not decoration: the first chunk of this longtable (caption, head, and
+% the break-protected first panel) has no legal breakpoint inside it, so on a page with
+% less room than that it runs into the bottom margin without any warning.
+\Needspace*{22\baselineskip}
 \begingroup
 \small
 \setlength{\tabcolsep}{4pt}
@@ -13,7 +17,8 @@ panel & setting & eff & 2-scale & BM & plug-in & $r_j$ \\
 panel & setting & eff & 2-scale & BM & plug-in & $r_j$ \\
 \midrule
 \endhead
-\midrule
+% no \midrule here: the inter-panel rule that lands at a break is already there, and a
+% second one 2.5pt below it prints as a doubled rule
 \multicolumn{7}{r}{\emph{continued on the next page}}\\
 \endfoot
 \bottomrule

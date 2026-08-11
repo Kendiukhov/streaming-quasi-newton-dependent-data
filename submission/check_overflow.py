@@ -39,6 +39,7 @@ def parse(path):
         r"|(?P<close>\))"
         r"|Overfull \\(?P<kind>hbox|vbox) \((?P<pt>[\d.]+)pt too (?:wide|high)\)"
         r"|(?P<float>Float too large for page by (?P<fpt>[\d.]+)pt on input line (?P<fl>\d+))"
+        r"|(?P<lt>Table widths have changed\. Rerun LaTeX\.)"
         r"(?: in paragraph at lines (?P<l1>\d+)--(?P<l2>\d+)"
         r"| detected at line (?P<l3>\d+)"
         r"| in alignment at lines (?P<l4>\d+)--(?P<l5>\d+))?")
@@ -51,6 +52,11 @@ def parse(path):
         elif m.group("float"):
             out.append((float(m.group("fpt")), stack[-1] if stack else "?",
                         m.group("fl"), m.group("fl"), "float"))
+        elif m.group("lt"):
+            # A longtable measures its columns on one pass and uses them on the next.  If the
+            # final pass still asks for a rerun, the shipped column widths are the previous
+            # build's and the table can be the wrong width -- silently.
+            out.append((0.0, stack[-1] if stack else "?", "?", "?", "longtable"))
         else:
             a = m.group("l1") or m.group("l3") or m.group("l4") or "?"
             b = m.group("l2") or m.group("l5") or a
@@ -66,11 +72,12 @@ def main():
     logs = sys.argv[1:] or (sorted(glob.glob(os.path.join(here, "*.log")))
                             + sorted(glob.glob(os.path.join(here, "..", "paper", "main.log"))))
     worst = 0.0
-    floats_seen = 0
+    floats_seen = lt_unstable = 0
     for log in logs:
         parsed = parse(log)
         floats_seen += sum(1 for b in parsed if b[4] == "float")
-        boxes = [b for b in parsed if b[0] >= THRESHOLD or b[4] == "float"]
+        lt_unstable += sum(1 for b in parsed if b[4] == "longtable")
+        boxes = [b for b in parsed if b[0] >= THRESHOLD or b[4] in ("float", "longtable")]
         name = os.path.basename(log)
         if not boxes:
             print(f"{name}: no overfull box over {THRESHOLD:g}pt")
@@ -81,10 +88,13 @@ def main():
             where = f"{os.path.basename(f)}:{a}" + (f"-{b}" if b != a else "")
             print(f"  {pt:8.1f}pt  {kind:5s}  {where}")
     print(f"\nworst: {worst:.1f}pt")
+    if lt_unstable:
+        print(f"{lt_unstable} log(s) still ask for a rerun to settle longtable column widths -- "
+              f"the shipped widths are from the previous build; add a pdflatex pass")
     if floats_seen:
         print(f"{floats_seen} float(s) too large for their page -- a float taller than the text "
               f"block runs off the bottom of the page; make it a longtable or split it")
-    return 1 if (worst >= THRESHOLD or floats_seen) else 0
+    return 1 if (worst >= THRESHOLD or floats_seen or lt_unstable) else 0
 
 
 if __name__ == "__main__":

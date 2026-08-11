@@ -44,6 +44,11 @@
 % is not an error in LaTeX -- it simply runs off the bottom, silently losing rows -- so that table
 % is a longtable, which breaks across pages instead.
 \usepackage{longtable}
+% ... and needspace, because a longtable's first chunk is atomic: caption + head + the first
+% break-protected panel is ~308pt with no legal breakpoint inside it, so on a page offering less
+% than that it silently overruns the bottom margin -- which it did, by 0.77in on page 44, with no
+% warning from LaTeX and none from the geometry gate either.
+\usepackage{needspace}
 \captionsetup{font=small,labelfont=bf}
 
 \newtheorem{theorem}{Theorem}

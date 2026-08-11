@@ -182,7 +182,11 @@ def table_ablation():
     # one panel are terminated with \\* rather than \\, which forbids a page break inside a
     # \multirow group, whose label would otherwise be dropped.
     HEADER = r"panel & setting & eff & 2-scale & BM & plug-in & $r_j$ \\"
-    L = [r"\begingroup", r"\small", r"\setlength{\tabcolsep}{4pt}",
+    L = [r"% \Needspace* is not decoration: the first chunk of this longtable (caption, head, and",
+         r"% the break-protected first panel) has no legal breakpoint inside it, so on a page with",
+         r"% less room than that it runs into the bottom margin without any warning.",
+         r"\Needspace*{22\baselineskip}",
+         r"\begingroup", r"\small", r"\setlength{\tabcolsep}{4pt}",
          r"\begin{longtable}{llrrrrr}",
          r"\caption{\textbf{Ablations} on the homogeneous autoregressive design"
          r" ($d=20$, $\kappa=2.92$, $R=%d$). The three coverage columns"
@@ -214,7 +218,8 @@ def table_ablation():
          r"\multicolumn{7}{l}{\emph{\tablename~\thetable, continued from the previous page.}}\\",
          r"\toprule", HEADER, r"\midrule",
          r"\endhead",
-         r"\midrule",
+         r"% no \midrule here: the inter-panel rule that lands at a break is already there, and a",
+         r"% second one 2.5pt below it prints as a doubled rule",
          r"\multicolumn{7}{r}{\emph{continued on the next page}}\\",
          r"\endfoot",
          r"\bottomrule",

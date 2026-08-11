@@ -75,7 +75,11 @@ Checked against the Guide for Authors on 11 August 2026.
   appendix, so there is no gap in the sequence. Table D.4 (the ablations, 77 rows across 11 panels)
   is a `longtable` and spans three pages: as a float it was twice the height of the text block, and
   a float that does not fit is not an error in LaTeX — it runs off the bottom of the page, and 40 of
-  its 77 rows, panels (f) to (j), were silently never drawn while the text cited them 13 times. All are cited in the text. Figures are vector PDFs in `../figures`.
+  its 77 rows, panels (f) to (j), were silently never drawn while the text cited them 13 times.
+  Two consequences a reviewer may notice: those three pages carry no line numbers, because `lineno`
+  does not number `longtable` rows (a float had none either, and numbering resumes correctly after
+  it); and a page break leaves white space where it falls, because rows inside one panel are held
+  together so a `\multirow` panel label cannot be orphaned. All are cited in the text. Figures are vector PDFs in `../figures`.
 - **Layout** — two independent gates run at the end of `build.sh`. `check_overflow.py` reads the
   logs (over-wide lines, and floats too large for their page — a class it originally missed, which
   is how a 617 pt table came to hang off page 44). `check_geometry.py` renders every page and
