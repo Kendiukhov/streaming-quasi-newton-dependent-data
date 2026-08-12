@@ -20,6 +20,7 @@ cd submission && sh build.sh
 | `highlights.tex` / `.txt` / `.pdf` | 5 bullets, each ≤ 85 characters. | Highlights (file name contains "highlights") |
 | `cover_letter.tex` / `.pdf` | Cover letter to the Editors-in-Chief. | Cover letter |
 | `declaration_of_competing_interest.txt` | Text for Elsevier's declarations tool. | See the note inside: must be the tool's `.docx` |
+| `title_abstract_keywords.txt` | Title, abstract and keywords, one per line, as plain text. | Paste into the system |
 | `credit_statement.txt` | CRediT roles. Also printed in the manuscript. | Enter in the system |
 | `data_availability.txt` | Data statement (journal applies Option C). Keep in step with `../paper/sec_data.tex`, which is what the manuscript prints. | Enter in the system |
 | `author_biography.txt` | Vitae **template — must be completed by the author**. | Editable file + photograph |
