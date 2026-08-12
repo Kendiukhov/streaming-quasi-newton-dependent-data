@@ -21,7 +21,7 @@ cd submission && sh build.sh
 | `cover_letter.tex` / `.pdf` | Cover letter to the Editors-in-Chief. | Cover letter |
 | `declaration_of_competing_interest.txt` | Text for Elsevier's declarations tool. | See the note inside: must be the tool's `.docx` |
 | `credit_statement.txt` | CRediT roles. Also printed in the manuscript. | Enter in the system |
-| `data_availability.txt` | Data statement (journal applies Option C). | Enter in the system |
+| `data_availability.txt` | Data statement (journal applies Option C). Keep in step with `../paper/sec_data.tex`, which is what the manuscript prints. | Enter in the system |
 | `author_biography.txt` | Vitae **template — must be completed by the author**. | Editable file + photograph |
 | `suggested_reviewers.md` | Candidate reviewers, with affiliations deliberately omitted. | Enter in the system |
 | `check_highlights.py` | Verifies the 3–5 bullets / 85-character limits. | — |
@@ -92,6 +92,11 @@ Checked against the Guide for Authors on 11 August 2026.
 - **Declarations** — competing interest, funding, CRediT, data availability, and the declaration on
   generative AI use all appear as unnumbered sections after the Conclusions, and are also provided
   as separate files here.
+- **Data and code availability** — printed as an unnumbered section after the Conclusions, from the
+  shared fragment `../paper/sec_data.tex` so the preprint carries the identical statement, and
+  pointed at from the end of the Introduction so a reader meets the DOI on page 3 rather than
+  hunting for it on page 18. It gives the version DOI, the concept DOI, the repository, what the
+  archive contains, and the provenance and DOIs of the two third-party data sets.
 - **Research data (Option C)** — satisfied: the code and results are archived on Zenodo with a DOI
   ([10.5281/zenodo.21891313](https://doi.org/10.5281/zenodo.21891313)), cited in the reference list
   as a software reference with creator, title, venue, date, version and identifier as Elsevier's

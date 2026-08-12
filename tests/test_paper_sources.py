@@ -23,7 +23,7 @@ SECTIONS = ["sec_intro.tex", "sec_setting.tex", "sec_theory.tex", "sec_lrv.tex",
             "sec_conclusions.tex", "sec_appendix.tex", "sec_appendix_exp.tex",
             "sec_setting_detail.tex", "sec_theory_detail.tex",
             "sec_experiments_detail.tex", "sec_related_detail.tex",
-            "sec_limits_detail.tex",
+            "sec_limits_detail.tex", "sec_data.tex",
             "abstract.tex", "fig_coverage.tex", "fig_lrv.tex", "fig_lrvrate.tex",
             "fig_gap_cost.tex", "fig_ablation.tex", "fig_real.tex", "fig_hard.tex"]
 
@@ -50,7 +50,8 @@ def test_sections_are_nonempty():
              "fig_real.tex": 600, "fig_hard.tex": 600,
              # the core fragments were cut to fit a 15-page main text; these floors are set
              # just under their current sizes, so a truncating edit still trips the test
-             "sec_conclusions.tex": 2000, "sec_limits.tex": 3000, "sec_related.tex": 3500}
+             "sec_conclusions.tex": 2000, "sec_limits.tex": 3000, "sec_related.tex": 3500,
+             "sec_data.tex": 1100}
     for f in SECTIONS:
         n = len(open(os.path.join(PAPER, f)).read())
         floor = FLOOR.get(f, 1500)

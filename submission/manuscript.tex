@@ -71,6 +71,16 @@
 % than that it silently overruns the bottom margin -- which it did, by 0.77in on page 44, with no
 % warning from LaTeX and none from the geometry gate either.
 \usepackage{needspace}
+
+\makeatletter
+% elsarticle appends a period to every run-in \paragraph heading -- \els@aparagraph passes
+% "{#2.}" to \elsparagraph -- and the shared fragments already end their headings with one, so
+% every one of them printed with two dots ("Contributions..", "This paper.."). Strip the class's
+% period and let the source supply it, which is also what article does in the preprint, so the two
+% documents now agree.
+\def\els@aparagraph[#1]#2{\elsparagraph[#1]{#2}}
+\def\els@bparagraph#1{\elsparagraph*{#1}}
+\makeatother
 \captionsetup{font=small,labelfont=bf}
 
 \newtheorem{theorem}{Theorem}

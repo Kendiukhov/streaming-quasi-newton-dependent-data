@@ -227,8 +227,9 @@ halves.
 
 `make paper` builds the first, `make submission` the second. The shared fragments are
 `paper/sec_*.tex`, `paper/fig_*.tex`, `paper/tab_*.tex`, `paper/abstract.tex` and
-`paper/numbers.tex`; the two main files own only their own preamble, title page and float
-placement. `tests/test_paper_sources.py` checks that no shared fragment has been truncated and
+`paper/numbers.tex` — including `paper/sec_data.tex`, the data and code availability statement, so
+both documents cite the same DOIs; the two main files own only their own preamble, title page and
+float placement. `tests/test_paper_sources.py` checks that no shared fragment has been truncated and
 that every numeric macro used in the prose is actually generated from `results/`.
 
 ## Data
